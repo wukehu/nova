@@ -1,11 +1,11 @@
 {
   "id": "nova-plugins",
-  "name": "Nova Plugins",
+  "name": "nova-plugins",
   "description": "Complete SDLC workflow plugins for Claude Code - from requirements clarification to testing and debugging",
   "version": "1.0.0",
-  "author": {
+  "owner": {
     "name": "wukehu",
-    "email": "dev@intellif.com"
+    "email": "w.khu@163.com"
   },
   "license": "MIT",
   "homepage": "https://github.com/wukehu/nova",
@@ -13,10 +13,11 @@
   "plugins": [
     {
       "id": "nova-plugin",
-      "name": "Nova Plugin",
+      "name": "nova-plugin",
       "description": "Complete SDLC workflow plugin - from requirements clarification to testing and debugging",
       "version": "1.0.0",
-      "path": "plugins/nova-plugin"
+      "path": "plugins/nova-plugin",
+      "source": "https://github.com/wukehu/nova.git"
     }
   ]
 }
