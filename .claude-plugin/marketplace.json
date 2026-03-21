@@ -1,22 +1,23 @@
 {
-  "id": "nova-plugins",
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "nova-plugins",
   "description": "Complete SDLC workflow plugins for Claude Code - from requirements clarification to testing and debugging",
-  "version": "1.0.0",
   "owner": {
     "name": "wukehu",
     "email": "w.khu@163.com"
   },
-  "license": "MIT",
-  "homepage": "https://github.com/wukehu/nova",
-  "repository": "https://github.com/wukehu/nova.git",
   "plugins": [
     {
-      "id": "nova-plugin",
       "name": "nova-plugin",
       "description": "Complete SDLC workflow plugin - from requirements clarification to testing and debugging",
       "version": "1.0.0",
-      "path": "plugins/nova-plugin"
+      "author": {
+        "name": "wukehu",
+        "email": "w.khu@163.com"
+      },
+      "source": "./plugins/nova-plugin",
+      "category": "development",
+      "strict": false
     }
   ]
 }
