@@ -1,0 +1,500 @@
+# C++ Language Configuration
+# C++ 语言配置
+
+name: "cpp"
+version: "C++17/C++20"
+description: "Modern C++ language templates and best practices"
+
+# 支持的框架
+frameworks:
+  web:
+    - name: "drogon"
+      description: "High-performance C++ web framework"
+      templates: ["http-controller", "http-filter", "websocket"]
+      version: "1.8+"
+
+    - name: "oat++"
+      description: "Lightweight web framework"
+      templates: ["endpoint", "dto", "component"]
+
+    - name: "pistache"
+      description: "HTTP REST framework"
+      templates: ["endpoint", "router"]
+
+    - name: "crow"
+      description: "Fast and easy to use microframework"
+      templates: ["route", "middleware"]
+
+  networking:
+    - name: "Boost.Asio"
+      description: "Networking and I/O"
+      templates: ["async-server", "async-client", "coroutine"]
+
+    - name: "libcurl"
+      description: "HTTP client library"
+      templates: ["http-client"]
+
+  data:
+    - name: "nlohmann/json"
+      description: "JSON library"
+      templates: ["json-parser", "json-serializer"]
+
+    - name: "sqlite_orm"
+      description: "SQLite ORM"
+      templates: ["model", "repository"]
+
+    - name: "pqxx"
+      description: "PostgreSQL adapter"
+      templates: ["query", "transaction"]
+
+  testing:
+    - name: "gtest"
+      description: "Google Test framework"
+      templates: ["test-case", "test-suite", "mock"]
+
+    - name: "catch2"
+      description: "Modern testing framework"
+      templates: ["test-case", "benchmark"]
+
+    - name: "cpputest"
+      description: "Unit testing framework"
+      templates: ["test-case", "mock"]
+
+  build_systems:
+    - name: "cmake"
+      description: "Cross-platform build system"
+      version: "3.20+"
+
+    - name: "meson"
+      description: "Fast build system"
+
+# 代码风格
+style:
+  formatter: ["clang-format"]
+  linter: ["clang-tidy", "cppcheck", "cpplint"]
+  style_guide: "Google C++ Style Guide"
+  indentation: 2
+  line_length: 100
+  naming:
+    classes: "PascalCase"
+    functions: "PascalCase (methods), snake_case (functions)"
+    variables: "snake_case"
+    constants: "kPascalCase or UPPER_SNAKE_CASE"
+    private_members: "trailing_underscore_"
+
+# C++ 特性
+features:
+  cpp11:
+    - "Smart pointers (unique_ptr, shared_ptr)"
+    - "Lambda expressions"
+    - "Range-based for loops"
+    - "Auto type deduction"
+    - "Move semantics"
+    - "nullptr"
+
+  cpp14:
+    - "Generic lambdas"
+    - "Relaxed constexpr"
+    - "Return type deduction"
+
+  cpp17:
+    - "Structured bindings"
+    - "if constexpr"
+    - "fold expressions"
+    - "std::optional"
+    - "std::variant"
+    - "std::string_view"
+
+  cpp20:
+    - "Concepts"
+    - "Ranges"
+    - "Coroutines"
+    - "Modules"
+    - "Three-way comparison"
+
+# 现代C++最佳实践
+best_practices:
+  memory_management:
+    - "Use smart pointers (unique_ptr, shared_ptr)"
+    - "Avoid raw new/delete"
+    - "Use std::make_unique and std::make_shared"
+    - "Use std::vector instead of C arrays"
+    - "Use std::string_view to avoid copies"
+
+  ownership:
+    - "unique_ptr for exclusive ownership"
+    - "shared_ptr for shared ownership"
+    - "weak_ptr to break cycles"
+    - "Pass by value for cheap-to-copy types"
+    - "Pass by const reference for others"
+
+  safety:
+    - "Use std::optional for nullable values"
+    - "Use std::variant for type-safe unions"
+    - "Use std::span for array views"
+    - "Use gsl::span for non-owning arrays"
+    - "Avoid C-style casts (use static_cast, etc.)"
+    - "Use constexpr for compile-time constants"
+    - "Use enum class for scoped enums"
+
+  performance:
+    - "Use move semantics"
+    - "Use emplace_back instead of push_back"
+    - "Reserve vector capacity"
+    - "Use std::string_view to avoid allocations"
+    - "Use std::array for stack arrays"
+    - "Avoid unnecessary copies"
+
+  code_quality:
+    - "Use auto for type deduction"
+    - "Use range-based for loops"
+    - "Use structured bindings"
+    - "Use algorithms instead of raw loops"
+    - "Use constexpr for compile-time evaluation"
+    - "Use templates for generic code"
+    - "Use concepts for template constraints"
+
+# 项目结构
+structure:
+  modern_cpp:
+    - "src/"              # Source files
+    - "include/{{project}}/"  # Public headers
+    - "tests/"            # Test files
+    - "examples/"         # Example code
+    - "benchmarks/"       # Benchmarks
+    - "docs/"             # Documentation
+    - "CMakeLists.txt"    # CMake config
+    - "conanfile.txt"     # Dependencies
+
+  header_only:
+    - "include/{{project}}/  # All headers"
+    - "tests/"
+    - "examples/"
+    - "CMakeLists.txt"
+
+# 常用模式
+patterns:
+  singleton:
+    cpp_code: |
+      class Singleton {
+      public:
+          static Singleton& getInstance() {
+              static Singleton instance;
+              return instance;
+          }
+          Singleton(const Singleton&) = delete;
+          Singleton& operator=(const Singleton&) = delete;
+      private:
+          Singleton() = default;
+      };
+
+  factory:
+    cpp_code: |
+      class Factory {
+      public:
+          template<typename T, typename... Args>
+          std::unique_ptr<T> create(Args&&... args) {
+              return std::make_unique<T>(std::forward<Args>(args)...);
+          }
+      };
+
+  observer:
+    cpp_code: |
+      class Observer {
+      public:
+          virtual void update(const std::string& message) = 0;
+      };
+
+      class Subject {
+          std::vector<std::weak_ptr<Observer>> observers_;
+      public:
+          void attach(std::shared_ptr<Observer> obs);
+          void notify(const std::string& message);
+      };
+
+  strategy:
+    cpp_code: |
+      class Strategy {
+      public:
+          virtual void execute() = 0;
+          virtual ~Strategy() = default;
+      };
+
+      template<typename StrategyType>
+      class Context {
+          std::unique_ptr<StrategyType> strategy_;
+      public:
+          void setStrategy(std::unique_ptr<StrategyType> s);
+          void execute() { strategy_->execute(); }
+      };
+
+# STL 使用指南
+stl:
+  containers:
+    vector: "Dynamic array, use as default container"
+    list: "Doubly-linked list, rarely needed"
+    deque: "Double-ended queue"
+    map: "Ordered key-value pairs"
+    unordered_map: "Hash table, O(1) lookup"
+    set: "Ordered unique elements"
+    unordered_set: "Hash set, O(1) lookup"
+
+  smart_pointers:
+    unique_ptr: "Exclusive ownership, zero overhead"
+    shared_ptr: "Shared ownership, reference counting"
+    weak_ptr: "Non-owning reference to shared_ptr"
+    auto_ptr: "DEPRECATED, do not use"
+
+  strings:
+    string: "Mutable string, owns memory"
+    string_view: "Non-owning view, avoid copies"
+
+# 错误处理
+error_handling:
+  exceptions:
+    - "Use exceptions for error handling"
+    - "Throw by value, catch by const reference"
+    - "Use standard exceptions (std::runtime_error, etc.)"
+    - "Create custom exception types"
+    - "Use noexcept for functions that don't throw"
+
+  alternative:
+    - "std::expected (C++23) or tl::expected"
+    - "std::optional for optional values"
+    - "std::variant for multiple types"
+    - "Result types (boost::outcome, etc.)"
+
+  example: |
+    std::expected<int, std::string> divide(int a, int b) {
+        if (b == 0) {
+            return std::unexpected("Division by zero");
+        }
+        return a / b;
+    }
+
+    // Usage
+    auto result = divide(10, 2);
+        if (result) {
+        std::cout << "Result: " << *result << "\n";
+        } else {
+        std::cout << "Error: " << result.error() << "\n";
+        }
+    }
+
+# 并发
+concurrency:
+  threading:
+    - "std::thread - Standard threads"
+    - "std::jthread (C++20) - Joining threads"
+
+  synchronization:
+    - "std::mutex - Mutual exclusion"
+    - "std::shared_mutex - Read-write lock"
+    - "std::condition_variable - Condition variable"
+    - "std::atomic - Atomic operations"
+    - "std::latch, std::barrier (C++20)"
+
+  async:
+    - "std::async - Async tasks"
+    - "std::future, std::promise - Task results"
+    - "Coroutines (C++20) - Co-operative multitasking"
+
+  best_practices:
+    - "Use RAII for lock management (std::lock_guard)"
+    - "Minimize lock contention"
+    - "Prefer lock-free algorithms"
+    - "Use atomics when possible"
+
+# 测试
+testing:
+  frameworks:
+    gtest:
+      description: "Google Test"
+      example: |
+        TEST(MyTest, TestName) {
+            EXPECT_EQ(2 + 2, 4);
+            ASSERT_TRUE(true);
+        }
+
+    catch2:
+      description: "Catch2"
+      example: |
+        TEST_CASE("Test name") {
+            REQUIRE(2 + 2 == 4);
+        }
+
+  mocking:
+    - "GMock - Google Mocking framework"
+    - "Hippomocks - Mocking framework"
+
+  coverage:
+    tool: "gcov/lcov"
+    command: "gcc --coverage"
+
+# 性能优化
+performance:
+  profiling:
+    - "gprof - GNU profiler"
+    - "perf - Linux profiling"
+    - "Valgrind/callgrind - Call graph profiling"
+    - "Tracy - Real-time profiler"
+
+  optimization:
+    - "Move semantics"
+    - "Avoid copies (use const reference, string_view)"
+    - "Reserve container capacity"
+    - "Use emplace_back"
+    - "Use constexpr"
+    - "Profile before optimizing"
+
+  memory_optimization:
+    - "Small object optimization"
+    - "Object pools"
+    - "Custom allocators"
+    - "std::span for array views"
+
+# 模板元编程
+templates:
+  basic:
+    - "Function templates"
+    - "Class templates"
+    - "Template template parameters"
+
+  advanced:
+    - "Variadic templates"
+    - "Fold expressions (C++17)"
+    - "constexpr if (C++17)"
+    - "Concepts (C++20)"
+
+  best_practices:
+    - "Prefer constexpr if to runtime if"
+    - "Use concepts to constrain templates"
+    - "Use auto to reduce template verbosity"
+    - "Avoid template bloat"
+
+# 安全注意事项
+security:
+  avoid:
+    - "Buffer overflows (use std::vector, std::string)"
+    - "Use after free (use smart pointers)"
+    - "Dangling references (use std::string_view carefully)"
+    - "Integer overflow (use checked arithmetic)"
+    - "Format string vulnerabilities (use std::format)"
+
+  recommend:
+    - "Use std::vector instead of C arrays"
+    - "Use std::string instead of char*"
+    - "Use std::array for stack arrays"
+    - "Use gsl::span for array views"
+    - "Use std::format for string formatting"
+    - "Enable warnings (-Wall -Wextra)"
+    - "Use sanitizers"
+
+  tools:
+    - "AddressSanitizer"
+    - "UndefinedBehaviorSanitizer"
+    - "MemorySanitizer"
+    - "ThreadSanitizer"
+
+# CMake 配置
+cmake:
+  modern_cmakelist: |
+    cmake_minimum_required(VERSION 3.20)
+    project(MyProject VERSION 1.0 LANGUAGES CXX)
+
+    set(CMAKE_CXX_STANDARD 20)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    set(CMAKE_CXX_EXTENSIONS OFF)
+
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
+
+    find_package(Threads REQUIRED)
+
+    add_executable(myapp
+        src/main.cpp
+        src/application.cpp
+    )
+
+    target_include_directories(myapp PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+    )
+
+    target_link_libraries(myapp PRIVATE
+        Threads::Threads
+    )
+
+    enable_testing()
+    add_subdirectory(tests)
+
+# 依赖管理
+dependencies:
+  package_managers:
+    - name: "conan"
+      description: "C/C++ package manager"
+
+    - name: "vcpkg"
+      description: "C/C++ package manager"
+
+    - name: "FetchContent"
+      description: "CMake dependency fetching"
+
+# 文档
+documentation:
+  tools:
+    - "Doxygen - Generate docs from comments"
+    - " Sphinx - Documentation generator"
+
+  comment_style: |
+    /**
+     * @brief Brief description
+     *
+     * Detailed description
+     *
+     * @tparam T Type description
+     * @param param Parameter description
+     * @return Return value description
+     * @throws exception_type Exception description
+     */
+    template<typename T>
+    T process(T param);
+
+# 编译器
+compilers:
+  gcc:
+    version: "11+"
+    flags: "-std=c++20 -Wall -Wextra -O2"
+
+  clang:
+    version: "14+"
+    flags: "-std=c++20 -Wall -Wextra -O2"
+
+  msvc:
+    version: "2019+"
+    flags: "/std:c++20 /W4 /O2"
+
+# 调试
+debugging:
+  tools:
+    - "gdb - GNU debugger"
+    - "lldb - LLVM debugger"
+    - "Visual Studio debugger - Windows"
+
+  debug_build:
+    flags: "-g -O0 -DDEBUG -fsanitize=address"
+
+  release_build:
+    flags: "-O3 -DNDEBUG"
+
+# 基准测试
+benchmarking:
+  framework: "Google Benchmark"
+  example: |
+    #include <benchmark/benchmark.h>
+
+    static void BM_StringCreation(benchmark::State& state) {
+        for (auto _ : state) {
+            std::string created_string("hello");
+            benchmark::DoNotOptimize(created_string);
+        }
+    }
+    BENCHMARK(BM_StringCreation);

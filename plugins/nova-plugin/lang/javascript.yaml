@@ -1,0 +1,117 @@
+# JavaScript Language Configuration
+# JavaScript 语言配置
+
+name: "javascript"
+version: "ES2022+"
+description: "JavaScript language templates and best practices"
+
+# 支持的运行时
+runtimes:
+  - name: "nodejs"
+    version: "20+"
+    description: "Server-side JavaScript"
+
+  - name: "bun"
+    version: "1.0+"
+    description: "Fast all-in-one runtime"
+
+  - name: "deno"
+    version: "1.40+"
+    description: "Secure runtime"
+
+# 支持的框架
+frameworks:
+  web:
+    - name: "react"
+      description: "UI library"
+      templates: ["component", "hook", "context"]
+      version: "18+"
+
+    - name: "vue"
+      description: "Progressive framework"
+      templates: ["component", "composable", "plugin"]
+      version: "3+"
+
+    - name: "svelte"
+      description: "Compile-time framework"
+      templates: ["component", "store", "action"]
+
+  backend:
+    - name: "express"
+      description: "Web framework"
+      templates: ["route", "middleware", "error-handler"]
+
+    - name: "fastify"
+      description: "Fast web framework"
+      templates: ["route", "plugin", "schema"]
+
+    - name: "nest"
+      description: "Opinionated framework"
+      templates: ["module", "controller", "service"]
+
+# 代码风格
+style:
+  formatter: "prettier"
+  linter: "eslint"
+  semi: true
+  quotes: "single"
+  trailing_comma: "es5"
+
+# 模块系统
+modules:
+  type: "ESM"
+  package_manager: "npm"
+  alternatives: ["yarn", "pnpm", "bun"]
+
+# TypeScript
+typescript:
+  enabled: true
+  strict: true
+  version: "5.0+"
+
+# 测试框架
+testing:
+  frameworks:
+    - name: "vitest"
+      description: "Fast unit testing"
+      templates: ["test-unit", "test-suite", "mock"]
+    - name: "jest"
+      description: "Testing framework"
+      templates: ["test", "describe", "mock"]
+    - name: "playwright"
+      description: "E2E testing"
+      templates: ["test-e2e", "page-object"]
+
+# 最佳实践
+best_practices:
+  - "Use const/let, never var"
+  - "Use arrow functions for callbacks"
+  - "Use async/await, not .then()"
+  - "Use template literals for strings"
+  - "Use destructuring for objects/arrays"
+  - "Use spread/rest for objects/arrays"
+  - "Use optional chaining (?.)"
+  - "Use nullish coalescing (??)"
+  - "Use modules, not namespaces"
+
+# 安全注意事项
+security:
+  avoid:
+    - "eval() and Function()"
+    - "innerHTML with user input"
+    - "postMessage without origin check"
+  recommend:
+    - "Use Content Security Policy"
+    - "Validate and sanitize user input"
+    - "Use HTTPS for all requests"
+    - "Implement CORS properly"
+
+# 性能优化
+performance:
+  profiling: ["Chrome DevTools", "clinic.js"]
+  optimization:
+    - "Code splitting"
+    - "Lazy loading"
+    - "Tree shaking"
+    - "Memoization"
+    - "Debouncing/throttling"

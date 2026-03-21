@@ -1,0 +1,279 @@
+# Performance Rules
+# 性能优化规则配置
+
+name: "performance"
+description: "Performance optimization rules and best practices"
+severity: "medium"
+
+# 通用性能规则
+rules:
+  - id: "PERF001"
+    name: "Algorithm Complexity"
+    description: "Use appropriate algorithm complexity"
+    check: |
+      - Avoid O(n²) when O(n log n) is possible
+      - Use hash tables for lookups, not lists
+      - Consider data structure characteristics
+      - Profile before optimizing
+    severity: "high"
+    examples:
+      bad: "for item in list: if item in list: ..."  # O(n²)
+      good: "set_list = set(list); for item in list: if item in set_list: ..."  # O(n)
+
+  - id: "PERF002"
+    name: "Database Query Optimization"
+    description: "Optimize database queries"
+    check: |
+      - Use indexes appropriately
+      - Avoid N+1 queries
+      - Use JOINs instead of multiple queries
+      - Select only needed columns
+      - Use query limits and pagination
+    severity: "critical"
+
+  - id: "PERF003"
+    name: "Caching Strategy"
+    description: "Implement caching where appropriate"
+    check: |
+      - Cache expensive computations
+      - Cache database query results
+      - Use appropriate cache expiration
+      - Consider cache invalidation
+      - Use distributed caching for scale
+    severity: "high"
+
+  - id: "PERF004"
+    name: "Memory Management"
+    description: "Manage memory efficiently"
+    check: |
+      - Avoid memory leaks
+      - Reuse objects when possible
+      - Use object pools
+      - Preallocate collections when size is known
+      - Clean up resources properly
+    severity: "high"
+
+  - id: "PERF005"
+    name: "I/O Optimization"
+    description: "Optimize I/O operations"
+    check: |
+      - Use async/non-blocking I/O
+      - Batch I/O operations
+      - Use buffering
+      - Minimize disk seeks
+      - Use compression for large data
+    severity: "high"
+
+  - id: "PERF006"
+    name: "Network Optimization"
+    description: "Optimize network operations"
+    check: |
+      - Minimize round trips
+      - Use connection pooling
+      - Enable HTTP/2
+      - Use compression (gzip, brotli)
+      - Implement retry logic
+    severity: "medium"
+
+  - id: "PERF007"
+    name: "Concurrency"
+    description: "Use concurrency appropriately"
+    check: |
+      - Parallelize independent operations
+      - Use worker pools for many tasks
+      - Avoid excessive locking
+      - Use lock-free data structures when possible
+      - Be aware of goroutine/thread overhead
+    severity: "medium"
+
+  - id: "PERF008"
+    name: "String Operations"
+    description: "Optimize string operations"
+    check: |
+      - Use StringBuilder/buffer for concatenation
+      - Preallocate when size is known
+      - Avoid regex in hot paths
+      - Use string interpolation
+    severity: "low"
+
+# 语言特定规则
+language_specific:
+  python:
+    - "Use list comprehensions instead of loops"
+    - "Use generators for large sequences"
+    - "Use built-in functions (map, filter, reduce)"
+    - "Use @lru_cache for memoization"
+    - "Avoid global variables in hot code"
+    - "Use __slots__ for classes with many instances"
+    - "Use pathlib for file operations"
+    - "Use async/await for I/O-bound tasks"
+
+  javascript:
+    - "Avoid blocking operations in event loop"
+    - "Use worker threads for CPU-intensive tasks"
+    - "Minimize DOM manipulation"
+    - "Use event delegation"
+    - "Debounce/throttle event handlers"
+    - "Use requestAnimationFrame for animations"
+    - "Lazy load images and components"
+    - "Code splitting for large bundles"
+
+  java:
+    - "Use StringBuilder for string concatenation"
+    - "Use primitive types when possible"
+    - "Use object pools"
+    - "Avoid auto-boxing/unboxing"
+    - "Use java.util.concurrent"
+    - "Use connection pooling"
+    - "Use prepared statements"
+    - "Profile with JVM tools"
+
+  go:
+    - "Preallocate slices/maps when size is known"
+    - "Use sync.Pool for object reuse"
+    - "Use buffered channels appropriately"
+    - "Avoid defer in loops"
+    - "Use strings.Builder for strings"
+    - "Minimize allocations in hot paths"
+    - "Use parallelism for CPU-bound tasks"
+    - "Profile with pprof"
+
+# 性能反模式
+anti_patterns:
+  - name: "Premature Optimization"
+    description: "Optimizing without profiling data"
+    recommendation: "Profile first, optimize hot paths"
+
+  - name: "Golden Hammer"
+    description: "Using the same solution for all problems"
+    recommendation: "Choose the right tool for the job"
+
+  - name: "Micro-optimization"
+    description: "Focusing on tiny optimizations"
+    recommendation: "Focus on algorithmic improvements"
+
+# 性能检查清单
+checklist:
+  pre_deployment:
+    - "Run performance benchmarks"
+    - "Check database query plans"
+    - "Profile memory usage"
+    - "Measure response times"
+    - "Test under load"
+    - "Check for memory leaks"
+    - "Verify cache hit rates"
+
+  optimization_pass:
+    - "Profile to find bottlenecks"
+    - "Optimize algorithms (O(n²) → O(n log n))"
+    - "Add caching where beneficial"
+    - "Optimize database queries"
+    - "Reduce network round trips"
+    - "Use async/non-blocking I/O"
+    - "Batch operations"
+    - "Optimize hot paths"
+    - "Re-measure improvements"
+
+# 工具集成
+tools:
+  profilers:
+    python: ["cProfile", "py-spy", "memory_profiler"]
+    javascript: ["Chrome DevTools", "clinic.js", "v8-profiler"]
+    java: ["JProfiler", "VisualVM", "Java Mission Control"]
+    go: ["pprof", "trace", "benchstat"]
+
+  load_testing:
+    - "k6 - Load testing"
+    - "artillery - Load testing"
+    - "locust - Python load testing"
+    - "JMeter - Java load testing"
+
+  apm:
+    - "Datadog"
+    - "New Relic"
+    - "Prometheus + Grafana"
+    - "Jaeger (tracing)"
+
+# 性能基准
+benchmarks:
+  web_api:
+    p50_response_time: "200ms"
+    p95_response_time: "500ms"
+    p99_response_time: "1000ms"
+    throughput: "1000 req/s"
+
+  database:
+    query_time: "100ms"
+    connection_pool_size: "10-50"
+
+  memory:
+    max_heap: "512MB - 2GB"
+    gc_pause_target: "50ms"
+
+# 常见性能问题
+common_issues:
+  n_plus_1:
+    description: "N+1 query problem"
+    solution: "Use eager loading or JOINs"
+    example:
+      bad: "For each user: SELECT * FROM posts WHERE user_id = ?"
+      good: "SELECT * FROM posts WHERE user_id IN (?, ?, ...)"
+
+  memory_leak:
+    description: "Unintended memory retention"
+    solution: "Clear references, use weak references"
+
+  blocking_io:
+    description: "Blocking I/O in async context"
+    solution: "Use async/non-blocking alternatives"
+
+# 性能优化策略
+strategies:
+  database:
+    - "Add indexes to hot columns"
+    - "Use read replicas"
+    - "Implement caching layer"
+    - "Use connection pooling"
+    - "Denormalize when appropriate"
+    - "Partition large tables"
+
+  api:
+    - "Implement pagination"
+    - "Use compression"
+    - "Enable HTTP/2"
+    - "Use CDN for static content"
+    - "Implement rate limiting"
+    - "Cache API responses"
+
+  frontend:
+    - "Minimize bundle size"
+    - "Code splitting"
+    - "Lazy loading"
+    - "Image optimization"
+    - "Minimize reflows/repaints"
+    - "Use virtual scrolling"
+
+  backend:
+    - "Use async I/O"
+    - "Implement caching"
+    - "Use worker pools"
+    - "Optimize algorithms"
+    - "Profile and optimize hot paths"
+
+# 性能监控
+monitoring:
+  metrics:
+    - "Response times (p50, p95, p99)"
+    - "Request rate"
+    - "Error rate"
+    - "Memory usage"
+    - "CPU usage"
+    - "Disk I/O"
+    - "Network I/O"
+
+  alerts:
+    - "High response time"
+    - "High error rate"
+    - "Low request rate"
+    - "High memory usage"
+    - "High CPU usage"

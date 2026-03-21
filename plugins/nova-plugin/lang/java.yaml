@@ -1,0 +1,203 @@
+# Java Language Configuration
+# Java 语言配置
+
+name: "java"
+version: "17+"
+description: "Java language templates and best practices"
+
+# 支持的框架
+frameworks:
+  web:
+    - name: "spring-boot"
+      description: "Opinionated framework for building microservices"
+      templates: ["controller", "service", "repository", "dto"]
+      version: "3.0+"
+
+    - name: "quarkus"
+      description: "Supersonic Subatomic Java"
+      templates: ["rest-endpoint", "service", "panache-entity"]
+      version: "3.0+"
+
+    - name: "micronaut"
+      description: "Modern JVM framework for cloud-native"
+      templates: ["controller", "service", "repository"]
+
+  data:
+    - name: "spring-data-jpa"
+      description: "JPA with Spring Data"
+      templates: ["entity", "repository", "specification"]
+
+    - name: "hibernate"
+      description: "Object-Relational Mapping"
+      templates: ["entity", "hbm-xml"]
+
+# 代码风格
+style:
+  formatter: "google-java-format"
+  linter: ["checkstyle", "spotbugs", "pmd"]
+  line_length: 100
+  indentation: 2
+  braces: "same_line"
+
+# 项目结构
+structure:
+  standard:
+    - "src/main/java/{{package_path}}/"
+    - "src/main/resources/"
+    - "src/test/java/{{package_path}}/"
+    - "src/test/resources/"
+    - "pom.xml or build.gradle"
+
+# 构建工具
+build:
+  tools:
+    - name: "maven"
+      file: "pom.xml"
+      commands: ["mvn compile", "mvn test", "mvn package"]
+
+    - name: "gradle"
+      file: "build.gradle"
+      commands: ["gradle build", "gradle test"]
+
+# 测试框架
+testing:
+  frameworks:
+    - name: "junit-5"
+      description: "Standard testing framework"
+      templates: ["test-class", "parameterized-test", "test-suite"]
+
+    - name: "testng"
+      description: "Testing framework"
+      templates: ["test-class", "test-config"]
+
+    - name: "mockito"
+      description: "Mocking framework"
+      templates: ["mock-test", "spy-test"]
+
+# 依赖注入
+di:
+  patterns:
+    - "Constructor injection"
+    - "Setter injection"
+    - "Field injection (discouraged)"
+
+# 异常处理
+exceptions:
+  checked: true
+  custom_exceptions: true
+  handling:
+    - "Try-with-resources"
+    - "Multi-catch blocks"
+    - "Custom exception types"
+
+# 并发
+concurrency:
+  features:
+    - "Virtual threads (Java 21+)"
+    - "CompletableFuture"
+    - "ExecutorService"
+    - "Parallel Streams"
+
+# 最佳实践
+best_practices:
+  - "Prefer interfaces over implementations"
+    - "Use dependency injection"
+    - "Immutable objects where possible"
+    - "Builder pattern for complex objects"
+    - "Streams for collections processing"
+    - "Optional for nullable returns"
+    - "Records for data carriers (Java 16+)"
+    - "Sealed classes for restricted inheritance (Java 17+)"
+    - "Pattern matching for instanceof (Java 16+)"
+    - "Text blocks for multi-line strings (Java 15+)"
+
+# 命名约定
+naming:
+  classes: "PascalCase"
+  methods: "camelCase"
+  constants: "UPPER_SNAKE_CASE"
+  packages: "lowercase.dots"
+  variables: "camelCase"
+
+# 类型系统
+types:
+  primitives: "Use where performance matters"
+  wrappers: "Use for nullability"
+  generics: "Always use for collections"
+  records: "Use for immutable data"
+  enums: "Use for fixed set of values"
+
+# 常用模式
+patterns:
+  singleton: "Enum singleton pattern"
+  factory: "Static factory method"
+  builder: "Builder pattern or Lombok @Builder"
+  observer: "Observer pattern or Reactor"
+  strategy: "Interface with multiple implementations"
+
+# 安全注意事项
+security:
+  avoid:
+    - "SQL injection (use JPA Criteria or PreparedStatements)"
+    - "XSS (sanitize output)"
+    - "Deserialization of untrusted data"
+    - "Weak crypto algorithms"
+  recommend:
+    - "Use Spring Security"
+    - "Enable Spring Security CSRF protection"
+    - "Use password encoders"
+    - "Validate with Bean Validation (JSR 380)"
+
+# 性能优化
+performance:
+  profiling: ["JProfiler", "VisualVM", "Java Mission Control"]
+  optimization:
+    - "Use object pools"
+    - "Lazy initialization"
+    - "Cache frequently used data"
+    - "Use StringBuilder for string concatenation"
+    - "Batch database operations"
+    - "Use connection pooling"
+    - "Tune JVM heap size"
+    - "Use G1GC or ZGC"
+
+# Lombok annotations
+lombok:
+  common:
+    - "@Data - Generate getters, setters, equals, hashCode, toString"
+    - "@Builder - Generate builder pattern"
+    - "@AllArgsConstructor - Generate all-args constructor"
+    - "@NoArgsConstructor - Generate no-args constructor"
+    - "@Slf4j - Generate logger field"
+
+# Spring Boot annotations
+spring_annotations:
+  controllers:
+    - "@RestController - REST controller"
+    - "@RequestMapping - Map HTTP requests"
+    - "@GetMapping - GET endpoint"
+    - "@PostMapping - POST endpoint"
+    - "@PathVariable - Path variable"
+    - "@RequestBody - Request body"
+
+  services:
+    - "@Service - Service layer"
+    - "@Transactional - Transaction boundary"
+    - "@Autowired - Dependency injection"
+
+  data:
+    - "@Entity - JPA entity"
+    - "@Repository - Repository layer"
+    - "@Id - Primary key"
+    - "@GeneratedValue - Auto-generated value"
+
+# 监控和可观测性
+observability:
+  metrics: "Micrometer"
+  tracing: "Spring Cloud Sleuth / OpenTelemetry"
+  logging: "SLF4J + Logback"
+
+# 容器化
+containers:
+  docker: "Use multi-stage builds"
+  kubernetes: "Use Spring Boot Kubernetes profile"

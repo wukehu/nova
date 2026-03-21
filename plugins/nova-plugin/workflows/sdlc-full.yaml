@@ -1,0 +1,120 @@
+# Full SDLC Workflow
+# 完整软件开发周期工作流
+
+name: "sdlc-full"
+description: "Complete software development lifecycle with all phases"
+version: "1.0.0"
+
+# 工作流阶段配置
+phases:
+  - id: "requirements"
+    prompt: "phases/requirements.md"
+    required: true
+    output:
+      document:
+        enabled: true
+        directory: "docs/requirements/"
+        filename_pattern: "requirements_{{timestamp}}.md"
+        template: "templates/docs/requirements.md"
+    next: ["architecture-design"]
+
+  - id: "architecture-design"
+    prompt: "phases/architecture-design.md"
+    required: true
+    output:
+      document:
+        enabled: true
+        directory: "docs/architecture/"
+        filename_pattern: "architecture_{{timestamp}}.md"
+        template: "templates/docs/architecture.md"
+        include_diagrams: true
+        create_adr: true
+        adr_directory: "docs/architecture/adr/"
+    next: ["detail-design"]
+
+  - id: "detail-design"
+    prompt: "phases/detail-design.md"
+    required: true
+    output:
+      document:
+        enabled: true
+        directory: "docs/design/"
+        filename_pattern: "detail_design_{{timestamp}}.md"
+        template: "templates/docs/detail-design.md"
+        include_api_spec: true
+        include_database_schema: true
+        api_directory: "docs/design/api/"
+        schema_directory: "docs/design/database/"
+    next: ["code"]
+
+  - id: "code"
+    prompt: "phases/code.md"
+    required: true
+    output:
+      document:
+        enabled: true
+        directory: "docs/implementation/"
+        filename_pattern: "implementation_notes_{{timestamp}}.md"
+        template: "templates/docs/implementation.md"
+        include_code_samples: true
+    next: ["test"]
+
+  - id: "test"
+    prompt: "phases/test.md"
+    required: true
+    output:
+      document:
+        enabled: true
+        directory: "docs/testing/"
+        filename_pattern: "test_report_{{timestamp}}.md"
+        template: "templates/docs/test-report.md"
+        include_coverage_report: true
+        coverage_directory: "docs/testing/coverage/"
+        include_test_results: true
+    next: ["review"]
+
+  - id: "review"
+    prompt: "phases/review.md"
+    required: true
+    output:
+      document:
+        enabled: true
+        directory: "docs/review/"
+        filename_pattern: "code_review_{{timestamp}}.md"
+        template: "templates/docs/code-review.md"
+        include_findings: true
+        include_action_items: true
+    next: ["docs"]
+
+  - id: "docs"
+    prompt: "phases/docs.md"
+    required: false
+    output:
+      document:
+        enabled: true
+        directory: "docs/user/"
+        filename_pattern: "user_guide_{{timestamp}}.md"
+        template: "templates/docs/user-guide.md"
+        include_api_reference: true
+        include_troubleshooting: true
+
+# 文档输出配置
+documentation:
+  enabled: true
+  format: "markdown"
+  timestamp_format: "%Y%m%d_%H%M%S"
+  auto_create_directories: true
+  auto_generate_index: true
+  index_file: "docs/INDEX.md"
+
+# 工作流选项
+options:
+  skip_tests: false
+  auto_review: true
+  generate_docs: true
+
+# 默认变量
+defaults:
+  language: "auto"
+  framework: "auto"
+  rules: ["security", "clean-code"]

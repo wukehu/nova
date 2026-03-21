@@ -1,0 +1,304 @@
+# Testing Rules
+# 测试规则配置
+
+name: "testing"
+description: "Testing best practices and quality standards"
+severity: "medium"
+
+# 核心测试原则
+principles:
+  - name: "Test Pyramid"
+    description: "More unit tests, fewer integration tests, even fewer E2E tests"
+    ratio: "70% unit, 20% integration, 10% E2E"
+
+  - name: "Test Isolation"
+    description: "Each test should be independent"
+    check:
+      - "Tests can run in any order"
+      - "No shared state between tests"
+      - "Clean up after each test"
+
+  - name: "Test Readability"
+    description: "Tests should be easy to understand"
+    check:
+      - "Clear test names"
+      - "Arrange-Act-Assert pattern"
+      - "Descriptive assertions"
+      - "Minimal test logic"
+
+# 通用测试规则
+rules:
+  - id: "TEST001"
+    name: "Test Coverage"
+    description: "Maintain adequate test coverage"
+    check: |
+      - Overall coverage ≥ 80%
+      - Critical paths 100% covered
+      - New code must have tests
+      - Edge cases tested
+    severity: "high"
+
+  - id: "TEST002"
+    name: "Test Naming"
+    description: "Use clear, descriptive test names"
+    check: |
+      - Name describes what is being tested
+      - Name describes expected outcome
+      - Use consistent naming convention
+    severity: "low"
+    examples:
+      good: "test_user_login_with_invalid_credentials_returns_error"
+      bad: "test1", "testLogin"
+
+  - id: "TEST003"
+    name: "One Assertion Per Test"
+    description: "Tests should focus on one behavior"
+    check: |
+      - Each test validates one thing
+      - Tests are focused and clear
+      - Use multiple tests for multiple cases
+    severity: "medium"
+
+  - id: "TEST004"
+    name: "Test Edge Cases"
+    description: "Test boundary conditions and edge cases"
+    check: |
+      - Empty inputs
+      - Null/undefined values
+      - Boundary values (0, -1, max)
+      - Invalid inputs
+      - Concurrent access
+    severity: "high"
+
+  - id: "TEST005"
+    name: "Mock External Dependencies"
+    description: "Mock external services and dependencies"
+    check: |
+      - Network calls are mocked
+      - Database is mocked or in-memory
+      - File system is mocked when possible
+      - Time is controlled in tests
+    severity: "medium"
+
+  - id: "TEST006"
+    name: "Test Error Handling"
+    description: "Test error conditions"
+    check: |
+      - Test error paths
+      - Test validation errors
+      - Test network failures
+      - Test timeout scenarios
+    severity: "high"
+
+  - id: "TEST007"
+    name: "Fast Tests"
+    description: "Unit tests should be fast"
+    check: |
+      - Unit tests run in milliseconds
+      - Slow tests are isolated
+      - No unnecessary delays
+    severity: "medium"
+
+  - id: "TEST008"
+    name: "Deterministic Tests"
+    description: "Tests should be deterministic"
+    check: |
+      - Same result every time
+      - No random data in tests
+      - No dependency on external state
+      - No time-dependent tests (or time is mocked)
+    severity: "critical"
+
+# 语言特定规则
+language_specific:
+  python:
+    testing_tools: ["pytest", "unittest", "unittest.mock"]
+    best_practices:
+      - "Use pytest for modern tests"
+      - "Use fixtures for setup/teardown"
+      - "Use parametrize for data-driven tests"
+      - "Use mocks for external dependencies"
+      - "Use pytest-cov for coverage"
+    example: |
+      @pytest.mark.parametrize("input,expected", [
+          ("valid@email.com", True),
+          ("invalid", False),
+      ])
+      def test_email_validation(input, expected):
+          assert validate_email(input) == expected
+
+  javascript:
+    testing_tools: ["vitest", "jest", "mocha", "chai"]
+    best_practices:
+      - "Use vitest or jest for modern tests"
+      - "Use describe/it for organization"
+      - "Use before/after for setup"
+      - "Use vi.mock for mocking"
+    example: |
+      describe('EmailValidator', () => {
+        it.each([
+          ['valid@email.com', true],
+          ['invalid', false],
+        ])('validates %s', (input, expected) => {
+          expect(validateEmail(input)).toBe(expected);
+        });
+      });
+
+  java:
+    testing_tools: ["JUnit 5", "TestNG", "Mockito"]
+    best_practices:
+      - "Use JUnit 5 for testing"
+      - "Use @DisplayName for descriptive names"
+      - "Use @ParameterizedTest for data-driven tests"
+      - "Use Mockito for mocking"
+    example: |
+      @ParameterizedTest
+      @CsvSource({
+          "valid@email.com, true",
+          "invalid, false"
+      })
+      void testEmailValidation(String input, boolean expected) {
+          assertEquals(expected, validateEmail(input));
+      }
+
+  go:
+    testing_tools: ["testing", "testify"]
+    best_practices:
+      - "Use table-driven tests"
+      - "Use t.Run for subtests"
+      - "Use testify for assertions"
+      - "Use interfaces for mocking"
+    example: |
+      func TestEmailValidation(t *testing.T) {
+          tests := []struct {
+              input    string
+              expected bool
+          }{
+              {"valid@email.com", true},
+              {"invalid", false},
+          }
+          for _, tt := range tests {
+              t.Run(tt.input, func(t *testing.T) {
+                  got := validateEmail(tt.input)
+                  if got != tt.expected {
+                      t.Errorf("validateEmail(%q) = %v, want %v", tt.input, got, tt.expected)
+                  }
+              })
+          }
+      }
+
+# 测试类型
+test_types:
+  unit:
+    scope: "Individual functions/classes"
+    characteristics:
+      - "Fast (milliseconds)"
+      - "Isolated"
+      - "No external dependencies"
+    tools: ["pytest", "vitest", "junit", "go test"]
+
+  integration:
+    scope: "Component interactions"
+    characteristics:
+      - "Slower (seconds)"
+      - "Real database/storage"
+      - "Real network (or mocked)"
+    tools: ["testcontainers", "integration test frameworks"]
+
+  e2e:
+    scope: "Complete workflows"
+    characteristics:
+      - "Slowest (minutes)"
+      - "Full system"
+      - "Real user scenarios"
+    tools: ["playwright", "cypress", "selenium"]
+
+# 测试模式
+patterns:
+  arrange_act_assert:
+    description: "Structure tests clearly"
+    template: |
+      # Arrange
+      input_data = prepare_data()
+
+      # Act
+      result = function_under_test(input_data)
+
+      # Assert
+      assert result == expected_result
+
+  given_when_then:
+    description: "BDD-style test structure"
+    template: |
+      Given a user with invalid credentials
+      When they attempt to login
+      Then they should receive an error
+
+  table_driven:
+    description: "Test multiple scenarios"
+    template: |
+      tests = [
+          (input1, expected1),
+          (input2, expected2),
+      ]
+      for input, expected in tests:
+          assert test_function(input) == expected
+
+# 测试覆盖策略
+coverage:
+  statement: "≥ 80%"
+  branch: "≥ 75%"
+  function: "≥ 90%"
+  line: "≥ 80%"
+
+  exclusions:
+    - "Generated code"
+    - "Configuration files"
+    - "Main/entry points"
+    - "Third-party libraries"
+
+# 测试反模式
+anti_patterns:
+  - name: "Testing Implementation Details"
+    solution: "Test behavior, not implementation"
+
+  - name: "Brittle Tests"
+    solution: "Avoid coupling to unrelated changes"
+
+  - name: "Slow Tests"
+    solution: "Mock I/O, use in-memory databases"
+
+  - name: "Flaky Tests"
+    solution: "Ensure isolation, control external dependencies"
+
+  - name: "Happy Path Only"
+    solution: "Test error cases and edge cases"
+
+# 测试质量指标
+quality_metrics:
+  coverage: "≥ 80%"
+  flakiness: "0%"
+  execution_time: "Unit tests < 5 min total"
+  complexity: "Cyclomatic complexity ≤ 10 per test"
+
+# CI/CD 集成
+ci_cd:
+  pre_commit:
+    - "Run fast unit tests"
+    - "Check coverage"
+
+  pre_push:
+    - "Run full test suite"
+    - "Generate coverage report"
+
+  pull_request:
+    - "Run all tests"
+    - "Require coverage checks"
+    - "Block on failures"
+
+# 测试文档
+documentation:
+  test_plan: "Document testing strategy"
+  test_cases: "Document complex test scenarios"
+  coverage_report: "Generate and review"
+  test_summary: "Summarize test results"

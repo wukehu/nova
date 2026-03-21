@@ -1,0 +1,23 @@
+{
+  "name": "nova-plugin",
+  "version": "2.0.0",
+  "description": "Multi-dimensional template system for Claude Code - flexible combination of workflows, phases, languages, and rules",
+  "author": {
+    "name": "wukehu",
+    "email": "dev@intellif.com"
+  },
+  "homepage": "https://github.com/wukehu/nova",
+  "repository": "https://github.com/wukehu/nova.git",
+  "license": "MIT",
+  "keywords": [
+    "template-system",
+    "multi-dimensional",
+    "workflow",
+    "sdlc",
+    "code-generation",
+    "language-templates",
+    "code-rules",
+    "flexible",
+    "extensible"
+  ]
+}

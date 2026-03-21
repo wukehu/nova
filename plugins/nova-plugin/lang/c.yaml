@@ -1,0 +1,368 @@
+# C Language Configuration
+# C 语言配置
+
+name: "c"
+version: "C11/C17"
+description: "C language templates and best practices for systems programming"
+
+# 支持的框架/库
+frameworks:
+  web:
+    - name: "libmicrohttpd"
+      description: "Small C library for HTTP"
+      templates: ["http-server", "http-handler"]
+
+    - name: "mongoose"
+      description: "Embedded web server"
+      templates: ["web-server", "websocket"]
+
+  networking:
+    - name: "libcurl"
+      description: "HTTP client library"
+      templates: ["http-client", "ftp-client"]
+
+    - name: "libevent"
+      description: "Event-driven library"
+      templates: ["event-server", "async-handler"]
+
+  data:
+    - name: "libxml2"
+      description: "XML parser"
+      templates: ["xml-parser", "xml-writer"]
+
+    - name: "cjson"
+      description: "JSON library"
+      templates: ["json-parser", "json-writer"]
+
+  testing:
+    - name: "unity"
+      description: "Unit testing framework"
+      templates: ["test-case", "test-suite"]
+
+    - name: "cmocka"
+      description: "Mocking framework"
+      templates: ["mock-test", "stub"]
+
+  build_systems:
+    - name: "cmake"
+      description: "Cross-platform build system"
+      version: "3.15+"
+
+    - name: "make"
+      description: "Traditional build tool"
+
+    - name: "meson"
+      description: "Fast and user-friendly build system"
+
+# 代码风格
+style:
+  formatter: ["clang-format", "astyle", "uncrustify"]
+  linter: ["clang-tidy", "cppcheck", "splint"]
+  style_guide: "Linux kernel coding style"
+  indentation: "tabs (8 spaces)"
+  line_length: 80
+  naming:
+    functions: "snake_case"
+    variables: "snake_case"
+    constants: "UPPER_SNAKE_CASE"
+    types: "PascalCase"
+    macros: "UPPER_SNAKE_CASE"
+
+# 项目结构
+structure:
+  standard:
+    - "src/"              # Source files
+    - "include/"          # Public headers
+    - "tests/"            # Test files
+    - "lib/"              # Internal headers
+    - "build/"            # Build output
+    - "CMakeLists.txt"    # CMake config
+    - "Makefile"          # Makefile
+    - "README.md"
+
+  header_organization:
+    - "include/{{project}}/  # Public headers"
+    - "src/                  # Private headers"
+
+# 内存管理
+memory:
+  manual: true
+  best_practices:
+    - "Free all allocated memory"
+    - "Check for NULL after malloc"
+    - "Use valgrind to detect leaks"
+    - "Initialize pointers to NULL"
+    - "Use calloc for zero-initialized memory"
+    - "Use realloc for resizing"
+  tools:
+    - "valgrind - Memory leak detection"
+    - "AddressSanitizer - Memory error detector"
+    - "UndefinedBehaviorSanitizer - UB detection"
+
+# 编译器
+compilers:
+  - name: "gcc"
+    version: "11+"
+    flags: "-Wall -Wextra -Werror -O2"
+
+  - name: "clang"
+    version: "14+"
+    flags: "-Wall -Wextra -Werror -O2"
+
+  - name: "msvc"
+    version: "2019+"
+    flags: "/W4 /WX /O2"
+
+# 最佳实践
+best_practices:
+  - "Use static for file-scoped variables"
+  - "Use const for immutable data"
+  - "Use size_t for sizes and counts"
+  - "Use uintptr_t for pointer arithmetic"
+  - "Check return values"
+  - "Use enum instead of #define for constants"
+  - "Use inline functions instead of macros"
+  - "Avoid global variables"
+  - "Use typedef for readability"
+  - "Document public APIs"
+
+# 常用模式
+patterns:
+  singleton: "Static variable + static function"
+
+  factory:
+    c_code: |
+      typedef struct {
+          int type;
+          void *(*create)(void);
+      } Factory;
+
+      Factory *get_factory(int type);
+
+  observer:
+    c_code: |
+      typedef void (*ObserverCallback)(void *data, void *context);
+
+      typedef struct {
+          ObserverCallback callback;
+          void *context;
+      } Observer;
+
+      void add_observer(Observer *obs);
+
+  strategy:
+    c_code: |
+      typedef struct {
+          void (*execute)(void *context);
+          void *context;
+      } Strategy;
+
+      void set_strategy(Strategy *s);
+
+# 错误处理
+error_handling:
+  conventions:
+    - "Return 0 on success, non-zero on failure"
+    - "Use errno for error codes"
+    - "Provide error messages"
+    - "Document all error codes"
+    - "Use goto for cleanup on error"
+
+  example: |
+    int process_data(const char *input) {
+        char *buffer = NULL;
+        FILE *file = NULL;
+        int result = 0;
+
+        buffer = malloc(SIZE);
+        if (!buffer) {
+            result = -1;
+            goto cleanup;
+        }
+
+        file = fopen(input, "r");
+        if (!file) {
+            result = -2;
+            goto cleanup;
+        }
+
+        // Process data...
+
+    cleanup:
+        if (buffer) free(buffer);
+        if (file) fclose(file);
+        return result;
+    }
+
+# 安全注意事项
+security:
+  avoid:
+    - "buffer overflow (use snprintf, not sprintf)"
+    - "format string vulnerabilities"
+    - "integer overflow/underflow"
+    - "use after free"
+    - "double free"
+    - "memory leaks"
+    - "NULL pointer dereference"
+    - "unchecked return values"
+
+  recommend:
+    - "Use strncpy, strncat"
+    - "Use snprintf for formatted output"
+    - "Check bounds"
+    - "Validate user input"
+    - "Use safe libraries"
+    - "Enable compiler warnings (-Wall -Wextra)"
+    - "Use static analysis tools"
+
+  tools:
+    - "AddressSanitizer"
+    - "UndefinedBehaviorSanitizer"
+    - "MemorySanitizer"
+    - "ThreadSanitizer"
+
+# 性能优化
+performance:
+  profiling:
+    - "gprof - GNU profiler"
+    - "perf - Linux profiling"
+    - "valgrind/cachegrind - Cache profiling"
+
+  optimization:
+    - "Use appropriate algorithms"
+    - "Minimize memory allocations"
+    - "Use stack when possible"
+    - "Avoid premature optimization"
+    - "Profile before optimizing"
+    - "Use compiler optimizations (-O2, -O3)"
+
+  memory_optimization:
+    - "Reuse buffers"
+    - "Pool allocation"
+    - "Bit packing"
+    - "Structure padding"
+
+# 并发
+concurrency:
+  threading:
+    - "pthread - POSIX threads"
+    - "C11 threads (threads.h)"
+
+  synchronization:
+    - "pthread_mutex_t - Mutex"
+    - "pthread_cond_t - Condition variable"
+    - "pthread_rwlock_t - Read-write lock"
+
+  best_practices:
+    - "Minimize lock contention"
+    - "Keep critical sections short"
+    - "Avoid deadlock"
+    - "Use RAII-style cleanup"
+
+# 测试
+testing:
+  frameworks:
+    - name: "unity"
+      description: "Simple unit testing"
+
+    - name: "criterion"
+      description: "KISS unit testing"
+
+    - name: "libcheck"
+      description: "Unit testing framework"
+
+  coverage:
+    tool: "gcov"
+    command: "gcc --coverage"
+
+# 构建示例
+build_examples:
+  cmake: |
+    cmake_minimum_required(VERSION 3.15)
+    project(MyProject C)
+
+    set(CMAKE_C_STANDARD 11)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
+
+    add_executable(myapp src/main.c)
+    target_include_directories(myapp PRIVATE include)
+
+    enable_testing()
+    add_subdirectory(tests)
+
+  makefile: |
+    CC = gcc
+    CFLAGS = -Wall -Wextra -O2 -Iinclude
+    SOURCES = $(wildcard src/*.c)
+    OBJECTS = $(SOURCES:.c=.o)
+    TARGET = myapp
+
+    all: $(TARGET)
+
+    $(TARGET): $(OBJECTS)
+        $(CC) $(CFLAGS) -o $@ $^
+
+    %.o: %.c
+        $(CC) $(CFLAGS) -c $< -o $@
+
+    clean:
+        rm -f $(OBJECTS) $(TARGET)
+
+    .PHONY: all clean
+
+# 依赖管理
+dependencies:
+  package_managers:
+    - name: "vcpkg"
+      description: "C/C++ package manager"
+
+    - name: "conan"
+      description: "C/C++ package manager"
+
+  system_packages:
+    - "apt-get (Ubuntu/Debian)"
+    - "yum (Fedora/RHEL)"
+    - "brew (macOS)"
+
+# 文档
+documentation:
+  tools:
+    - "Doxygen - Generate docs from comments"
+    - "Sphinx - Documentation generator"
+
+  comment_style: |
+    /**
+     * @brief Brief description
+     *
+     * Detailed description
+     *
+     * @param param1 Description
+     * @return Return value description
+     */
+
+# 跨平台
+cross_platform:
+  preprocessor:
+    - "_WIN32 - Windows"
+    - "__linux__ - Linux"
+    - "__APPLE__ - macOS"
+
+  considerations:
+    - "Endianness"
+    - "Word size (32/64 bit)"
+    - "Path separators"
+    - "Dynamic library loading"
+    - "Thread support"
+
+# 调试
+debugging:
+  tools:
+    - "gdb - GNU debugger"
+    - "lldb - LLVM debugger"
+    - "valgrind - Memory debugging"
+
+  debug_build:
+    flags: "-g -O0 -DDEBUG"
+
+  release_build:
+    flags: "-O3 -DNDEBUG"

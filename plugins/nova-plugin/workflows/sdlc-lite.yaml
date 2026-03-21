@@ -1,0 +1,34 @@
+# Lite SDLC Workflow
+# 轻量级软件开发周期（适合快速原型）
+
+name: "sdlc-lite"
+description: "Lightweight workflow for rapid prototyping"
+version: "1.0.0"
+
+phases:
+  - id: "requirements"
+    prompt: "phases/requirements.md"
+    required: true
+    output: "docs/requirements.md"
+    next: ["code"]
+
+  - id: "code"
+    prompt: "phases/code.md"
+    required: true
+    output: "src/"
+    next: ["test"]
+
+  - id: "test"
+    prompt: "phases/test.md"
+    required: true
+    output: "tests/"
+    depends_on: ["code"]
+
+options:
+  skip_design: true
+  skip_review: true
+  generate_docs: false
+
+defaults:
+  language: "auto"
+  rules: ["clean-code"]

@@ -1,0 +1,162 @@
+# Security Rules
+# 安全规则配置
+
+name: "security"
+description: "Security-focused coding rules and best practices"
+severity: "critical"
+
+# 通用安全规则
+rules:
+  - id: "SEC001"
+    name: "Injection Prevention"
+    description: "Prevent injection attacks"
+    check: |
+      - No string concatenation for SQL queries
+      - Use parameterized queries
+      - Validate and sanitize user input
+      - Use prepared statements
+    severity: "critical"
+
+  - id: "SEC002"
+    name: "Authentication"
+    description: "Proper authentication implementation"
+    check: |
+      - Use strong password hashing (bcrypt, argon2)
+      - Implement rate limiting
+      - Use secure session management
+      - Implement MFA for sensitive operations
+    severity: "high"
+
+  - id: "SEC003"
+    name: "Authorization"
+    description: "Proper authorization checks"
+    check: |
+      - Implement principle of least privilege
+      - Check permissions on every request
+      - Use role-based access control
+      - Validate resource ownership
+    severity: "high"
+
+  - id: "SEC004"
+    name: "Data Protection"
+    description: "Protect sensitive data"
+    check: |
+      - Encrypt data at rest
+      - Use TLS for data in transit
+      - Never log sensitive information
+      - Implement data retention policies
+    severity: "critical"
+
+  - id: "SEC005"
+    name: "Input Validation"
+    description: "Validate all inputs"
+    check: |
+      - Validate type, length, format
+      - Check for boundary conditions
+      - Sanitize output
+      - Use allowlisting over blocklisting
+    severity: "high"
+
+  - id: "SEC006"
+    name: "Cryptography"
+    description: "Proper use of cryptography"
+    check: |
+      - Use standard algorithms (AES, RSA, SHA-256)
+      - Never implement custom crypto
+      - Use authenticated encryption
+      - Manage keys properly
+    severity: "critical"
+
+  - id: "SEC007"
+    name: "Error Handling"
+    description: "Secure error handling"
+    check: |
+      - Don't expose sensitive info in errors
+      - Log errors securely
+      - Use generic error messages for users
+      - Implement proper error codes
+    severity: "medium"
+
+  - id: "SEC008"
+    name: "Dependencies"
+    description: "Secure dependency management"
+    check: |
+      - Keep dependencies updated
+      - Scan for vulnerabilities
+      - Use lock files
+      - Review dependency code
+    severity: "high"
+
+# 语言特定规则
+language_specific:
+  python:
+    - "Avoid eval() and exec()"
+    - "Use secrets for random values"
+    - "Avoid pickle with untrusted data"
+    - "Use pathlib for secure file operations"
+
+  javascript:
+    - "Avoid eval() and Function()"
+    - "Avoid innerHTML with user input"
+    - "Use CSP headers"
+    - "Validate JSON.parse() input"
+
+  java:
+    - "Prefer PreparedStatement over Statement"
+    - "Use secure random (SecureRandom)"
+    - "Validate serialization"
+    - "Use proper key stores"
+
+  go:
+    - "Use sql package with parameterized queries"
+    - "Avoid unsafe package"
+    - "Verify time formatting"
+    - "Use proper error handling"
+
+# 检查模式
+checks:
+  pre_commit:
+    - "Dependency vulnerability scan"
+    - "Secret detection"
+    - "Basic security linters"
+
+  pre_push:
+    - "Full security scan"
+    - "Dependency audit"
+    - "SAST analysis"
+
+  ci_cd:
+    - "Comprehensive security scan"
+    - "Container security"
+    - "Infrastructure as code security"
+
+# 工具集成
+tools:
+  sast:
+    - "semgrep"
+    - "sonarqube"
+    - "codeql"
+
+  sca:
+    - "snyk"
+    - "dependabot"
+    - "trivy"
+
+  secrets:
+    - "gitleaks"
+    - "trufflehog"
+    - "git-secrets"
+
+# 常见漏洞检查
+vulnerabilities:
+  owasp_top_10:
+    - "A01: Broken Access Control"
+    - "A02: Cryptographic Failures"
+    - "A03: Injection"
+    - "A04: Insecure Design"
+    - "A05: Security Misconfiguration"
+    - "A06: Vulnerable Components"
+    - "A07: Auth Failures"
+    - "A08: Data Integrity Failures"
+    - "A09: Logging Failures"
+    - "A10: SSRF"

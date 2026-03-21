@@ -1,0 +1,41 @@
+# Bug Fix Workflow
+# Bug 修复工作流
+
+name: "bug-fix"
+description: "Systematic bug fixing workflow"
+version: "1.0.0"
+
+phases:
+  - id: "diagnose"
+    prompt: "phases/diagnose.md"
+    required: true
+    output: "docs/diagnosis.md"
+    next: ["fix"]
+
+  - id: "fix"
+    prompt: "phases/fix.md"
+    required: true
+    output: "src/"
+    depends_on: ["diagnose"]
+    next: ["verify"]
+
+  - id: "verify"
+    prompt: "phases/verify.md"
+    required: true
+    output: "tests/"
+    depends_on: ["fix"]
+    next: ["regression-test"]
+
+  - id: "regression-test"
+    prompt: "phases/regression-test.md"
+    required: true
+    output: "tests/regression/"
+    depends_on: ["verify"]
+
+options:
+  auto_diagnose: true
+  require_reproduction: true
+  regression_test_required: true
+
+defaults:
+  rules: ["debugging"]

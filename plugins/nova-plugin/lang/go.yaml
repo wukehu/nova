@@ -1,0 +1,259 @@
+# Go Language Configuration
+# Go 语言配置
+
+name: "go"
+version: "1.21+"
+description: "Go language templates and best practices"
+
+# 支持的框架
+frameworks:
+  web:
+    - name: "gin"
+      description: "High-performance HTTP web framework"
+      templates: ["handler", "middleware", "router"]
+    - name: "echo"
+      description: "Minimalist web framework"
+      templates: ["handler", "middleware"]
+    - name: "fiber"
+      description: "Express inspired web framework"
+      templates: ["handler", "middleware"]
+
+  cli:
+    - name: "cobra"
+      description: "CLI applications"
+      templates: ["command", "flag", "config"]
+
+  data:
+    - name: "gorm"
+      description: "ORM library"
+      templates: ["model", "repository"]
+    - name: "sqlx"
+      description: "Extensions to database/sql"
+      templates: ["query", "model"]
+
+# 代码风格
+style:
+  formatter: "gofmt"
+  linter: ["golint", "staticcheck", "golangci-lint"]
+  line_length: "Unlimited (but be reasonable)"
+  indentation: "tab"
+  naming: "MixedCaps for exported, lowerCase for unexported"
+
+# 项目结构
+structure:
+  standard:
+    - "cmd/{{app_name}}/"  # Main application
+    - "internal/"          # Private application code
+    - "pkg/"               # Library code
+    - "api/"               # API definitions
+    - "configs/"           # Configuration files
+    - "scripts/"           # Build scripts
+    - "test/"              # Additional test data
+    - "docs/"              # Documentation
+    - "go.mod"
+
+# 模块管理
+modules:
+  tool: "go mod"
+  commands:
+    - "go mod init"       # Initialize
+    - "go mod tidy"       # Clean dependencies
+    - "go mod vendor"     # Vendor dependencies
+    - "go get"            # Add dependency
+
+# 测试框架
+testing:
+  framework: "testing"
+  templates:
+    - "table-driven tests"
+    - "test helpers"
+    - "test mocks (interfaces)"
+  coverage:
+    tool: "go test -cover"
+    threshold: 80
+
+# Go 特性
+features:
+  goroutines: true
+  channels: true
+  select: true
+  defer: true
+  interfaces: true
+  composition: true
+  embedding: true
+
+# 最佳实践
+best_practices:
+  - "Handle errors explicitly (never ignore errors)"
+  - "Use defer for cleanup (resources, locks)"
+  - "Use channels for goroutine communication"
+  - "Keep goroutines manageable (use worker pools)"
+  - "Use interfaces for abstraction"
+  - "Accept interfaces, return structs"
+  - "Keep interfaces small (few methods)"
+  - "Use composition over inheritance"
+  - "Avoid package-level state"
+  - "Use context for cancellation/timeout"
+  - "Use gofmt to format code"
+  - "Use goimports to manage imports"
+  - "Document exported types and functions"
+  - "Use table-driven tests"
+  - "Use testify for assertions (optional)"
+
+# 命名约定
+naming:
+  packages: "lowercase, single word"
+  exported: "PascalCase"
+  unexported: "camelCase"
+  interfaces: "-er suffix (Reader, Writer)"
+  constants: "PascalCase or camelCase"
+
+# 错误处理
+errors:
+  wrapping: "fmt.Errorf with %w"
+  custom: "Implement error interface"
+  sentinel: "Predefined errors for comparison"
+  examples:
+    - "errors.New for simple errors"
+    - "fmt.Errorf for formatted errors"
+    - "errors.Is for checking"
+    - "errors.As for type assertion"
+
+# 并发模式
+concurrency:
+  patterns:
+    - "Worker pools"
+    - "Fan-out/fan-in"
+    - "Pipeline"
+    - "Context for cancellation"
+    - "sync.WaitGroup for waiting"
+    - "sync.Mutex for mutual exclusion"
+    - "sync.RWMutex for read-write locks"
+    - "channel for communication"
+
+# 常用标准库
+stdlib:
+  io: "io.Reader, io.Writer interfaces"
+  context: "Context for cancellation/timeout"
+  net_http: "HTTP client and server"
+  encoding_json: "JSON encoding/decoding"
+  database_sql: "Database interface"
+  log: "Logging"
+  testing: "Testing framework"
+  time: "Time and duration"
+  strings: "String manipulation"
+  strconv: "String conversion"
+  math: "Mathematical operations"
+
+# 常用第三方库
+libraries:
+  web:
+    - "github.com/gin-gonic/gin - Web framework"
+    - "github.com/labstack/echo - Web framework"
+    - "github.com/gorilla/mux - HTTP router"
+
+  database:
+    - "gorm.io/gorm - ORM"
+    - "github.com/jmoiron/sqlx - Extensions"
+
+  cli:
+    - "github.com/spf13/cobra - CLI framework"
+    - "github.com/urfave/cli - CLI framework"
+
+  config:
+    - "github.com/spf13/viper - Configuration"
+    - "github.com/knadh/koanf - Configuration"
+
+  logging:
+    - "go.uber.org/zap - Structured logging"
+    - "github.com/sirupsen/logrus - Structured logging"
+
+  testing:
+    - "github.com/stretchr/testify - Testing helpers"
+    - "github.com/golang/mock - Mocking"
+
+# 安全注意事项
+security:
+  avoid:
+    - "SQL injection (use prepared statements)"
+    - "Path traversal (validate paths)"
+    - "Command injection (validate input)"
+  recommend:
+    - "Use tls.Config for TLS"
+    - "Validate all input"
+    - "Use crypto packages for crypto"
+    - "Sanitize output"
+
+# 性能优化
+performance:
+  profiling: ["pprof", "trace"]
+  optimization:
+    - "Use sync.Pool for object reuse"
+    - "Use buffered channels appropriately"
+    - "Preallocate slices/maps when size is known"
+    - "Use strings.Builder for string building"
+    - "Avoid unnecessary allocations"
+    - "Use benchmarking (go test -bench)"
+    - "Use pprof for profiling"
+
+# 项目示例
+examples:
+  simple_server:
+    content: |
+      package main
+
+      import "net/http"
+
+      func main() {
+          http.HandleFunc("/", handler)
+          http.ListenAndServe(":8080", nil)
+      }
+
+      func handler(w http.ResponseWriter, r *http.Request) {
+          w.Write([]byte("Hello, World!"))
+      }
+
+  test_example:
+    content: |
+      func TestAdd(t *testing.T) {
+          tests := []struct {
+              name     string
+              a, b     int
+              expected int
+          }{
+              {"positive", 1, 2, 3},
+              {"negative", -1, -2, -3},
+              {"zero", 0, 0, 0},
+          }
+
+          for _, tt := range tests {
+              t.Run(tt.name, func(t *testing.T) {
+                  result := Add(tt.a, tt.b)
+                  if result != tt.expected {
+                      t.Errorf("Add(%d, %d) = %d; want %d",
+                          tt.a, tt.b, result, tt.expected)
+                  }
+              })
+          }
+      }
+
+# 工具
+tools:
+  formatting: "gofmt, goimports"
+  linting: "golangci-lint"
+  testing: "go test"
+  coverage: "go test -cover"
+  benchmarking: "go test -bench"
+  profiling: "go test -cpuprofile"
+  race_detection: "go test -race"
+  vet: "go vet"
+
+# 交叉编译
+cross_compile:
+  command: "GOOS=linux GOARCH=amd64 go build"
+  platforms:
+    - "linux/amd64"
+    - "linux/arm64"
+    - "darwin/amd64"
+    - "darwin/arm64"
+    - "windows/amd64"

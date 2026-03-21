@@ -1,0 +1,292 @@
+# Review Workflow Configuration
+# 审核工作流配置
+
+version: "1.0.0"
+
+# 审核流程
+review_workflow:
+  phases:
+    - id: "request_review"
+      name: "请求审核"
+      description: "请求人工审核文档"
+      auto_trigger: true
+
+    - id: "in_review"
+      name: "审核中"
+      description: "审核人正在进行审核"
+      requires: "reviewer_assigned"
+
+    - id: "completed"
+      name: "审核完成"
+      description: "审核已完成"
+      requires: "all_review_items_addressed"
+
+    - id: "approved"
+      name: "审核通过"
+      description: "文档已通过审核"
+      requires: "all_criteria_met"
+
+    - id: "changes_requested"
+      name: "需要修改"
+      description: "文档需要修改后重新审核"
+      requires: "blocking_issues_found"
+
+# 审核状态
+statuses:
+  pending: "待审核"
+  assigned: "已分配"
+  in_progress: "审核中"
+  completed: "已完成"
+  approved: "已通过"
+  changes_requested: "需要修改"
+  rejected: "已拒绝"
+
+# 审核角色
+roles:
+  requirements_reviewer:
+    name: "需求审核员"
+    permissions:
+      - "view_document"
+      - "add_comments"
+      - "request_changes"
+      - "approve"
+
+  architecture_reviewer:
+    name: "架构审核员"
+    permissions:
+      - "view_document"
+      - "add_comments"
+      - "request_changes"
+      - "approve"
+      - "reject"
+
+  technical_reviewer:
+    name: "技术审核员"
+    permissions:
+      - "view_document"
+      - "add_comments"
+      - "request_changes"
+      - "approve"
+
+  security_reviewer:
+    name: "安全审核员"
+    permissions:
+      - "view_document"
+      - "add_comments"
+      - "request_changes"
+      - "approve"
+      - "reject"
+
+# 审核检查清单
+checklists:
+  requirements:
+    - name: "完整性检查"
+      items:
+        - "所有功能需求都已列出"
+        - "非功能需求都已定义"
+        - "约束条件都已明确"
+        - "验收标准清晰可测"
+      weight: 20
+
+    - name: "准确性检查"
+      items:
+        - "需求描述准确无歧义"
+        - "术语使用一致"
+        - "没有相互矛盾的条款"
+        - "数据需求明确"
+      weight: 25
+
+    - name: "可行性检查"
+      items:
+        - "技术可实现"
+        - "时间预算合理"
+        - "资源需求可行"
+        - "风险可接受"
+      weight: 25
+
+    - name: "清晰性检查"
+      items:
+        - "文档结构清晰"
+        - "语言表达简洁"
+        - "图表辅助说明"
+        - "索引目录完整"
+      weight: 30
+
+  architecture:
+    - name: "设计完整性"
+      items:
+        - "所有组件已定义"
+        - "数据流清晰"
+        - "接口定义完整"
+        - "部署方案明确"
+      weight: 25
+
+    - name: "技术可行性"
+      items:
+        - "技术栈选型合理"
+        - "性能可满足要求"
+        - "可扩展性考虑充分"
+        - "安全措施到位"
+      weight: 25
+
+    - name: "设计原则遵循"
+      items:
+        - "遵循SOLID原则"
+        - "高内聚低耦合"
+        - "接口设计清晰"
+        - "错误处理完善"
+      weight: 25
+
+    - name: "文档质量"
+      items:
+        - "架构图清晰准确"
+        - "ADR记录完整"
+        - "技术决策有依据"
+        - "风险有应对方案"
+      weight: 25
+
+  detail_design:
+    - name: "API设计"
+      items:
+        - "RESTful规范遵循"
+        - "接口定义完整"
+        - "错误码规范"
+        - "版本控制策略"
+      weight: 20
+
+    - name: "数据模型"
+      items:
+        - "表结构设计合理"
+        - "索引设置适当"
+        - "关系定义正确"
+        - "数据类型选择合适"
+      weight: 20
+
+    - name: "安全设计"
+      items:
+        - "认证授权方案"
+        - "输入验证规则"
+        - "敏感数据保护"
+        - "审计日志设计"
+      weight: 25
+
+    - name: "可测试性"
+      items:
+        - "接口可测试"
+        - "依赖可模拟"
+        - "测试数据准备"
+        - "自动化测试友好"
+      weight: 20
+
+    - name: "文档完整性"
+      items:
+        - "API文档完整"
+        - "数据库schema清晰"
+        - "错误码列表"
+        - "示例代码充分"
+      weight: 15
+
+# 评分标准
+scoring:
+  excellent:
+    min_score: 9
+    description: "优秀，直接通过"
+
+  good:
+    min_score: 7
+    max_score: 8.9
+    description: "良好，小幅修改后通过"
+
+  acceptable:
+    min_score: 6
+    max_score: 6.9
+    description: "可接受，需要修改后重新审核"
+
+  poor:
+    max_score: 5.9
+    description: "较差，大幅修改后重新审核"
+
+# 审核意见分类
+comment_categories:
+  blocking:
+    description: "阻塞问题，必须修复"
+    priority: "critical"
+    requires_rereview: true
+
+  major:
+    description: "主要问题，强烈建议修复"
+    priority: "high"
+    requires_rereview: true
+
+  minor:
+    description: "次要问题，建议修复"
+    priority: "medium"
+    requires_rereview: false
+
+  suggestion:
+    description: "改进建议"
+    priority: "low"
+    requires_rereview: false
+
+# 审核时效要求
+time_limits:
+  requirements:
+    max_review_duration: "2 hours"
+    max_revision_time: "1 day"
+
+  architecture:
+    max_review_duration: "4 hours"
+    max_revision_time: "2 days"
+
+  detail_design:
+    max_review_duration: "3 hours"
+    max_revision_time: "2 days"
+
+# 审核记录
+review_history:
+  track_changes: true
+  keep_history: true
+  max_versions: 10
+
+# 审核通知
+notifications:
+  on_assigned:
+    - "email: Review assigned notification"
+    - "slack: Review assigned message"
+
+  on_completed:
+    - "email: Review completed notification"
+    - "slack: Review completed message"
+
+  on_approved:
+    - "email: Document approved notification"
+    - "slack: Document approved message"
+    - "git: Auto-commit if enabled"
+
+  on_changes_requested:
+    - "email: Changes requested notification"
+    - "slack: Changes requested message"
+    - "jira: Create issue if enabled"
+
+# 审核质量指标
+quality_metrics:
+  track_review_time: true
+  track_revision_count: true
+  track_approval_rate: true
+  track_comment_quality: true
+
+  benchmarking:
+    avg_review_time:
+      target: "2 hours"
+      warning: "4 hours"
+      critical: "8 hours"
+
+    approval_rate:
+      target: "80%"
+      warning: "60%"
+      critical: "40%"
+
+    revision_rate:
+      target: "20%"
+      warning: "40%"
+      critical: "60%"

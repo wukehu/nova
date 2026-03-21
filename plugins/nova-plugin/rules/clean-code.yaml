@@ -1,0 +1,209 @@
+# Clean Code Rules
+# 代码质量规则配置
+
+name: "clean-code"
+description: "Clean code principles and best practices"
+severity: "medium"
+
+# 核心原则
+principles:
+  - name: "Single Responsibility"
+    description: "Each function/class should do one thing well"
+    check:
+      - "Functions should be short (< 20 lines)"
+      - "Classes should have one reason to change"
+      - "Functions should have at most 3 parameters"
+
+  - name: "DRY (Don't Repeat Yourself)"
+    description: "Avoid code duplication"
+    check:
+      - "No copy-pasted code blocks"
+      - "Extract common logic into functions"
+      - "Use inheritance/composition for reuse"
+
+  - name: "Meaningful Names"
+    description: "Use clear, descriptive names"
+    check:
+      - "Variables describe their content"
+      - "Functions describe their action"
+      - "Boolean variables should be predicates (is_, has_, can_)"
+
+  - name: "Small Functions"
+    description: "Keep functions focused and small"
+    check:
+      - "One level of abstraction per function"
+      - "Extract complex conditions into named variables"
+      - "Use early returns to reduce nesting"
+
+# 命名约定
+naming:
+  variables:
+    style: "snake_case"  # or camelCase
+    rules:
+      - "Use descriptive names"
+      - "Avoid abbreviations"
+      - "Don't include type in name (hungarian_notation: NO)"
+
+  functions:
+    style: "snake_case"  # or camelCase
+    rules:
+      - "Use verb-noun pattern (get_user, save_data)"
+      - "Booleans: is_, has_, can_, should_"
+      - "Setters: set_"
+      - "Getters: get_"
+
+  classes:
+    style: "PascalCase"
+    rules:
+      - "Use noun phrases"
+      - "Avoid suffixes like Manager, Handler, Processor"
+
+  constants:
+    style: "UPPER_SNAKE_CASE"
+    rules:
+      - "Use for magic numbers and strings"
+
+# 代码结构
+structure:
+  functions:
+    max_lines: 20
+    max_parameters: 3
+    max_nesting: 3
+
+  classes:
+    max_methods: 15
+    max_fields: 10
+    max_lines: 300
+
+  files:
+    max_lines: 500
+    max_classes: 1
+
+# 注释规则
+comments:
+  good:
+    - "Explain WHY, not WHAT"
+    - "Document non-obvious logic"
+    - "Use examples for complex APIs"
+    - "Keep comments up to date"
+
+  bad:
+    - "Don't comment out code (delete it)"
+    - "Don't repeat what code says"
+    - "Don't use noisy comments (// i++)"
+
+# 错误处理
+error_handling:
+  principles:
+    - "Handle errors at appropriate level"
+    - "Use exceptions for exceptional cases"
+    - "Provide meaningful error messages"
+    - "Log errors with context"
+    - "Don't ignore errors"
+
+# 测试规则
+testing:
+  principles:
+    - "Write testable code"
+    - "Use dependency injection"
+    - "Avoid global state"
+    - "Mock external dependencies"
+
+# 语言特定规则
+language_specific:
+  python:
+    - "Follow PEP 8"
+    - "Use type hints"
+    - "Write docstrings (Google style)"
+    - "Use context managers"
+    - "Prefer dataclasses for data"
+    - "Use pathlib for paths"
+    - "Avoid mutable default args"
+
+  javascript:
+    - "Use const/let, not var"
+    - "Use arrow functions"
+    - "Use async/await"
+    - "Use template literals"
+    - "Destructure objects/arrays"
+    - "Use optional chaining"
+    - "Avoid side effects"
+
+  java:
+    - "Follow Java conventions"
+    - "Use interfaces"
+    - "Prefer immutable objects"
+    - "Use Optional for nullable"
+    - "Override toString, equals, hashCode"
+    - "Use try-with-resources"
+
+  go:
+    - "Follow go conventions"
+    - "Use meaningful package names"
+    - "Keep interfaces small"
+    - "Accept interfaces, return structs"
+    - "Handle errors explicitly"
+    - "Use goroutines carefully"
+
+# 代码坏味道检测
+code_smells:
+  - name: "Long Method"
+    threshold: "20+ lines"
+    refactor: "Extract method"
+
+  - name: "Large Class"
+    threshold: "300+ lines"
+    refactor: "Extract class"
+
+  - name: "Long Parameter List"
+    threshold: "4+ parameters"
+    refactor: "Introduce parameter object"
+
+  - name: "Duplicated Code"
+    threshold: "3+ copies"
+    refactor: "Extract method"
+
+  - name: "Complex Conditionals"
+    threshold: "3+ nested if"
+    refactor: "Extract to named variable"
+
+  - name: "Magic Numbers"
+    threshold: "Unnamed literals"
+    refactor: "Extract to constant"
+
+# 重构建议
+refactoring:
+  extract_method:
+    when: "Code is duplicated or complex"
+    how: "Select code, extract to named function"
+
+  extract_class:
+    when: "Class has too many responsibilities"
+    how: "Group related methods, extract to new class"
+
+  introduce_parameter_object:
+    when: "Too many parameters"
+    how: "Create a data class/struct"
+
+  replace_conditional_with_polymorphism:
+    when: "Type-based conditional"
+    how: "Use inheritance/strategy pattern"
+
+# 工具集成
+tools:
+  linters:
+    python: ["ruff", "pylint", "flake8"]
+    javascript: ["eslint", "prettier"]
+    java: ["checkstyle", "spotbugs"]
+    go: ["golint", "staticcheck"]
+
+  formatters:
+    python: ["black", "yapf"]
+    javascript: ["prettier"]
+    java: ["google-java-format"]
+    go: ["gofmt", "goimports"]
+
+  metrics:
+    - "cyclomatic_complexity"
+    - "maintainability_index"
+    - "code_duplication"

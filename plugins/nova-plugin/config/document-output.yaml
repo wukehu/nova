@@ -1,0 +1,390 @@
+# Document Output Configuration
+# 文档输出配置
+
+version: "1.0.0"
+
+# 全局配置
+global:
+  output_format: "markdown"
+  output_directory: "docs/"
+  date_format: "%Y%m%d_%H%M%S"
+  timestamp_naming: true
+  auto_create_directories: true
+
+# 审核配置
+review:
+  enabled: true
+  require_review: true
+  min_reviewers: 1
+  auto_assign: false
+  tracking:
+    enabled: true
+    log_file: "docs/review.log"
+    metrics_file: "docs/review_metrics.json"
+
+# 各阶段输出配置
+phases:
+  requirements:
+    output:
+      directory: "docs/requirements/"
+      filename_pattern: "requirements_{{timestamp}}.md"
+      template: "templates/docs/requirements.md"
+      sections:
+        - "Overview"
+        - "Functional Requirements"
+        - "Non-Functional Requirements"
+        - "Constraints"
+        - "Assumptions"
+        - "Success Criteria"
+      metadata:
+        version: "1.0.0"
+        authors: ["{{team_members}}"]
+        phase: "requirements"
+        status: "draft"
+      review:
+        enabled: true
+        required: true
+        min_score: 70
+        roles:
+          - requirements_reviewer
+        checklist: "requirements"
+
+  architecture-design:
+    output:
+      directory: "docs/architecture/"
+      filename_pattern: "architecture_{{timestamp}}.md"
+      template: "templates/docs/architecture.md"
+      sections:
+        - "Executive Summary"
+        - "Architecture Overview"
+        - "System Components"
+        - "Data Architecture"
+        - "Technology Stack"
+        - "Security Architecture"
+        - "Deployment Architecture"
+        - "Architecture Decision Records"
+      metadata:
+        version: "1.0.0"
+        authors: ["{{architect}}"]
+        phase: "architecture"
+        status: "draft"
+      diagrams:
+        - "system-architecture"
+        - "component-diagram"
+        - "data-flow"
+        - "deployment-diagram"
+      review:
+        enabled: true
+        required: true
+        min_score: 75
+        roles:
+          - architecture_reviewer
+        checklist: "architecture"
+
+  detail-design:
+    output:
+      directory: "docs/design/"
+      filename_pattern: "detail_design_{{timestamp}}.md"
+      template: "templates/docs/detail-design.md"
+      sections:
+        - "Introduction"
+        - "API Specification"
+        - "Data Models"
+        - "Component Design"
+        - "Validation Rules"
+        - "Error Handling"
+        - "Security Implementation"
+        - "Test Strategy"
+      metadata:
+        version: "1.0.0"
+        authors: ["{{lead_developer}}"]
+        phase: "detail-design"
+        status: "draft"
+      appendices:
+        - "API Reference"
+        - "Database Schema"
+        - "Class Diagrams"
+      review:
+        enabled: true
+        required: true
+        min_score: 75
+        roles:
+          - technical_reviewer
+          - security_reviewer
+        checklist: "detail-design"
+
+  code:
+    output:
+      directory: "docs/implementation/"
+      filename_pattern: "implementation_notes_{{timestamp}}.md"
+      template: "templates/docs/implementation.md"
+      sections:
+        - "Implementation Summary"
+        - "Code Organization"
+        - "Key Implementation Details"
+        - "Dependencies"
+        - "Configuration"
+        - "Deployment Notes"
+      metadata:
+        version: "{{app_version}}"
+        authors: ["{{developers}}"]
+        phase: "code"
+        status: "in-progress"
+      code_samples:
+        include: true
+        format: "markdown"
+
+  test:
+    output:
+      directory: "docs/testing/"
+      filename_pattern: "test_report_{{timestamp}}.md"
+      template: "templates/docs/test-report.md"
+      sections:
+        - "Test Summary"
+        - "Unit Tests"
+        - "Integration Tests"
+        - "E2E Tests"
+        - "Performance Tests"
+        - "Coverage Report"
+        - "Test Results"
+      metadata:
+        version: "{{app_version}}"
+        authors: ["{{qa_team}}"]
+        phase: "test"
+        status: "completed"
+      test_results:
+        format: "json"
+        include: true
+
+  review:
+    output:
+      directory: "docs/review/"
+      filename_pattern: "code_review_{{timestamp}}.md"
+      template: "templates/docs/code-review.md"
+      sections:
+        - "Review Summary"
+        - "Findings"
+        - "Action Items"
+        - "Approval Status"
+      metadata:
+        version: "{{app_version}}"
+        reviewers: ["{{reviewers}}"]
+        phase: "review"
+        status: "completed"
+
+  docs:
+    output:
+      directory: "docs/user/"
+      filename_pattern: "user_guide_{{timestamp}}.md"
+      template: "templates/docs/user-guide.md"
+      sections:
+        - "Getting Started"
+        - "Installation"
+        - "User Guide"
+        - "API Documentation"
+        - "FAQ"
+        - "Troubleshooting"
+      metadata:
+        version: "{{app_version}}"
+        authors: ["{{technical_writers}}"]
+        phase: "documentation"
+        status: "published"
+
+  perf-analyze:
+    output:
+      directory: "docs/performance/"
+      filename_pattern: "performance_analysis_{{timestamp}}.md"
+      template: "templates/docs/performance-analysis.md"
+      sections:
+        - "Analysis Summary"
+        - "Baseline Metrics"
+        - "Bottlenecks Identified"
+        - "Profiling Results"
+        - "Recommendations"
+      metadata:
+        version: "{{app_version}}"
+        authors: ["{{performance_team}}"]
+        phase: "performance-analysis"
+        status: "completed"
+
+  perf-optimize:
+    output:
+      directory: "docs/performance/"
+      filename_pattern: "optimization_plan_{{timestamp}}.md"
+      template: "templates/docs/optimization.md"
+      sections:
+        - "Optimization Plan"
+        - "Quick Wins"
+        - "Medium-Term Optimizations"
+        - "Long-Term Optimizations"
+        - "Implementation Steps"
+      metadata:
+        version: "{{app_version}}"
+        authors: ["{{performance_team}}"]
+        phase: "performance-optimization"
+        status: "in-progress"
+
+  perf-benchmark:
+    output:
+      directory: "docs/performance/"
+      filename_pattern: "benchmark_results_{{timestamp}}.md"
+      template: "templates/docs/benchmark.md"
+      sections:
+        - "Benchmark Summary"
+        - "Test Results"
+        - "Before/After Comparison"
+        - "Performance Metrics"
+        - "Recommendations"
+      metadata:
+        version: "{{app_version}}"
+        authors: ["{{performance_team}}"]
+        phase: "benchmarking"
+        status: "completed"
+
+  perf-validate:
+    output:
+      directory: "docs/performance/"
+      filename_pattern: "performance_validation_{{timestamp}}.md"
+      template: "templates/docs/performance-validation.md"
+      sections:
+        - "Validation Summary"
+        - "Production Results"
+        - "Monitoring Setup"
+        - "Final Report"
+      metadata:
+        version: "{{app_version}}"
+        authors: ["{{performance_team}}"]
+        phase: "performance-validation"
+        status: "completed"
+
+# 文档格式配置
+formats:
+  markdown:
+    extension: ".md"
+    line_width: 120
+    code_blocks: true
+    tables: true
+    task_lists: true
+    front_matter: true
+
+  html:
+    extension: ".html"
+    theme: "github"
+    code_highlighting: true
+    table_of_contents: true
+
+  pdf:
+    extension: ".pdf"
+    template: "templates/pdf/default.html"
+    page_size: "A4"
+
+# 文档模板配置
+templates:
+  common:
+    header: |
+      # {{title}}
+
+      > **Document Info**
+      >
+      > - **Version**: {{version}}
+      > - **Date**: {{date}}
+      > - **Authors**: {{authors}}
+      > - **Status**: {{status}}
+
+      ---
+
+    footer: |
+      ---
+
+      **Document History**
+
+      | Version | Date | Author | Changes |
+      |---------|------|--------|---------|
+      | {{version}} | {{date}} | {{authors}} | Initial |
+
+    changelog: |
+      ## Change History
+
+      | Date | Version | Author | Description |
+      |------|---------|--------|-------------|
+      | {{date}} | {{version}} | {{authors}} | {{description}} |
+
+# 文档命名规范
+naming:
+  pattern: "{{phase}}_{{timestamp}}_{{version}}.md"
+  alternative_pattern: "{{phase}}_{{date}}.md"
+  use_timestamp: true
+  timestamp_format: "%Y%m%d_%H%M%S"
+  include_version: false
+
+# 文档目录结构
+directory_structure:
+  docs/
+    requirements/
+      requirements_20260321_143000.md
+      requirements_20260321_150000.md
+    architecture/
+      architecture_20260321_143000.md
+      adr/                          # Architecture Decision Records
+        adr_001_use_fastapi.md
+        adr_002_database_choice.md
+    design/
+      detail_design_20260321_143000.md
+      api/                          # API specifications
+        api_v1_20260321_143000.md
+      database/                     # Database schemas
+        schema_20260321_143000.md
+    implementation/
+      implementation_notes_20260321_143000.md
+    testing/
+      test_report_20260321_143000.md
+      coverage/
+        coverage_20260321_143000.md
+    review/
+      code_review_20260321_143000.md
+    user/
+      user_guide_20260321_143000.md
+      api_reference_20260321_143000.md
+      troubleshooting/
+        known_issues_20260321_143000.md
+    performance/
+      performance_analysis_20260321_143000.md
+      optimization_plan_20260321_143000.md
+      benchmark_results_20260321_143000.md
+      performance_validation_20260321_143000.md
+
+# 文档版本控制
+versioning:
+  enabled: true
+  auto_increment: true
+  keep_history: true
+  max_versions: 10
+
+# 文档发布配置
+publishing:
+  auto_publish: false
+  formats:
+    - markdown
+    - html
+  locations:
+    - local: "docs/build/"
+    - wiki: false
+    - confluence: false
+
+# 文档索引生成
+index:
+  generate: true
+  filename: "docs/INDEX.md"
+  sections:
+    - title: "Requirements"
+      path: "docs/requirements/"
+    - title: "Architecture"
+      path: "docs/architecture/"
+    - title: "Design"
+      path: "docs/design/"
+    - title: "Implementation"
+      path: "docs/implementation/"
+    - title: "Testing"
+      path: "docs/testing/"
+    - title: "Performance"
+      path: "docs/performance/"

@@ -1,0 +1,102 @@
+# Performance Optimization Workflow
+# 性能优化工作流
+
+name: "performance-opt"
+description: "Systematic performance optimization workflow - analyze, optimize, benchmark, and validate"
+version: "1.0.0"
+
+# 工作流阶段配置
+phases:
+  - id: "analyze"
+    name: "性能分析"
+    description: "分析系统性能瓶颈，识别优化机会"
+    prompt: "phases/perf-analyze.md"
+    required: true
+    output: "docs/performance-analysis.md"
+    next: ["optimize"]
+
+  - id: "optimize"
+    name: "性能优化"
+    description: "实施性能优化方案"
+    prompt: "phases/perf-optimize.md"
+    required: true
+    depends_on: ["analyze"]
+    output: "docs/optimization-plan.md"
+    next: ["benchmark"]
+
+  - id: "benchmark"
+    name: "性能基准测试"
+    description: "进行基准测试，验证优化效果"
+    prompt: "phases/perf-benchmark.md"
+    required: true
+    depends_on: ["optimize"]
+    output: "docs/benchmark-results.md"
+    next: ["validate"]
+
+  - id: "validate"
+    name: "验证与监控"
+    description: "验证优化效果并设置持续监控"
+    prompt: "phases/perf-validate.md"
+    required: true
+    depends_on: ["benchmark"]
+    output: "docs/performance-report.md"
+
+# 工作流选项
+options:
+  target_metrics:
+    response_time_p50: "100ms"
+    response_time_p95: "500ms"
+    response_time_p99: "1000ms"
+    throughput: "1000 req/s"
+    error_rate: "0.1%"
+
+  optimization_areas:
+    - database
+    - api
+    - frontend
+    - caching
+    - concurrency
+
+  profiling_tools:
+    - cpu_profiler
+    - memory_profiler
+    - database_profiler
+    - apm_tracing
+
+# 默认变量
+defaults:
+  baseline_required: true
+  regression_testing: true
+  monitoring_setup: true
+
+# 性能目标
+targets:
+  primary:
+    - "Reduce response time by 50%"
+    - "Increase throughput by 2x"
+    - "Reduce memory usage by 30%"
+
+  secondary:
+    - "Improve cache hit rate to 90%+"
+    - "Reduce database query time by 60%"
+    - "Minimize GC pauses"
+
+# 优化策略
+strategies:
+  quick_wins:
+    - "Add database indexes"
+    - "Enable compression"
+    - "Implement caching"
+    - "Optimize N+1 queries"
+
+  medium_term:
+    - "Refactor slow algorithms"
+    - "Implement connection pooling"
+    - "Add CDN"
+    - "Optimize bundle size"
+
+  long_term:
+    - "Architecture changes"
+    - "Database sharding"
+    - "Implement caching layer"
+    - "Microservices decomposition"

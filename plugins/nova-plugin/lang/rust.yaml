@@ -1,0 +1,578 @@
+# Rust Language Configuration
+# Rust 语言配置
+
+name: "rust"
+version: "1.70+"
+description: "Rust language templates and best practices for safe systems programming"
+
+# 支持的框架
+frameworks:
+  web:
+    - name: "actix-web"
+      description: "Powerful, pragmatic web framework"
+      templates: ["http-handler", "websocket", "middleware"]
+      version: "4.0+"
+
+    - name: "axum"
+      description: "Ergonomic and modular web framework"
+      templates: ["handler", "extractor", "router"]
+      version: "0.7+"
+
+    - name: "rocket"
+      description: "Web framework with ease of use"
+      templates: ["route", "guard", "fairing"]
+      version: "0.5+"
+
+    - name: "warp"
+      description: "Super-easy, composable web server"
+      templates: ["filter", "route"]
+
+  async_runtime:
+    - name: "tokio"
+      description: "Async runtime"
+      features: ["full", "rt-multi-thread"]
+      version: "1.35+"
+
+    - name: "async-std"
+      description: "Async std library"
+      version: "1.12+"
+
+  database:
+    - name: "sqlx"
+      description: "Async SQL toolkit"
+      features: ["runtime-tokio", "postgres"]
+      templates: ["query", "transaction", "pool"]
+
+    - name: "diesel"
+      description: "ORM and query builder"
+      templates: ["model", "schema", "query"]
+
+    - name: "sea-orm"
+      description: "Async ORM"
+      templates: ["entity", "query"]
+
+  cli:
+    - name: "clap"
+      description: "Command line argument parser"
+      version: "4.0+"
+      templates: ["command", "arg", "subcommand"]
+
+    - name: "structopt"
+      description: "Parse command line arguments"
+      version: "0.3+"
+
+  serialization:
+    - name: "serde"
+      description: "Serialization framework"
+      version: "1.0+"
+      features: ["derive"]
+
+    - name: "serde_json"
+      description: "JSON support"
+      templates: ["json-serialize", "json-deserialize"]
+
+  testing:
+    - name: "criterion"
+      description: "Statistics-driven benchmarking"
+      templates: ["benchmark"]
+
+# Cargo 配置
+cargo:
+  edition: "2021"
+  workspace: true
+  features:
+    default: [" tokio", "serde"]
+
+# 代码风格
+style:
+  formatter: "rustfmt"
+  linter: "clippy"
+  edition: "2021"
+  max_line_length: 100
+  indentation: 4
+  naming:
+    structs: "PascalCase"
+    enums: "PascalCase"
+    functions: "snake_case"
+    variables: "snake_case"
+    constants: "SCREAMING_SNAKE_CASE"
+    traits: "PascalCase"
+    modules: "snake_case"
+
+# Rust 特性
+features:
+  ownership:
+    - "Ownership - Memory safety without GC"
+    - "Borrowing - References with lifetimes"
+    - "Lifetimes - Validity of references"
+
+  zero_cost_abstractions:
+    - "Iterators - Lazy evaluation"
+    - "Pattern matching - Exhaustive matching"
+    - "Closures - Anonymous functions"
+    - "Smart pointers - Box, Rc, Arc, Cow"
+
+  type_system:
+    - "Traits - Behavior sharing"
+    - "Generics - Compile-time polymorphism"
+    - "Associated types"
+    - "Trait objects (dyn Trait)"
+
+  safety:
+    - "No null values - Option<T>"
+    - "No exceptions - Result<T, E>"
+    - "Memory safety - Borrow checker"
+    - "Thread safety - Send and Sync traits"
+
+  async:
+    - "async/await syntax"
+    - "Futures - Lazy computations"
+    - "Pinning - Fixed location data"
+
+# 最佳实践
+best_practices:
+  ownership:
+    - "Borrow rather than own when possible"
+    - "Use &str for string slices, String for owned"
+    - "Use Cow<str> for conditional ownership"
+    - "Prefer references over copies"
+    - "Use Clone only when necessary"
+
+  error_handling:
+    - "Use Result<T, E> for recoverable errors"
+    - "Use Option<T> for optional values"
+    - "Use ? operator for error propagation"
+    - "Use thiserror for custom error types"
+    - "Use anyhow for application errors"
+    - "Avoid panic in library code"
+    - "Use unwrap_or, unwrap_or_else in application code"
+
+  concurrency:
+    - "Use channels for message passing"
+    - "Use Arc for shared ownership across threads"
+    - "Use Mutex for interior mutability"
+    - "Use RwLock for read-heavy workloads"
+    - "Use atomic types for lock-free programming"
+
+  performance:
+    - "Use iterators instead of loops"
+    - "Use with_capacity for collections"
+    - "Avoid unnecessary clones"
+    - "Use references instead of copies"
+    - "Profile before optimizing"
+    - "Use criterion for benchmarks"
+
+  code_organization:
+    - "Use modules for organization"
+    - "Use re-exports to simplify paths"
+    - "Use use statements for imports"
+    - "Keep functions small and focused"
+    - "Use meaningful names"
+
+  idiomatic_rust:
+    - "Use iterators and adapters"
+    - "Use pattern matching"
+    - "Use if let and while let for pattern matching"
+    - "Use for loops over iterators"
+    - "Use match for exhaustive patterns"
+    - "Use &self and &mut self for methods"
+    - "Use impl Trait for arguments"
+    - "Use dyn Trait for trait objects"
+
+# 常用模式
+patterns:
+  new: |
+    impl MyStruct {
+        pub fn new() -> Self {
+            Self { /* fields */ }
+        }
+    }
+
+  builder: |
+    struct Builder {
+        name: Option<String>,
+        value: Option<i32>,
+    }
+
+    impl Builder {
+        pub fn new() -> Self {
+            Self {
+                name: None,
+                value: None,
+            }
+        }
+
+        pub fn name(mut self, name: String) -> Self {
+            self.name = Some(name);
+            self
+        }
+
+        pub fn value(mut self, value: i32) -> Self {
+            self.value = Some(value);
+            self
+        }
+
+        pub fn build(self) -> MyStruct {
+            MyStruct {
+                name: self.name.unwrap(),
+                value: self.value.unwrap(),
+            }
+        }
+    }
+
+  option_result_chain: |
+    fn process(input: Option<i32>) -> Result<i32, Error> {
+        input
+            .ok_or(Error::NoInput)?
+            .checked_add(1)
+            .ok_or(Error::Overflow)
+    }
+
+  trait_bound: |
+    fn process<T: Clone + Display>(value: T) {
+        println!("{}", value);
+    }
+
+  // Or with where clause
+  fn process<T>(value: T)
+    where
+        T: Clone + Display,
+    {
+        println!("{}", value);
+    }
+
+# 错误处理
+error_handling:
+  result:
+    description: "Use Result for operations that can fail"
+    example: |
+      use std::io::{self, Read};
+
+      fn read_file(path: &str) -> Result<String, io::Error> {
+          let mut file = File::open(path)?;
+          let mut contents = String::new();
+          file.read_to_string(&mut contents)?;
+          Ok(contents)
+      }
+
+  option:
+    description: "Use Option for values that may be absent"
+    example: |
+      fn find_user(id: u32) -> Option<User> {
+          if id <= MAX_ID {
+              Some(User::new(id))
+          } else {
+              None
+          }
+      }
+
+  error_propagation:
+    description: "Use ? operator for error propagation"
+    example: |
+      fn process_file(path: &str) -> Result<Data, Error> {
+          let contents = read_file(path)?;
+          let data = parse(contents)?;
+          Ok(data)
+      }
+
+  custom_errors:
+    description: "Use thiserror for custom errors"
+    example: |
+      use thiserror::Error;
+
+      #[derive(Error, Debug)]
+      pub enum MyError {
+          #[error("IO error: {0}")]
+          Io(#[from] std::io::Error),
+
+          #[error("Parse error: {0}")]
+          Parse(String),
+
+          #[error("Not found: {0}")]
+          NotFound(String),
+      }
+
+# 项目结构
+structure:
+  binary:
+    - "src/main.rs - Binary entry point"
+    - "src/lib.rs - Library code"
+    - "src/modules/ - Other modules"
+    - "tests/ - Integration tests"
+    - "benches/ - Benchmarks"
+    - "examples/ - Examples"
+    - "Cargo.toml - Project config"
+
+  library:
+    - "src/lib.rs - Library entry"
+    - "src/ - Library modules"
+    - "tests/ - Integration tests"
+    - "benches/ - Benchmarks"
+    - "examples/ - Examples"
+    - "Cargo.toml - Project config"
+
+  workspace:
+    - "Cargo.toml - Workspace config"
+    - "member1/ - First crate"
+    - "member2/ - Second crate"
+    - "Cargo.lock - Lock file"
+
+# Cargo.toml 配置
+cargo_toml:
+  basic: |
+    [package]
+    name = "my-project"
+    version = "0.1.0"
+    edition = "2021"
+
+    [dependencies]
+    tokio = { version = "1", features = ["full"] }
+    serde = { version = "1", features = ["derive"] }
+
+    [dev-dependencies]
+    criterion = "0.5"
+
+  library: |
+    [package]
+    name = "my-lib"
+    version = "0.1.0"
+    edition = "2021"
+
+    [lib]
+    name = "my_lib"
+    path = "src/lib.rs"
+
+    [[bin]]
+    name = "my-app"
+    path = "src/main.rs"
+
+# 测试
+testing:
+  unit_tests:
+    description: "Inline tests with #[test]"
+    example: |
+      #[cfg(test)]
+      mod tests {
+          use super::*;
+
+          #[test]
+          fn test_addition() {
+              assert_eq!(add(2, 2), 4);
+          }
+
+          #[test]
+          #[should_panic]
+          fn test_panic() {
+              panic!("Expected panic");
+          }
+      }
+
+  integration_tests:
+    description: "Tests in tests/ directory"
+    example: |
+      // tests/integration_test.rs
+      use my_lib;
+
+      #[test]
+      fn test_integration() {
+          let result = my_lib::process();
+          assert!(result.is_ok());
+      }
+
+  documentation_tests:
+    description: "Tests in doc comments"
+    example: |
+      /// Adds two numbers.
+      ///
+      /// # Examples
+      /// ```
+      /// use my_lib::add;
+      /// assert_eq!(add(2, 2), 4);
+      /// ```
+      fn add(a: i32, b: i32) -> i32 {
+          a + b
+      }
+
+# 性能优化
+performance:
+  profiling:
+    - "Flamegraph - Flame graph generation"
+    - "perf - Linux profiling"
+    - "cargo-flamegraph - Cargo flamegraph"
+
+  benchmarking:
+    framework: "Criterion"
+    example: |
+      use criterion::{black_box, criterion_group, criterion_main, Criterion};
+
+      fn fibonacci(n: u64) -> u64 {
+          match n {
+              0 => 1,
+              1 => 1,
+              _ => fibonacci(n - 1) + fibonacci(n - 2),
+          }
+      }
+
+      fn criterion_benchmark(c: &mut Criterion) {
+          c.bench_function("fib 20", |b| b.iter(|| fibonacci(black_box(20))));
+      }
+
+      criterion_group!(benches, criterion_benchmark);
+      criterion_main!(benches);
+
+  optimization:
+    - "Use iterators"
+    - "Avoid clones"
+    - "Use with_capacity"
+    - "Profile before optimizing"
+    - "Use cargo expand to check macro expansion"
+
+  release_build:
+    profile: "release"
+    flags: "--release"
+
+# 并发
+concurrency:
+  threads:
+    - "std::thread - Standard threads"
+    - "std::sync - Synchronization primitives"
+
+  async:
+    - "async/await - Async syntax"
+    - "Future - Lazy computations"
+    - "Pin - Fixed location data"
+
+  channels:
+    - "std::sync::mpsc - Multi-producer single-consumer"
+    - "tokio::sync::mpsc - Async channels"
+    - "crossbeam - Concurrent data structures"
+
+  synchronization:
+    - "Mutex - Mutual exclusion"
+    - "RwLock - Read-write lock"
+    - "Atomic - Atomic operations"
+    - "Barrier - Barrier synchronization"
+    - "Condvar - Condition variable"
+
+# 安全注意事项
+security:
+  avoid:
+    - "unsafe code unless necessary"
+    - "unwrap() and expect() in production"
+    - "panic! in library code"
+
+  safe_alternatives:
+    - "Use Result<T, E> for errors"
+    - "Use Option<T> for optional values"
+    - "Use ? operator for error propagation"
+    - "Use unwrap_or, unwrap_or_else for defaults"
+
+  unsafe:
+    when_to_use:
+      - "FFI (Foreign Function Interface)"
+      - "Implementing custom smart pointers"
+      - "Performance-critical code"
+
+    guidelines:
+      - "Keep unsafe blocks small"
+      - "Document why unsafe is needed"
+      - "Isolate unsafe code"
+      - "Review unsafe code carefully"
+
+# 常用 Crates
+crates:
+  async:
+    - "tokio - Async runtime"
+    - "async-std - Async std library"
+    - "futures - Future utilities"
+
+  web:
+    - "actix-web - Web framework"
+    - "axum - Web framework"
+    - "reqwest - HTTP client"
+
+  database:
+    - "sqlx - Async SQL"
+    - "diesel - ORM"
+    - "sea-orm - Async ORM"
+
+  serialization:
+    - "serde - Serialization"
+    - "serde_json - JSON"
+
+  error_handling:
+    - "anyhow - Easy error handling"
+    - "thiserror - Error derives"
+
+  logging:
+    - "tracing - Structured logging"
+    - "log - Logging facade"
+
+  testing:
+    - "criterion - Benchmarking"
+    - "mockall - Mocking"
+
+  cli:
+    - "clap - CLI parsing"
+    - "structopt - CLI parsing (deprecated)"
+
+# 工具
+tools:
+  build_tools:
+    - "cargo - Package manager"
+    - "rustup - Rust toolchain installer"
+
+  formatters:
+    - "rustfmt - Code formatter"
+
+  linters:
+    - "clippy - Rust linter"
+
+  documentation:
+    - "cargo doc - Generate docs"
+
+  testing:
+    - "cargo test - Run tests"
+
+  benchmarking:
+    - "cargo bench - Run benchmarks"
+
+# IDE 集成
+ide:
+  vscode:
+    extensions:
+      - "rust-analyzer - Official Rust language server"
+      - "CodeLLDB - Debugger"
+      - "Even Better TOML - TOML support"
+
+# 交叉编译
+cross_compilation:
+  tool: "cross"
+  command: "cross build --target aarch64-unknown-linux-gnu"
+
+  targets:
+    - "x86_64-unknown-linux-gnu"
+    - "aarch64-unknown-linux-gnu"
+    - "x86_64-pc-windows-msvc"
+    - "x86_64-apple-darwin"
+    - "aarch64-apple-darwin"
+    - "wasm32-wasi"
+
+# WebAssembly
+wasm:
+  tool: "wasm-pack"
+  targets:
+    - "wasm32-wasi"
+    - "wasm32-unknown-unknown"
+
+  frameworks:
+    - "yew - Frontend framework"
+    - "leptos - Frontend framework"
+    - "seed - Frontend framework"
+
+# 嵌入式
+embedded:
+  tool: "cargo-embed"
+  hal:
+    - "cortex-m - ARM Cortex-M"
+    - "avr - AVR microcontrollers"

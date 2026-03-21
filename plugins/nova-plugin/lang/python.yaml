@@ -1,0 +1,118 @@
+# Python Language Configuration
+# Python 语言配置
+
+name: "python"
+version: "3.12+"
+description: "Python language templates and best practices"
+
+# 支持的框架
+frameworks:
+  web:
+    - name: "fastapi"
+      description: "Modern, fast web framework"
+      templates: ["api-endpoint", "pydantic-model", "dependency-injection"]
+    - name: "django"
+      description: "Full-featured web framework"
+      templates: ["django-model", "django-view", "django-url"]
+    - name: "flask"
+      description: "Micro web framework"
+      templates: ["flask-route", "flask-template"]
+
+  data:
+    - name: "pandas"
+      description: "Data manipulation"
+      templates: ["dataframe-operation", "data-pipeline"]
+    - name: "polars"
+      description: "Fast dataframes"
+      templates: ["lazy-frame", "data-expression"]
+
+  ml:
+    - name: "pytorch"
+      description: "Deep learning"
+      templates: ["neural-network", "training-loop"]
+    - name: "scikit-learn"
+      description: "Machine learning"
+      templates: ["sklearn-pipeline", "model-training"]
+
+# 代码风格
+style:
+  formatter: "black"
+  linter: "ruff"
+  type_checker: "mypy"
+  line_length: 88
+  import_style: "sorted"
+
+# 项目结构
+structure:
+  standard:
+    - "src/{{package_name}}/"
+    - "tests/"
+    - "docs/"
+    - "pyproject.toml"
+    - "README.md"
+
+# 测试框架
+testing:
+  frameworks:
+    - name: "pytest"
+      templates: ["test-unit", "test-integration", "test-fixtures"]
+    - name: "unittest"
+      templates: ["testcase", "test-suite"]
+
+# 依赖管理
+dependencies:
+  format: "pyproject.toml"
+  tools: ["poetry", "uv", "pip"]
+
+# 类型提示
+types:
+  enabled: true
+  strict: true
+  library: "typing"
+  generics: true
+
+# 异步支持
+async:
+  enabled: true
+  libraries: ["asyncio", "anyio"]
+
+# 最佳实践
+best_practices:
+  - "Use type hints for all function signatures"
+  - "Write docstrings in Google style"
+  - "Use context managers for resource management"
+  - "Prefer dataclasses over plain classes for data storage"
+  - "Use pathlib for file operations"
+  - "Avoid mutable default arguments"
+  - "Use generators for large sequences"
+  - "Follow PEP 8 naming conventions"
+
+# 常用模式
+patterns:
+  singleton: "Use module-level variables or metaclasses"
+  factory: "Use @dataclass or builder pattern"
+  observer: "Use asyncio.Event or custom pub/sub"
+  strategy: "Use Callable type hints or Protocol"
+
+# 安全注意事项
+security:
+  avoid:
+    - "eval() and exec()"
+    - "pickle with untrusted data"
+    - "shell=True in subprocess"
+    - "SQL string concatenation"
+  recommend:
+    - "Use cryptography for encryption"
+    - "Use secrets for random values"
+    - "Use hashlib for hashing"
+    - "Use parameterized queries"
+
+# 性能优化
+performance:
+  profiling: ["cProfile", "py-spy"]
+  optimization:
+    - "Use built-in functions and libraries"
+    - "Use list comprehensions instead of loops"
+    - "Use generators for large datasets"
+    - "Use __slots__ for classes with many instances"
+    - "Cache expensive computations with @lru_cache"

@@ -1,0 +1,15 @@
+{
+  "name": "nova-plugins",
+  "version": "1.0.0",
+  "description": "Complete SDLC workflow plugins for Claude Code - from requirements clarification to testing and debugging",
+  "plugins": [
+    {
+      "name": "nova-plugin",
+      "version": "1.0.0",
+      "description": "Complete SDLC workflow plugin - from requirements clarification to testing and debugging",
+      "path": "plugins/nova-plugin",
+      "manifest": ".claude-plugin/plugin.json",
+      "status": "active"
+    }
+  ]
+}

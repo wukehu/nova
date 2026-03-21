@@ -1,0 +1,204 @@
+# Review Tracking Data Format
+# 审核追踪数据格式
+
+version: "1.0.0"
+
+# 审核记录数据结构
+review_record:
+  document_id: "{{document_id}}"
+  document_name: "{{document_name}}"
+  document_type: "{{phase}}"
+  document_path: "{{document_path}}"
+  version: "{{version}}"
+  timestamp: "{{timestamp}}"
+
+  # 审核基本信息
+  review_info:
+    review_id: "{{review_id}}"
+    status: "{{status}}"  # pending, assigned, in_progress, completed, approved, changes_requested, rejected
+    created_at: "{{created_at}}"
+    started_at: "{{started_at}}"
+    completed_at: "{{completed_at}}"
+    duration_seconds: {{duration}}
+
+  # 审核人信息
+  reviewer:
+    name: "{{reviewer_name}}"
+    role: "{{reviewer_role}}"
+    email: "{{reviewer_email}}"
+    id: "{{reviewer_id}}"
+
+  # 审核评分
+  scores:
+    overall: {{overall_score}}
+    breakdown:
+      completeness:
+        score: {{completeness_score}}
+        weight: {{completeness_weight}}
+        comments: "{{completeness_comments}}"
+      accuracy:
+        score: {{accuracy_score}}
+        weight: {{accuracy_weight}}
+        comments: "{{accuracy_comments}}"
+      clarity:
+        score: {{clarity_score}}
+        weight: {{clarity_weight}}
+        comments: "{{clarity_comments}}"
+      feasibility:
+        score: {{feasibility_score}}
+        weight: {{feasibility_weight}}
+        comments: "{{feasibility_comments}}"
+
+  # 审核意见
+  comments:
+    blocking: []  # 阻塞问题
+    major: []     # 主要问题
+    minor: []     # 次要问题
+    suggestions: []  # 建议
+
+    # 格式
+    # - id: "comment_001"
+    #   category: "blocking|major|minor|suggestion"
+    #   section: "Section name"
+    #   line: 123
+    #   content: "Comment text"
+    #   severity: "critical|high|medium|low"
+    #   status: "open|resolved"
+    #   created_at: "2026-03-21T14:30:00Z"
+
+  # 审核结论
+  conclusion:
+    decision: "{{decision}}"  # approved, changes_requested, rejected
+    confidence: {{confidence}}  # 1-10
+    requires_rereview: {{requires_rereview}}
+    next_steps: []
+
+  # 后续行动
+  action_items:
+    - id: "action_001"
+      type: "fix|clarify|complete|review"
+      description: "{{description}}"
+      priority: "critical|high|medium|low"
+      assignee: "{{assignee}}"
+      due_date: "{{due_date}}"
+      status: "pending|in_progress|completed"
+
+# 审核历史
+review_history:
+  - review_id: "rev_001"
+    document_id: "{{document_id}}"
+    reviewer_id: "{{reviewer_id}}"
+    reviewer_name: "{{reviewer_name}}"
+    started_at: "{{started_at}}"
+    completed_at: "{{completed_at}}"
+    duration: "{{duration}}"
+    status: "completed"
+    scores: {{scores}}
+    decision: "changes_requested"
+    comments_count: {{comments_count}}
+
+# 审核质量指标
+quality_metrics:
+  review_timeliness:
+    target_duration: "{{target_duration}}"
+    actual_duration: "{{actual_duration}}"
+    within_target: {{within_target}}
+    variance_percent: {{variance}}
+
+  comment_quality:
+    specific_comments: {{specific_comments}}
+    total_comments: {{total_comments}}
+    constructive_ratio: {{constructive_ratio}}
+
+  review_consistency:
+    similar_document_reviews: []
+    score_variance: {{score_variance}}
+
+# 示例数据
+example:
+  document_id: "requirements_20260321_143000"
+  document_name: "Requirements Document"
+  document_type: "requirements"
+  document_path: "docs/requirements/requirements_20260321_143000.md"
+  version: "1.0.0"
+  timestamp: "20260321_143000"
+
+  review_info:
+    review_id: "rev_req_001"
+    status: "approved"
+    created_at: "2026-03-21T14:30:00Z"
+    started_at: "2026-03-21T14:30:00Z"
+    completed_at: "2026-03-21T15:45:00Z"
+    duration_seconds: 4500  # 1 hour 15 minutes
+
+  reviewer:
+    name: "John Doe"
+    role: "requirements_reviewer"
+    email: "john.doe@example.com"
+    id: "usr_001"
+
+  scores:
+    overall: 87
+    breakdown:
+      completeness:
+        score: 18
+        weight: 20
+        comments: "Complete, minor gaps in edge cases"
+      accuracy:
+        score: 22
+        weight: 25
+        comments: "Accurate, no contradictions"
+      clarity:
+        score: 27
+        weight: 30
+        comments: "Very clear, good structure"
+      feasibility:
+        score: 20
+        weight: 25
+        comments: "Feasible with reasonable timeline"
+
+  comments:
+    blocking: []
+    major:
+      - id: "cmt_001"
+        category: "major"
+        section: "Functional Requirements"
+        line: 45
+        content: "Performance requirement needs more specific metrics"
+        severity: "high"
+        status: "open"
+        created_at: "2026-03-21T15:30:00Z"
+    minor:
+      - id: "cmt_002"
+        category: "minor"
+        section: "Success Criteria"
+        line: 78
+        content: "Consider adding quantifiable success criteria"
+        severity: "low"
+        status: "open"
+        created_at: "2026-03-21T15:35:00Z"
+    suggestions:
+      - id: "cmt_003"
+        category: "suggestion"
+        section: "Overview"
+        line: 12
+        content: "Would benefit from a system context diagram"
+        severity: "info"
+        status: "open"
+        created_at: "2026-03-21T15:40:00Z"
+
+  conclusion:
+    decision: "approved"
+    confidence: 8
+    requires_rereview: false
+    next_steps:
+      - "Document approved, proceed to architecture phase"
+
+  action_items:
+    - id: "action_001"
+      type: "clarify"
+      description: "Add specific performance metrics"
+      priority: "medium"
+      assignee: "jane.smith"
+      due_date: "2026-03-22T17:00:00Z"
+      status: "pending"
