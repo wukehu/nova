@@ -16,8 +16,7 @@
       "name": "nova-plugin",
       "description": "Complete SDLC workflow plugin - from requirements clarification to testing and debugging",
       "version": "1.0.0",
-      "path": "plugins/nova-plugin",
-      "source": "https://github.com/wukehu/nova.git"
+      "path": "plugins/nova-plugin"
     }
   ]
 }
