@@ -1,0 +1,75 @@
+# Hotfix Workflow
+# 紧急修复工作流
+
+name: "hotfix"
+description: "Urgent hotfix workflow for production issues"
+version: "1.0.0"
+
+# Workflow stages
+stages:
+  - id: "assess"
+    name: "问题评估"
+    phases:
+      - "assess-severity"
+      - "determine-scope"
+    outputs:
+      - "docs/hotfix/assessment.md"
+    required: true
+    next: ["fix"]
+
+  - id: "fix"
+    name: "修复"
+    phases:
+      - "implement-fix"
+      - "write-regression-tests"
+      - "add-safety-checks"
+    outputs:
+      - "src/"
+      - "tests/hotfix/"
+    required: true
+    next: ["verify"]
+
+  - id: "verify"
+    name: "验证"
+    phases:
+      - "unit-tests"
+      - "integration-tests"
+      - "regression-tests"
+    outputs:
+      - "docs/testing/hotfix-test-report.md"
+    required: true
+    next: ["emergency-deploy"]
+
+  - id: "emergency-deploy"
+    name: "紧急部署"
+    phases:
+      - "create-hotfix-branch"
+      - "merge-to-release"
+      - "tag-release"
+      - "deploy-to-production"
+      - "monitor-post-deploy"
+    outputs:
+      - "docs/deployment/hotfix-deployment.md"
+    required: true
+
+# Quality gates
+quality_gates:
+  tests:
+    enabled: true
+    on_stages: ["verify"]
+
+  regression_tests:
+    enabled: true
+    required: true
+
+# Automation
+automation:
+  auto_tests: true
+  auto_deploy: false  # Manual for hotfixes
+
+# Options
+options:
+  branch_from: "main"  # or "release/x.y.z"
+  include_regression_tests: true
+  require_post_deploy_monitoring: true
+  rollback_automation: true

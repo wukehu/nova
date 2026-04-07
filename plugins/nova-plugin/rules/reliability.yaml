@@ -1,0 +1,240 @@
+# Reliability Rules
+# Reliability and fault tolerance rules
+
+name: "reliability"
+description: "Reliability, fault tolerance, and resilience patterns"
+severity: "high"
+
+# Core principles
+principles:
+  - name: "Fail Gracefully"
+    description: "Handle failures gracefully without crashing"
+    check:
+      - "Implement proper error handling"
+      - "Use try-catch appropriately"
+      - "Provide fallback behavior"
+      - "Log errors with context"
+
+  - name: "Fault Tolerance"
+    description: "Design for failure scenarios"
+    check:
+      - "Assume dependencies can fail"
+      - "Implement retry logic"
+      - "Use circuit breakers"
+      - "Implement timeouts"
+
+  - name: "Resilience"
+    description: "Recover from failures automatically"
+    check:
+      - "Implement auto-recovery"
+      - "Use health checks"
+      - "Implement graceful degradation"
+      - "Design for high availability"
+
+  - name: "Idempotency"
+    description: "Operations should be idempotent"
+    check:
+      - "Safe to retry operations"
+      - "Multiple calls have same effect"
+      - "Handle duplicates correctly"
+
+# Fault tolerance patterns
+patterns:
+  circuit_breaker:
+    description: "Stop calling failing services"
+    implementation:
+      - "Detect failures (error rate, timeout)"
+      - "Open circuit after threshold"
+      - "Half-open for testing recovery"
+      - "Auto-close on recovery"
+      - "Provide fallback response"
+
+  retry:
+    description: "Retry failed operations"
+    implementation:
+      - "Exponential backoff"
+      - "Max retry limit"
+      - "Retry on specific errors only"
+      - "Idempotent operations only"
+      - "Log retry attempts"
+
+  timeout:
+    description: "Don't wait forever"
+    implementation:
+      - "Set reasonable timeouts"
+      - "Timeout on entire request"
+      - "Timeout on individual operations"
+      - "Handle timeout errors"
+
+  fallback:
+    description: "Alternative path on failure"
+    implementation:
+      - "Cached data fallback"
+      - "Default response fallback"
+      - "Alternative service fallback"
+      - "Degraded functionality fallback"
+
+  bulkhead:
+    description: "Limit concurrent calls"
+    implementation:
+      - "Set max concurrent requests"
+      - "Queue excess requests"
+      - "Reject when at capacity"
+      - "Monitor bulkhead metrics"
+
+  chaos_testing:
+    description: "Test failure scenarios"
+    implementation:
+      - "Inject failures in testing"
+      - "Test circuit breakers"
+      - "Test retry logic"
+      - "Test timeout scenarios"
+
+# Error handling
+error_handling:
+  principles:
+    - "Handle errors at appropriate level"
+    - "Never ignore errors"
+    - "Provide useful error messages"
+    - "Log errors with context"
+    - "Clean up resources on error"
+    - "Propagate errors when needed"
+    - "Use specific exception types"
+
+  patterns:
+    - "Try-catch-finally for resource cleanup"
+    - "Use context managers for resources"
+    - "Implement global error handlers"
+    - "Use error aggregation"
+    - "Implement error recovery"
+
+# Idempotency checks
+idempotency:
+  checks:
+    - "Write operations are idempotent"
+    - "Delete operations are idempotent"
+    - "Update operations handle retries"
+    - "Create operations handle duplicates"
+    - "Use unique IDs for operations"
+
+# Data consistency
+data_consistency:
+  patterns:
+    - "Use database transactions"
+    - "Implement optimistic locking"
+    - "Implement pessimistic locking"
+    - "Use atomic operations"
+    - "Implement distributed transactions"
+    - "Use event sourcing for audit trail"
+
+  checks:
+    - "All related updates in transaction"
+    - "Handle concurrent updates"
+    - "Implement conflict resolution"
+    - "Maintain referential integrity"
+
+# Distributed systems
+distributed:
+  patterns:
+    - "Use distributed transactions (2PC, Saga)"
+    - "Implement eventual consistency"
+    - "Use message queues for async operations"
+    - "Implement idempotent message processing"
+    - "Use dead letter queues"
+
+  checks:
+    - "Handle network partitions"
+    - "Handle partial failures"
+    - "Implement retry with deduplication"
+    - "Handle message ordering"
+    - "Implement compensating transactions"
+
+# Quality checks
+quality_gates:
+  - name: "Error handling coverage"
+    description: "All code paths handle errors"
+    check: "No unhandled exceptions"
+
+  - name: "Timeout coverage"
+    description: "All external calls have timeouts"
+    check: "No infinite waits"
+
+  - name: "Resource cleanup"
+    description: "Resources are always cleaned up"
+    check: "No resource leaks"
+
+  - name: "Retry logic"
+    description: "Retry logic is implemented"
+    check: "Retry exponential backoff"
+
+  - name: "Circuit breaker"
+    description: "Circuit breakers for external calls"
+    check: "Circuit breaker implementation"
+
+# Monitoring
+monitoring:
+  metrics:
+    - "Error rate"
+    - "Success rate"
+    - "Latency (p50, p90, p99)"
+    - "Retry count"
+    - "Circuit breaker state"
+    - "Timeout rate"
+    - "Resource usage"
+
+  alerts:
+    - "High error rate"
+    - "Circuit breaker open"
+    - "High retry count"
+    - "High timeout rate"
+    - "Resource exhaustion"
+
+# Testing
+testing:
+  - "Test error scenarios"
+  - "Test timeout scenarios"
+  - "Test retry logic"
+  - "Test circuit breaker"
+  - "Test fallback behavior"
+  - "Test graceful degradation"
+  - "Test chaos scenarios"
+  - "Test recovery paths"
+
+# Language-specific patterns
+language_specific:
+  python:
+    - "Use context managers for resources"
+    - "Use try-finally for cleanup"
+    - "Use specific exception types"
+    - "Use logging.exception() for errors"
+
+  javascript:
+    - "Use try-catch-finally"
+    - "Use Promise error handling"
+    - "Handle unhandled rejections"
+    - "Use error boundaries (React)"
+
+  java:
+    - "Use try-with-resources"
+    - "Use specific exception types"
+    - "Use finally for cleanup"
+    - "Use @Transactional for consistency"
+
+  go:
+    - "Use defer for cleanup"
+    - "Check error returns"
+    - "Use context for timeouts"
+    - "Handle panics appropriately"
+
+# Best practices
+best_practices:
+  - "Design for failure"
+  - "Never trust external services"
+  - "Always handle errors"
+  - "Use timeouts everywhere"
+  - "Implement circuit breakers"
+  - "Make operations idempotent"
+  - "Log everything important"
+  - "Monitor reliability metrics"
+  - "Test failure scenarios"
+  - "Plan for recovery"

@@ -1,0 +1,115 @@
+# Data Pipeline Development Workflow
+# 数据管道开发工作流
+
+name: "data-pipeline"
+description: "Data pipeline and ETL workflow development"
+version: "1.0.0"
+
+# Workflow stages
+stages:
+  - id: "requirements"
+    name: "需求分析"
+    phases:
+      - "clarify-data-requirements"
+      - "define-data-sources"
+      - "define-data-destinations"
+    outputs:
+      - "docs/requirements/data-requirements.md"
+      - "docs/data/data-sources.md"
+      - "docs/data/data-schemas.md"
+    required: true
+    next: ["design"]
+
+  - id: "design"
+    name: "设计"
+    phases:
+      - "pipeline-architecture-design"
+      - "data-transform-design"
+      - "error-handling-design"
+    outputs:
+      - "docs/design/pipeline-architecture.md"
+      - "docs/design/data-transform.md"
+      - "docs/design/error-handling.md"
+    required: true
+    next: ["implementation"]
+
+  - id: "implementation"
+    name: "实现"
+    phases:
+      - "implement-pipeline"
+      - "implement-transformations"
+      - "implement-error-handling"
+      - "add-logging-metrics"
+    outputs:
+      - "src/pipelines/"
+      - "src/transforms/"
+      - "tests/"
+    required: true
+    next: ["testing"]
+
+  - id: "testing"
+    name: "测试"
+    phases:
+      - "unit-tests"
+      - "integration-tests"
+      - "data-quality-tests"
+      - "performance-tests"
+    outputs:
+      - "tests/unit/"
+      - "tests/integration/"
+      - "tests/data-quality/"
+      - "docs/testing/test-report.md"
+    required: true
+    next: ["deployment"]
+
+  - id: "deployment"
+    name: "部署"
+    phases:
+      - "containerize-pipeline"
+      - "deploy-to-environment"
+      - "configure-scheduling"
+    outputs:
+      - "docker-compose.yml"
+      - "k8s/"
+      - "airflow-dags/"
+    required: true
+
+# Quality gates
+quality_gates:
+  data_quality:
+    enabled: true
+    checks:
+      - "completeness"
+      - "accuracy"
+      - "consistency"
+      - "timeliness"
+
+  performance:
+    enabled: true
+    metrics:
+      - "throughput"
+      - "latency"
+      - "resource_usage"
+
+# Tech stack defaults
+tech_stack:
+  backend:
+    language: "python"
+    framework: "apache-airflow"
+
+  data_processing:
+    frameworks:
+      - "pandas"
+      - "spark"
+      - "dask"
+
+  storage:
+    - "s3"
+    - "postgresql"
+    - "mongodb"
+    - "redis"
+
+  messaging:
+    - "kafka"
+    - "rabbitmq"
+    - "aws-sqs"

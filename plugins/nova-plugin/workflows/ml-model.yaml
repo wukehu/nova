@@ -1,0 +1,151 @@
+# ML Model Development Workflow
+# Machine Learning Model Development Workflow
+
+name: "ml-model"
+description: "End-to-end machine learning model development workflow"
+versionversion: "1.0.0"
+
+# Workflow stages
+stages:
+  - id: "problem-definition"
+    name: "问题定义"
+    phases:
+      - "define-problem"
+      - "set-objectives"
+      - "define-metrics"
+    outputs:
+      - "docs/problem/problem-definition.md"
+      - "docs/objectives/success-metrics.md"
+    required: true
+    next: ["data-analysis"]
+
+  - id: "data-analysis"
+    name: "数据分析"
+    phases:
+      - "data-exploration"
+      - "data-visualization"
+      - "feature-analysis"
+    outputs:
+      - "notebooks/data-exploration.ipynb"
+      - "docs/data/data-summary.md"
+    required: true
+    next: ["data-preprocessing"]
+
+  - id: "data-preprocessing"
+    name: "数据预处理"
+    phases:
+      - "data-cleaning"
+      - "feature-engineering"
+      - "train-test-split"
+    outputs:
+      - "notebooks/data-preprocessing.ipynb"
+      - "data/processed/"
+    required: true
+    next: ["model-development"]
+
+  - id: "model-development"
+    name: "模型开发"
+    phases:
+      - "baseline-model"
+      - "model-selection"
+      - "hyperparameter-tuning"
+      - "model-training"
+    outputs:
+      - "notebooks/model-training.ipynb"
+      - "models/"
+      - "docs/model/model-selection.md"
+    required: true
+    next: ["model-evaluation"]
+
+  - id: "model-evaluation"
+    name: "模型评估"
+    phases:
+      - "cross-validation"
+      - "performance-metrics"
+      - "error-analysis"
+    outputs:
+      - "notebooks/model-evaluation.ipynb"
+      - "docs/evaluation/performance-report.md"
+    required: true
+    next: ["model-deployment"]
+
+  - id: "model-deployment"
+    name: "模型部署"
+    phases:
+      - "model-serialization"
+      - "api-development"
+      - "deployment-infrastructure"
+    outputs:
+      - "api/"
+      - "deployment/"
+      - "docs/deployment/deployment-guide.md"
+    required: true
+    next: ["monitoring"]
+
+  - id: "monitoring"
+    name: "监控"
+    phases:
+      - "performance-monitoring"
+      - "data-drift-detection"
+      - "logging-setup"
+    outputs:
+      - "monitoring/"
+      - "docs/monitoring/monitoring-plan.md"
+    required: false
+
+# Quality gates
+quality_gates:
+  model_performance:
+    enabled: true
+    metrics:
+      - accuracy
+      - precision
+      - recall
+      - f1_score
+      - auc_roc
+    thresholds:
+      - metric: "accuracy"
+        minimum: 0.8
+
+  data_quality:
+    enabled: true
+    checks:
+      - "missing_values"
+      - "outliers"
+      - "data_types"
+      - "data_balance"
+
+# Tech stack defaults
+tech_stack:
+  languages:
+    - "python"
+    - "r"
+
+  frameworks:
+    ml:
+      - "scikit-learn"
+      - "tensorflow"
+      - "pytorch"
+      - "xgboost"
+      - "lightgbm"
+
+    deep_learning:
+      - "tensorflow"
+      - "pytorch"
+      - "keras"
+
+    data_processing:
+      - "pandas"
+      - "numpy"
+      - "polars"
+
+    visualization:
+      - "matplotlib"
+      - "seaborn"
+      - "plotly"
+
+    deployment:
+      - "fastapi"
+      - "flask"
+      - "tensorflow-serving"
+      - "torchserve"

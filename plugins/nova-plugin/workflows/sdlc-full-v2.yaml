@@ -1,0 +1,337 @@
+# Full SDLC Workflow - Nova 2.0
+# 完整软件开发周期工作流
+
+name: "sdlc-full"
+description: "Complete software development lifecycle with best practices - Nova 2.0"
+version: "2.0.0"
+
+# 技术栈配置（Nova 2.0 新增）
+tech_stack:
+  # 选择一个预设技术栈
+  preset: "react-fastapi"  # 可选: react-fastapi, vue-spring, svelte-go, rust-actix-postgresql, java-spring-microservice
+
+  # 或者自定义技术栈
+  custom: false  # 如果为 true，则下面的配置生效
+  frontend:
+    framework: "react"  # react, vue, svelte
+    language: "typescript"
+    state_management: "zustand"  # zustand, redux, pinia, recoil
+    styling: "tailwindcss"  # tailwindcss, styled-components, sass
+    ui_library: "shadcn/ui"  # shadcn/ui, material-ui, ant-design
+
+  backend:
+    framework: "fastapi"  # fastapi, spring-boot, express, gin, actix
+    language: "python"  # python, java, javascript, go, rust
+    database: "postgresql"  # postgresql, mysql, mongodb, redis
+    orm: "sqlalchemy"  # sqlalchemy, jpa-hibernate, prisma, gorm, sea-orm
+    async: "asyncio"  # asyncio, async/await, goroutines, tokio
+
+  testing:
+    unit: "pytest"  # pytest, jest, junit5, go test
+    integration: "testcontainers"  # testcontainers, docker-compose
+    e2e: "playwright"  # playwright, cypress, selenium
+    coverage_target: 80
+
+  deployment:
+    container: "docker"  # docker
+    orchestration: "kubernetes"  # kubernetes, docker-compose, docker-swarm
+    ci_cd: "github-actions"  # github-actions, gitlab-ci, jenkins
+
+# 质量规则（Nova 1.0 保留）
+rules:
+  - "security"
+  - "clean-code"
+  - "performance"
+  - "testing"
+  - "documentation"
+
+# 工作流阶段配置
+stages:
+  - id: "requirements"
+    name: "需求分析"
+    phases:
+      - "clarify-requirements"
+      - "analyze-requirements"
+    outputs:
+      - "docs/requirements/clarified-requirements.md"
+      - "docs/requirements/user-stories.md"
+      - "docs/requirements/requirements-analysis.md"
+    required: true
+    tech_stack_specific: false  # 所有技术栈通用
+    next: ["architecture-design"]
+
+  - id: "architecture"
+    name: "架构设计"
+    phases:
+      - "design-architecture"
+      - "create-adrs"
+    outputs:
+      - "docs/architecture/architecture-design.md"
+      - "docs/architecture/adr/"
+    required: true
+    tech_stack_specific: true  # 生成架构决策记录（ADR）
+    next: ["detail-design"]
+
+  - id: "detail-design"
+    name: "详细设计"
+    phases:
+      - "detail-design"
+      - "api-spec"
+      - "data-model"
+    outputs:
+      - "docs/design/detail-design.md"
+      - "docs/design/api-spec.md"
+      - "docs/design/data-model.md"
+    required: true
+    tech_stack_specific: true  # 根据技术栈生成 API 规范和数据模型
+    next: ["setup"]
+
+  - id: "setup"
+    name: "项目初始化"
+    phases:
+      - "setup-frontend"
+      - "setup-backend"
+      - "setup-database"
+      - "setup-testing"
+    outputs:
+      - "frontend/"  # 前端项目结构
+      - "backend/"   # 后端项目结构
+      - "tests/"     # 测试结构
+      - "docker-compose.yml"
+      - ".env"
+    required: true
+    tech_stack_specific: true  # 根据技术栈生成项目结构
+    next: ["frontend-dev", "backend-dev"]
+
+  - id: "frontend-dev"
+    name: "前端开发"
+    phases:
+      - "set-up-frontend-environment"
+      - "implement-components"
+      - "implement-pages"
+      - "write-frontend-tests"
+      - "frontend-linting"
+    outputs:
+      - "frontend/src/"
+      - "tests/frontend/"
+      - "frontend/package.json"
+    required: true
+    tech_stack_specific: true  # 根据前端技术栈开发
+    next: ["integration"]
+
+  - id: "backend-dev"
+    name: "后端开发"
+    phases:
+      - "set-up-backend-environment"
+      - "implement-models"
+      - "implement-services"
+      - "implement-api-endpoints"
+      - "write-backend-tests"
+      - "backend-linting"
+      - "backend-type-checking"
+    outputs:
+      - "backend/app/"
+      - "tests/backend/"
+      - "backend/requirements.txt"  # 或 pom.xml, package.json, go.mod
+    required: true
+    tech_stack_specific: true  # 根据后端技术栈开发
+    next: ["integration"]
+
+  - id: "integration"
+    name: "集成开发"
+    phases:
+      - "integrate-frontend-backend"
+      - "write-integration-tests"
+    outputs:
+      - "tests/integration/"
+      - "docs/integration/integration-notes.md"
+    required: true
+    tech_stack_specific: false  # 所有技术栈通用
+    next: ["unit-test"]
+
+  - id: "unit-test"
+    name: "单元测试"
+    phases:
+      - "run-frontend-unit-tests"
+      - "run-backend-unit-tests"
+      - "check-coverage"
+    outputs:
+      - "tests/coverage/"
+      - "docs/testing/unit-test-report.md"
+    required: true
+    tech_stack_specific: true  # 根据测试配置运行
+    next: ["integration-test"]
+
+  - id: "integration-test"
+    name: "集成测试"
+    phases:
+      - "run-integration-tests"
+      - "test-api-contracts"
+    outputs:
+      - "docs/testing/integration-test-report.md"
+    required: true
+    tech_stack_specific: true  # 使用 Testcontainers 运行
+    next: ["e2e-test"]
+
+  - id: "e2e-test"
+    name: "端到端测试"
+    phases:
+      - "setup-e2e-environment"
+      - "write-e2e-tests"
+      - "run-e2e-tests"
+    outputs:
+      - "tests/e2e/"
+      - "docs/testing/e2e-test-report.md"
+      - "playwright-report/"
+    required: true
+    tech_stack_specific: true  # 使用 Playwright 运行
+    next: ["security-audit"]
+
+  - id: "security-audit"
+    name: "安全审计"
+    phases:
+      - "run-security-scan"
+      - "check-vulnerabilities"
+      - "generate-security-report"
+    outputs:
+      - "docs/security/security-audit.md"
+      - "reports/security/"
+    required: true
+    tech_stack_specific: false  # 所有技术栈通用
+    next: ["performance-test"]
+
+  - id: "performance-test"
+    name: "性能测试"
+    phases:
+      - "setup-performance-baseline"
+      - "run-load-tests"
+      - "analyze-performance"
+      - "generate-performance-report"
+    outputs:
+      - "docs/performance/performance-report.md"
+      - "reports/performance/"
+    required: true
+    tech_stack_specific: true  # 根据技术栈运行性能测试
+    next: ["code-review"]
+
+  - id: "code-review"
+    name: "代码审查"
+    phases:
+      - "self-review"
+      - "peer-review"
+      - "check-style-compliance"
+      - "check-type-safety"
+    outputs:
+      - "docs/review/code-review.md"
+    required: true
+    tech_stack_specific: true  # 根据代码规范进行审查
+    next: ["deploy"]
+
+  - id: "deploy"
+    name: "部署"
+    phases:
+      - "build-docker-images"
+      - "run-tests-in-docker"
+      - "deploy-to-staging"
+      - "run-smoke-tests"
+      - "promote-to-production"
+    outputs:
+      - "docker-compose.yml"
+      - "k8s/"
+      - "docs/deployment/deployment-guide.md"
+    required: true
+    tech_stack_specific: true  # 根据部署配置进行部署
+    next: ["monitor"]
+
+  - id: "monitor"
+    name: "监控配置"
+    phases:
+      - "setup-monitoring"
+      - "configure-alerts"
+      - "setup-logging"
+      - "create-dashboards"
+    outputs:
+      - "monitoring/prometheus.yml"
+      - "monitoring/grafana-dashboards/"
+      - "monitoring/alert-rules/"
+    required: true
+    tech_stack_specific: true  # 根据监控配置进行设置
+    next: ["document"]
+
+  - id: "document"
+    name: "文档生成"
+    phases:
+      - "api-documentation"
+      - "user-guide"
+      - "developer-guide"
+      - "changelog"
+    outputs:
+      - "docs/api/"
+      - "docs/user-guide.md"
+      - "docs/developer-guide.md"
+      - "CHANGELOG.md"
+    required: false  # 可选
+    tech_stack_specific: true  # 根据技术栈生成文档
+
+# 质量门禁
+quality_gates:
+  test_coverage:
+    enabled: true
+    minimum: 80
+    on_stages: ["unit-test", "integration-test"]
+
+  security_scan:
+    enabled: true
+    on_stages: ["security-audit"]
+
+  code_quality:
+    enabled: true
+    checks:
+      - linting
+      - type_checking
+      - security_review
+    on_stages: ["code-review"]
+
+  performance_benchmark:
+    enabled: true
+    on_stages: ["performance-test"]
+
+# 自动化选项
+automation:
+  auto_tests: true
+  auto_security_scan: true
+  auto_documentation: true
+  auto_deploy_to_staging: true
+
+  # 自动运行命令（Nova 2.0 新增）
+  auto_run:
+    - "format-code"        # 自动格式化代码
+    - "lint-code"          # 自动运行 linter
+    - "type-check"         # 自动运行类型检查
+    - "generate-docs"      # 自动生成文档
+
+# 项目变量模板（可以根据技术栈调整）
+variables:
+  project_name: "{{tech_stack.preset}}"
+  project_description: "A modern full-stack application"
+  version: "1.0.0"
+  author: "{{USER.name}}"
+  license: "MIT"
+  repository: "{{git.origin_url}}"
+
+# 文档输出配置
+documentation:
+  enabled: true
+  format: "markdown"
+  timestamp_format: "%Y%m%d_%H%M%S"
+  auto_create_directories: true
+  auto_generate_index: true
+  index_file: "docs/INDEX.md"
+
+  # 文档模板（Nova 2.0 新增）
+  templates:
+    api: "templates/docs/api.md"
+    user_guide: "templates/docs/user-guide.md"
+    developer_guide: "templates/docs/developer-guide.md"
+    changelog: "templates/docs/changelog.md"
+    deployment: "templates/docs/deployment.md"

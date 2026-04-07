@@ -1,0 +1,305 @@
+# Vue + Spring Boot Full Stack
+
+name: "vue-spring"
+version: "1.0.0"
+description: "Vue 3 frontend + Spring Boot backend full-stack configuration"
+
+# Project structure
+project_structure:
+  frontend:
+    - src/
+        - assets/           # Static assets
+        - components/       # Vue components
+        - composables/      # Vue composables
+        - pages/           # Page components
+        - router/           # Vue Router
+        - stores/           # Pinia stores
+        - services/         # API calls
+        - types/            # TypeScript types
+        - utils/            # Utility functions
+    - public/             # Public assets
+    - package.json         # Dependencies
+    - tsconfig.json        # TypeScript config
+    - vite.config.ts       # Vite config
+    - tailwind.config.js    # Tailwind CSS config
+
+  backend:
+    - src/main/java/com/example/project/
+        - ProjectApplication.java
+        - controller/
+        - service/
+        - repository/
+        - model/
+        - dto/
+        - config/
+        - exception/
+        - security/
+        - util/
+    - src/main/resources/
+        - application.yml
+    - src/test/
+    - pom.xml
+
+# Frontend configuration
+frontend:
+  framework: "vue"
+  version: "3.4+"
+  language: "typescript"
+  version: "5+"
+
+  # Build tool
+  build_tool: "vite"
+  version: "5+"
+
+  # State management
+  state_management: "pinia"
+  version: "2+"
+
+  # Styling
+  styling:
+    framework: "tailwindcss"
+    version: "3+"
+    config:
+      - "jit_mode: true"
+
+  # UI components
+  ui_library: "primevue"
+  version: "4+"
+
+  # Form handling
+  forms: "vee-validate"
+  version: "4+"
+
+  # Data fetching
+  data_fetching: "axios"
+  version: "1+"
+
+  # Routing
+  routing: "vue-router"
+  version: "4+"
+
+  # Dependencies
+  dependencies:
+    - "vue@^3.4"
+    - "vue-router@^4"
+    - "pinia@^2"
+    - "axios@^1"
+    - "vee-validate@^4"
+    - "@primevue/themes@^4"
+    - "@primevue/icons@^4"
+    - "tailwindcss@^3"
+    - "date-fns"
+
+  dev_dependencies:
+    - "@vitejs/plugin-vue@^5"
+    - "typescript@^5"
+    - "vite@^5"
+    - "@vue/tsconfig@^0"
+    - "@vue/test-utils@^2"
+    - "vitest@^1"
+    - "@vitest/ui@^1"
+    - "@types/node"
+    - "jsdom"
+    - "playwright@^1"
+    - "eslint@^8"
+    - "prettier@^3"
+
+# Backend configuration
+backend:
+  language: "java"
+  version: "17+"
+  framework: "spring-boot"
+  version: "3.2+"
+  build_tool: "maven"
+
+  # CORS configuration
+  cors_origins:
+    - "http://localhost:5173"
+    - "http://localhost:3000"
+
+  # Dependencies
+  dependencies:
+    spring_boot_starter:
+      - "spring-boot-starter-web"
+      - "spring-boot-starter-data-jpa"
+      - "spring-boot-starter-security"
+      - "spring-boot-starter-validation"
+      - "spring-boot-starter-actuator"
+      - "spring-boot-starter-cache"
+
+    database:
+      - "postgresql"
+      - "hikaricp"
+
+    json:
+      - "jackson-databind"
+
+    utils:
+      - "apache-commons-lang3"
+
+    testing:
+      - "spring-boot-starter-test"
+      - "assertj-core"
+      - "mockito-core"
+
+    lombok:
+      - "lombok"
+      - "mapstruct"
+
+    openapi:
+      - "springdoc-openapi-starter-webmvc-ui"
+
+  dev_dependencies:
+    - "spring-boot-devtools"
+    - "spring-boot-configuration-processor"
+    - "testcontainers"
+    - "spotless-maven-plugin"
+
+# Database configuration
+database:
+  default: "postgresql"
+  options:
+    - name: "postgresql"
+      version: "15+"
+      driver: "postgresql"
+      orm: "jpa-hibernate"
+      migrations: "liquibase"
+      connection_pool: "hikaricp"
+
+# Testing configuration
+testing:
+  frontend:
+    unit:
+      framework: "vitest"
+      coverage: "vitest"
+      coverage_target: 80
+    e2e:
+      framework: "playwright"
+      browsers: ["chromium", "firefox"]
+
+  backend:
+    unit:
+      framework: "junit5"
+      mocking: "mockito"
+      assertions: "assertj"
+      coverage_target: 80
+
+    integration:
+      framework: "junit5"
+      fixtures: "testcontainers"
+      coverage_target: 80
+
+# Code standards
+code_standards:
+  frontend:
+    vue:
+      - "Use Composition API"
+      - "Use script setup syntax"
+      - "Use TypeScript for type safety"
+      - "Use proper props and emits typing"
+      - "Use reactive() for objects"
+      - "Use ref() for primitives"
+      - "Use computed() for derived state"
+      - "Use watchers sparingly"
+
+    typescript:
+      - "Use strict mode"
+      - "Avoid 'any' types"
+      - "Use proper interfaces"
+      - "Use type guards"
+
+    formatting:
+      - "Use Prettier"
+      - "Use ESLint with Vue config"
+
+  backend:
+    java:
+      - "Follow Java Code Conventions"
+      - "Use Lombok to reduce boilerplate"
+      - "Use interfaces for abstractions"
+      - "Use DTOs for API communication"
+      - "Use proper exception handling"
+
+    spring_boot:
+      - "Use @RestController for REST endpoints"
+      - "Use @Service for business logic"
+      - "Use @Repository for data access"
+      - "Use @Validated for request validation"
+      - "Use global exception handling"
+
+# Security
+security:
+  frontend:
+    - "Sanitize user input"
+    - "Use Content Security Policy"
+    - "Use HTTPS in production"
+    - "Store tokens securely (httpOnly cookies)"
+    - "Implement CSRF protection"
+
+  backend:
+    - "Use Spring Security"
+    - "Implement JWT authentication"
+    - "Implement role-based authorization"
+    - "Validate all input"
+    - "Use parameterized queries"
+
+# Performance
+performance:
+  frontend:
+    - "Use v-if and v-show appropriately"
+    - "Use key props for lists"
+    - "Use lazy loading for routes"
+    - "Use code splitting"
+    - "Optimize images"
+    - "Use virtual scrolling for long lists"
+
+  backend:
+    - "Use @Async for async operations"
+    - "Use caching with Spring Cache"
+    - "Optimize JPA queries"
+    - "Use connection pooling"
+    - "Use pagination for large result sets"
+
+# Deployment
+deployment:
+  docker:
+    - "Use multi-stage Dockerfile"
+    - "Use Alpine base images"
+    - "Minimize image size"
+    - "Use .dockerignore"
+
+  docker_compose:
+    services:
+      - frontend:
+          build: ./frontend
+          ports: ["3000:3000"]
+          environment:
+            - VITE_API_URL=http://localhost:8080
+      - backend:
+          build: ./backend
+          ports: ["8080:8080"]
+          environment:
+            - SPRING_DATASOURCE_URL=postgresql://user:pass@db:5432/db
+      db:
+          image: postgres:15
+          environment:
+            - POSTGRES_DB=db
+            - POSTGRES_USER=user
+            - POSTGRES_PASSWORD=pass
+
+  kubernetes:
+    - "Use ConfigMaps for configuration"
+    - "Use Secrets for sensitive data"
+    - "Implement health checks"
+    - "Set resource limits"
+    - "Use rolling updates"
+
+# Best practices
+best_practices:
+  full_stack:
+    - "Separate frontend and backend concerns"
+    - "Use TypeScript for full-stack type safety"
+    - "Share DTOs between frontend and backend"
+    - "Use consistent error handling"
+    - "Implement proper authentication flow"
+    - "Use API versioning"

@@ -1,0 +1,305 @@
+# SvelteKit + Go Backend Full Stack
+
+name: "svelte-go"
+version: "1.0.0"
+description: "SvelteKit frontend + Go backend full-stack configuration"
+
+# Project structure
+project_structure:
+  frontend:
+    - src/
+        - routes/            # File-based routing
+        - lib/              # Utility functions
+        - components/        # Svelte components
+        - stores/           # Svelte stores
+        - types/            # TypeScript types
+        - styles/           # Global styles
+    - static/             # Static assets
+    - package.json         # Dependencies
+    - svelte.config.js     # Svelte config
+    - vite.config.js       # Vite config
+    - tailwind.config.js    # Tailwind config
+    - tsconfig.json        # TypeScript config
+
+  backend:
+    - cmd/
+        - main.go
+        - go.mod
+        - internal/
+            - controller/
+            - service/
+            - repository/
+            - model/
+            - dto/
+            - middleware/
+            - config/
+            - utils/
+        - tests/
+            - unit/
+            - integration/
+        - configs/
+            - config.yaml
+            - .env.example
+
+# Frontend configuration
+frontend:
+  framework: "sveltekit"
+  version: "2.5+"
+  language: "typescript"
+  version: "5+"
+
+  # Build tool
+  build_tool: "vite"
+  version: "5+"
+
+  # State management
+  state_management: "svelte-stores"
+  version: "4+"
+
+  # Styling
+  styling:
+    framework: "tailwindcss"
+    version: "3+"
+    config:
+      - "jit_mode: true"
+
+  # UI components
+  ui_library: "svelte-headlessui"
+  version: "0+"
+
+  # Form handling
+  forms: "svelte-use-form"
+  version: "2+"
+
+  # Data fetching
+  data_fetching: "svelte-kit-load"
+  version: "built-in"
+
+  # Testing
+  testing:
+    unit: "vitest"
+    e2e: "playwright"
+
+  # Dependencies
+  dependencies:
+    - "svelte@^4"
+    - "@sveltejs/kit@^2"
+    - "typescript@^5"
+    - "vite@^5"
+    - "tailwindcss@^3"
+    - "svelte-use-form@^2"
+    - "zod@^3"
+    - "axios@^1"
+    - "date-fns"
+
+  dev_dependencies:
+    - "@sveltejs/vite-plugin-svelte@^3"
+    - "@sveltejs/adapter-auto@^3"
+    - "@types/node"
+    - "vitest@^1"
+    - "@vitest/ui@^1"
+    - "@testing-library/svelte@^5"
+    - "@playwright/test@^1"
+    - "eslint@^8"
+    - "prettier@^3"
+    - "eslint-plugin-svelte@^2"
+    - "svelte-eslint-parser@^0"
+
+# Backend configuration
+backend:
+  language: "go"
+  version: "1.21+"
+  framework: "gin"
+  version: "1.10+"
+
+  # CORS configuration
+  cors_origins:
+    - "http://localhost:5173"
+    - "http://localhost:3000"
+
+  # Dependencies
+  dependencies:
+    web:
+      - "github.com/gin-gonic/gin"
+      - "github.com/gin-contrib/cors"
+      - "github.com/swaggo/gin-swagger"
+      - "github.com/swaggo/files"
+
+    database:
+      - "gorm.io/gorm"
+      - "gorm.io/driver/postgres"
+      - "github.com/jmoiron/sqlx"
+
+    validation:
+      - "github.com/go-playground/validator/v10"
+
+    utils:
+      - "github.com/google/uuid"
+      - "github.com/pkg/errors"
+
+    middleware:
+      - "github.com/gin-contrib/zap"
+      - "github.com/gin-contrib/cors"
+
+    config:
+      - "github.com/spf13/viper"
+
+    logging:
+      - "go.uber.org/zap"
+
+  dev_dependencies:
+    - "github.com/cosmtic/air"
+    - "github.com/stretchr/testify"
+    - "github.com/golang/mock"
+    - "github.com/DATA-DOG/go-sqlmock/v4"
+    - "github.com/golangci/golangci-lint"
+    - "github.com/fzipp/gocov"
+    - "go.uber.org/mock/gomock"
+    - "go.uber.org/goveralls"
+
+# Database configuration
+database:
+  default: "postgresql"
+  options:
+    - name: "postgresql"
+      version: "15+"
+      driver: "postgres"
+      orm: "gorm"
+      pool: "pgxpool"
+
+# Testing configuration
+testing:
+  frontend:
+    unit:
+      framework: "vitest"
+      coverage: "vitest"
+      coverage_target: 80
+    e2e:
+      framework: "playwright"
+      browsers: ["chromium", "firefox"]
+
+  backend:
+    unit:
+      framework: "testify"
+      mocking: "gomock"
+      assertions: "testify/assert"
+      coverage_target: 80
+
+    integration:
+      framework: "testify"
+      fixtures: "testcontainers"
+      coverage_target: 80
+
+# Code standards
+code_standards:
+  frontend:
+    svelte:
+      - "Use TypeScript for type safety"
+      - "Use Svelte stores for state"
+      - "Use SvelteKit load functions"
+      - "Use proper component composition"
+      - "Avoid side effects in templates"
+      - "Use run() sparingly"
+
+    typescript:
+      - "Use strict mode"
+      - "Avoid 'any' types"
+      - "Use proper interfaces"
+      - "Use type guards"
+
+    formatting:
+      - "Use Prettier"
+      - "Use ESLint with Svelte config"
+
+  backend:
+    go:
+      - "Follow Go Code Conventions"
+      - "Use gofmt for formatting"
+      - "Use effective Go naming"
+      - "Keep interfaces small"
+      - "Use error wrapping"
+      - "Document exported functions"
+
+    gin:
+      - "Use proper HTTP status codes"
+      - "Use middleware for cross-cutting"
+      - "Use structured logging"
+      - "Use proper error handling"
+
+# Security
+security:
+  frontend:
+    - "Sanitize user input"
+    - "Use Content Security Policy"
+    - "Use HTTPS in production"
+    - "Store tokens securely"
+    - "Implement CSRF protection"
+
+  backend:
+    - "Validate all user input"
+    - "Use parameterized queries"
+    - "Implement JWT authentication"
+    - "Implement role-based authorization"
+    - "Implement rate limiting"
+    - "Use environment variables for secrets"
+
+# Performance
+performance:
+  frontend:
+    - "Use Svelte's built-in reactivity"
+    - "Use SSR for initial load"
+    - "Use code splitting"
+    - "Optimize images"
+    - "Use virtual scrolling for long lists"
+    - "Use eager loading for critical components"
+
+  backend:
+    - "Use goroutines for concurrency"
+    - "Use connection pooling"
+    - "Implement caching"
+    - "Optimize database queries"
+    - "Use response compression"
+
+# Deployment
+deployment:
+  docker:
+    - "Use multi-stage Dockerfile"
+    - "Use Alpine base images"
+    - "Minimize image size"
+    - "Use .dockerignore"
+
+  docker_compose:
+    services:
+      - frontend:
+          build: ./frontend
+          ports: ["3000:3000"]
+          environment:
+            - VITE_API_URL=http://localhost:8080
+      - backend:
+          build: ./backend
+          ports: ["8080:8080"]
+          environment:
+            - DATABASE_URL=postgresql://user:pass@db:5432/db
+      db:
+          image: postgres:15
+          environment:
+            - POSTGRES_DB=db
+            - POSTGRES_USER=user
+            - POSTGRES_PASSWORD=pass
+
+  kubernetes:
+    - "Use ConfigMaps for configuration"
+    - "Use Secrets for sensitive data"
+    - "Implement health checks"
+    - "Set resource limits"
+    - "Use rolling updates"
+
+# Best practices
+best_practices:
+  full_stack:
+    - "Separate frontend and backend concerns"
+    - "Use TypeScript for full-stack type safety"
+    - "Share DTOs between frontend and backend"
+    - "Use consistent error handling"
+    - "Implement proper authentication flow"
+    - "Use API versioning"

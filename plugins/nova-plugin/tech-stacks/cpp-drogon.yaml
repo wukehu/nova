@@ -1,0 +1,381 @@
+# C++ + Drogon 技术栈
+
+name: "cpp-drogon"
+version: "1.0.0"
+description: "C++ Drogon 高性能 Web 服务技术栈 - 现代 C++ 开发最佳实践"
+
+# 项目结构
+project_structure:
+  backend:
+    - src/
+        - controllers/          # HTTP 控制器
+        - services/            # 业务逻辑
+        - models/              # 数据模型
+        - repositories/         # 数据访问
+        - dto/                  # 数据传输对象
+        - utils/               # 工具函数
+        - config/              # 配置管理
+    - tests/
+        - unit/
+        - integration/
+        - e2e/
+    - CMakeLists.txt          # 构建配置
+
+ - include/
+    - .env.example             # 环境变量示例
+    - docker/
+        - Dockerfile
+        - docker-compose.yml
+
+# 后端配置
+backend:
+  language: "cpp"
+  version: "20+"
+  standard: "C++20"
+  framework: "drogon"
+  version: "1.9.2+"
+
+  # 依赖管理
+  dependencies:
+    web_framework:
+      - "drogon:1.9.2+"
+
+    database:
+      - "oat++:1.8.2+"
+      - "pqxx:7.12.0"
+      - "drogon::orm::pqxx:1.9.2+"
+
+    json:
+      - "json-cpp:2023.1.0"
+      - "oatpp:1.8.2+"
+
+    validation:
+      - "drogon::validator:1.9.2+"
+
+    logging:
+      - "spdlog:v1.13.0"
+      - "drogon::spdlog:1.9.2+"
+
+    utils:
+      - "abseil-cpp:2023.10.0"
+      - "openssl:3.3.0"
+      - "fmt:10.2.0"
+      - "date:3.0.6"
+      - "zlib:1.3.0"
+
+  # 开发依赖
+  dev_dependencies:
+    - "gtest:1.15.2+"
+    - "gmock:1.15.2+"
+    - "benchmark:1.8.5.0"
+    - "clang-tidy:18.1.8"
+    - "clang-format:18.1.8"
+
+# 数据库配置
+database:
+  default: "postgresql"
+  options:
+    - name: "postgresql"
+      version: "15+"
+      driver: "pqxx"
+      orm: "drogon-orm-pqxx"
+      connection_pool: "pqxx-connection-pool"
+
+    - name: "mysql"
+      version: "8.0+"
+      driver: "oatpp-connector"
+      orm: "drogon-orm-oatpp"
+      connection_pool: "oatpp-connection-pool"
+
+    - name: "sqlite"
+      version: "3+"
+      driver: "sqlite3"
+      orm: "drogon-orm-sqlite3"
+      connection_pool: "sqlite-connection-pool"
+
+# 缓存配置
+cache:
+  default: "redis"
+  options:
+    - name: "redis"
+      version: "7+"
+      client: "hiredis"
+
+# 消息队列
+message_queue:
+  default: "none"
+  options:
+    - name: "nats"
+      version: "0.7.0+"
+      client: "drogon::nats"
+
+# 测试配置
+testing:
+  framework: "gtest"
+  version: "1.15.2+"
+
+  unit_tests:
+    framework: "gtest"
+    mocking: "gmock"
+    assertions: "gtest-assertions"
+    coverage_target: 80
+
+  integration_tests:
+    framework: "gtest"
+    mocking: "gmock"
+    fixtures: "gtest-bootstrap"
+    coverage_target: 80
+
+  e2e_tests:
+    framework: "playwright"
+    browsers: ["chromium", "firefox"]
+    headless: true
+
+  # 测试最佳实践
+  practices:
+    - "Write unit tests for business logic"
+    - "Write integration tests for API endpoints"
+    - "Use gtest fixtures for test data"
+    - "Use gmock for mocking"
+    - "Aim for 80%+ test coverage"
+    - "Test edge cases and error conditions"
+    - "Use table-driven tests"
+    - "Use googletest for parameterized tests"
+    - "Use async testing with gtest"
+
+# 代码规范
+code_standards:
+  cpp:
+    - "Follow C++20 standard"
+    - "Use RAII for resource management"
+    - "Use smart pointers properly"
+    - "Follow Rule of Five (0-1-2-3-5-0)"
+    - "Use modern C++ features (auto, constexpr, etc.)"
+    - "Use meaningful variable names"
+    - "Prefer references over pointers"
+    - "Use const correctness"
+
+  drogon:
+    - "Use coroutines for async operations"
+    - "Use controllers for separation of concerns"
+    - "Use filters for HTTP middleware"
+    - "Use validators for request/response validation"
+    - "Use ORM for database access"
+    - "Use proper HTTP status codes"
+    - "Implement global exception handling"
+    - "Use structured logging"
+    - "Use thread-safe code"
+
+  oatpp:
+    - "Use prepared statements for SQL queries"
+    - "Use transactions properly"
+    - "Handle connection errors gracefully"
+    - "Use connection pooling"
+    - "Use proper result handling"
+
+# 格式化工具
+formatting:
+  code_formatter: "clang-format"
+  version: "18.1.8"
+  config: ".clang-format"
+  options:
+    - "BasedOnStyle: google"
+    - "Language: Cpp"
+    - "Standard: c++20"
+
+  import_sorter: "clang-format"
+  version: "18.1.8"
+  config: ".clang-format"
+
+  linter: "clang-tidy"
+  version: "18.1.8"
+  config: ".clang-tidy"
+  options:
+    - "WarningsAsErrors: All"
+    - "Checks: -*,modernize-*,modernize-headers,*"
+
+# 安全最佳实践
+security:
+  authentication: "jwt"
+  authorization: "role-based"
+
+  practices:
+    - "Validate all user input with drogon validators"
+    - "Use parameterized queries (OAT++ handles this)"
+    - "Implement proper authentication"
+    - "Use JWT for API authentication"
+    - "Implement role-based authorization"
+    - "Implement rate limiting"
+    - "Sanitize error messages"
+    - "Use environment variables for secrets"
+    - "Implement CORS properly"
+    - "Use secure session management"
+    - "Validate file uploads"
+    - "Implement security headers"
+    - "Use Content Security Policy"
+    - "Use HTTPS in production"
+
+  owasp_top_10:
+    - "A01:2021 - Broken Access Control"
+    - "A02.2021 - Cryptographic Failures"
+    - "A03:2021 - Injection (OAT++ prevents SQL injection)"
+    - "A04:2021 - Insecure Design"
+    - "A05:2021 - Security Misconfiguration"
+    - "A07:2021 - Identification and Authentication Failures"
+    - "A08:2021 - Software and Data Integrity Failures"
+    - "A09:2021 - Security Logging and Monitoring Failures"
+    - "A10:2021 - Server-Side Request Forgery"
+
+# 性能优化
+performance:
+  practices:
+    - "Use coroutines for concurrent operations"
+    - "Use connection pooling (pqxx-connection-pool)"
+    - "Implement caching with Redis"
+    - "Use database indexes"
+    - "Optimize queries"
+    - "Use pagination for large result sets"
+    - "Implement lazy loading"
+    - "Profile bottlenecks"
+    - "Use response compression"
+    - "Implement rate limiting"
+
+  async_operations:
+    - "Use coroutines for async operations"
+    - "Use drogon's async API"
+    - "Use channels/pipes for communication"
+
+  database_optimization:
+    - "Use prepared statements for N+1 queries"
+    - "Use batch operations"
+    - "Use database indexes"
+    - "Use connection pooling with pqxx-connection-pool"
+    - "Use read replicas for read-heavy workloads"
+
+  caching:
+    - "Use Redis for distributed caching"
+    - "Implement cache invalidation"
+    - "Use cache warming"
+    - "Implement cache busting"
+
+# 部署配置
+deployment:
+  docker:
+    - "Use multi-stage Dockerfile"
+    - "Use base image with C++20 runtime"
+    - "Optimize layer caching"
+    - "Minimize image size"
+    - "Use .dockerignore"
+    - "Use non-root user"
+    - "Implement health checks"
+    - "Use multi-stage builds"
+
+  kubernetes:
+    - "Use ConfigMaps for configuration"
+    - "Use Secrets for sensitive data"
+    - "Implement health checks"
+    - "Set resource limits (CPU, memory)"
+    - "Use liveness and readiness probes"
+    - "Implement graceful shutdown"
+    - "Use horizontal pod autoscaler"
+    - "Implement rolling updates"
+    - "Use persistent volumes for logs"
+
+  ci_cd:
+    - "Run tests on every commit"
+    - "Run clang-tidy for linting"
+    - "Build Docker images"
+    - "Run security scans"
+    - "Deploy to staging on PR"
+    - "Run integration tests on staging"
+    - "Manual approval for production"
+    - "Implement rollback strategy"
+    - "Use GitHub Actions or GitLab CI"
+
+# 日志和监控
+logging:
+  framework: "spdlog"
+  level: "INFO"
+  format: "json"
+
+  practices:
+    - "Use structured logging (with sinks)"
+    - "Log request/response for API endpoints"
+    - "Log errors with stack traces"
+    - "Use log levels appropriately"
+    - "Implement log rotation"
+    - "Send logs to centralized system (Loki, ELK)"
+    - "Use async logging for performance"
+    - "Use thread context for tracing"
+
+monitoring:
+  metrics: "prometheus"
+  tracing: "opentelemetry"
+  alerts: "alertmanager"
+
+  practices:
+    - "Expose metrics endpoint"
+    - "Track request latency"
+    - "Track error rates"
+    - "Track request count"
+    - "Implement distributed tracing (OpenTelemetry)"
+    - "Set up alerts for critical errors"
+    - "Monitor resource usage (CPU, memory, goroutines)"
+    - "Monitor database connection pool"
+    - "Monitor cache hit rate"
+
+# 文档
+documentation:
+  api: "openapi"
+  framework: "markdown"
+  format: "markdown"
+
+  practices:
+    - "Use OpenAPI for API documentation"
+    - "Document controllers and models"
+    - "Include examples in API docs"
+    - "Write comprehensive README"
+    - "Document configuration options"
+    - "Document deployment process"
+    - "Keep changelog up to date"
+
+# 最佳实践总结
+best_practices:
+  architecture:
+    - "Use MVC architecture (Controller → Service → Repository)"
+    - "Use dependency injection (with frameworks like Boost.DI)"
+    - "Use RAII for resource management"
+    - "Separate concerns (business logic, data access)"
+
+  code_quality:
+    - "Follow C++20 standard"
+    - "Use clang-format for formatting"
+    - "Use clang-tidy for linting"
+    - "Write comprehensive tests"
+    - "Aim for 80%+ test coverage"
+
+  performance:
+    - "Use coroutines for concurrency"
+    - "Implement caching"
+    - "Optimize database queries"
+    - "Use connection pooling"
+
+  security:
+    - "Validate all input"
+    - "Implement JWT authentication"
+    - "Implement role-based authorization"
+    - "Follow OWASP guidelines"
+    - "Use HTTPS in production"
+
+  deployment:
+    - "Use Docker"
+    - "Use Kubernetes"
+    - "Implement health checks"
+    - "Use CI/CD"
+    - "Implement rollback strategy"
+
+  monitoring:
+    - "Use structured logging"
+    - "Expose metrics (Prometheus)"
+    - "Implement distributed tracing"
+    - "Set up alerts"

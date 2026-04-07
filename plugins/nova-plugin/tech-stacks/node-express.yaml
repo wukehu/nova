@@ -1,0 +1,417 @@
+# Node.js + Express Backend Stack
+
+name: "node-express"
+version: "1.0.0"
+description: "Node.js + Express backend technology stack configuration"
+
+# Project structure
+project_structure:
+  backend:
+    - src/
+        - controllers/        # Request handlers
+        - services/           # Business logic
+        - repositories/        # Data access
+        - models/             # Data models
+        - schemas/            # Validation schemas
+        - middleware/         # Express middleware
+        - routes/             # Route definitions
+        - utils/              # Utility functions
+        - config/             # Configuration
+        - constants/          # Constants
+    - tests/
+        - unit/
+        - integration/
+        - e2e/
+    - package.json
+    - tsconfig.json
+    - .eslintrc.json
+    - .prettierrc
+    - jest.config.js
+    - .env.example
+
+# Backend configuration
+backend:
+  language: "javascript"
+  version: "20+"
+  runtime: "node"
+  framework: "express"
+  version: "4.19+"
+
+  # Type checking
+  typescript:
+    enabled: true
+    version: "5.4+"
+    strict: true
+
+  # Dependencies
+  dependencies:
+    web:
+      - "express@^4.19"
+      - "cors@^2.8"
+      - "helmet@^7.1"
+      - "compression@^1.7"
+
+    database:
+      - "pg@^8.12"
+      - "sequelize@^6.37"
+      - "sequelize-typescript@^2.1"
+
+    validation:
+      - "joi@^17.13"
+      - "celebrate@^15.2"
+
+    auth:
+      - "jsonwebtoken@^9.0"
+      - "bcryptjs@^2.4"
+      - "passport@^0.7"
+
+    logging:
+    - "winston@^3.13"
+      - "morgan@^1.10"
+
+    utils:
+      - "dotenv@^16.4"
+      - "uuid@^10.0"
+      - "lodash@^4.17"
+
+  dev_dependencies:
+    testing:
+      - "jest@^29.7"
+      - "@types/jest@^29.5"
+      - "supertest@^6.3"
+      - "ts-jest@^29.2"
+
+    quality:
+      - "eslint@^8.58"
+      - "@typescript-eslint/eslint-plugin@^7.0"
+      - "@typescript-eslint/parser@^7.0"
+      - "prettier@^3.3"
+      - "eslint-config-prettier@^9.1"
+
+    development:
+      - "nodemon@^3.1"
+      - "@types/node@^20.11"
+      - "@types/express@^4.17"
+      - "@types/cors@^2.8"
+      - "@types/compression@^1.7"
+      - "@types/jsonwebtoken@^9.0"
+      - "@types/bcryptjs@^2.4"
+      - "ts-node@^10.9"
+
+# Database configuration
+database:
+  default: "postgresql"
+  options:
+    - name: "postgresql"
+      version: "15+"
+      driver: "pg"
+      orm: "sequelize"
+      migrations: "sequelize-cli"
+      connection_pool: "sequelize"
+
+    - name: "mysql"
+      version: "8.0+"
+      driver: "mysql2"
+      orm: "sequelize"
+      migrations: "sequelize-cli"
+
+    - name: "sqlite"
+      version: "3+"
+      driver: "sqlite3"
+      orm: "sequelize"
+      migrations: "sequelize-cli"
+
+# Caching configuration
+cache:
+  default: "redis"
+  options:
+    - name: "redis"
+      version: "7+"
+      client: "ioredis"
+
+# Message queue
+message_queue:
+  default: "none"
+  options:
+    - name: "rabbitmq"
+      version: "3.12+"
+      client: "amqplib"
+    - name: "kafka"
+      version: "3.6+"
+      client: "kafkajs"
+
+# Testing configuration
+testing:
+  framework: "jest"
+  version: "29.7+"
+
+  unit_tests:
+    framework: "jest"
+    mocking: "jest.mock"
+    assertions: "expect"
+    coverage_target: 80
+
+  integration_tests:
+    framework: "jest"
+    mocking: "jest.mock"
+    fixtures: "testcontainers"
+    coverage_target: 80
+
+  e2e_tests:
+    framework: "playwright"
+    browsers: ["chromium", "firefox"]
+    headless: true
+
+  # Test best practices
+  practices:
+    - "Write unit tests for business logic"
+    - "Write integration tests for API endpoints"
+    - "Use Jest mocks for mocking"
+    - "Write E2E tests with Playwright"
+    - "Aim for 80%+ test coverage"
+    - "Test edge cases and error conditions"
+    - "Use test isolation (beforeEach/afterEach)"
+
+# Code standards
+code_standards:
+  javascript:
+    - "Use const/let, not var"
+    - "Use arrow functions"
+    - "Use async/await"
+    - "Use template literals"
+    - "Use destructuring"
+    - "Use optional chaining"
+    - "Use nullish coalescing"
+
+  typescript:
+    - "Use strict mode"
+    - "Avoid 'any' types"
+    - "Use proper interfaces"
+    - "Use type guards"
+    - "Use generic types appropriately"
+
+  express:
+    - "Use Express Router for organization"
+    - "Use middleware for cross-cutting concerns"
+    - "Use proper HTTP status codes"
+    - "Implement proper error handling"
+    - "Use async/await for async handlers"
+    - "Implement request validation with Joi/Celebrate"
+    - "Separate concerns (controllers, services, repositories)"
+
+  sequelize:
+    - "Use models with proper associations"
+    - "Use transactions for multi-step operations"
+    - "Use scopes for reusable queries"
+    - "Use proper indexes"
+    - "Use hooks for lifecycle events"
+
+# Formatting
+formatting:
+  code_formatter: "prettier"
+  version: "3.3+"
+  config: ".prettierrc"
+  options:
+    - "semi: true"
+    - "single_quote: false"
+    - "tab_width: 2"
+    - "trailing_comma: es5"
+
+  linter: "eslint"
+  version: "8.58+"
+  config: ".eslintrc.json"
+  options:
+    - "extends: ['eslint:recommended', '@typescript-eslint/recommended']"
+    - "parser: '@typescript-eslint/parser'"
+
+  type_checker: "tsc"
+  version: "5.4+"
+  config: "tsconfig.json"
+  options:
+    - "strict: true"
+    - "noImplicitAny: true"
+
+# Security
+security:
+  authentication: "jwt"
+  authorization: "role-based"
+
+  practices:
+    - "Validate all user input with Joi"
+    - "Use parameterized queries (Sequelize handles this)"
+    - "Implement proper JWT authentication"
+    - "Use bcrypt for password hashing"
+    - "Implement rate limiting"
+    - "Sanitize error messages"
+    - "Use environment variables for secrets"
+    - "Implement CORS properly with helmet"
+    - "Use HTTPS in production"
+    - "Implement secure session management"
+    - "Validate file uploads"
+    - "Implement security headers with helmet"
+
+  owasp_top_10:
+    - "A01:2021 - Broken Access Control"
+    - "A02:2021 - Cryptographic Failures"
+    - "A03:2021 - Injection"
+    - "A04:2021 - Insecure Design"
+    - "A05:2021 - Security Misconfiguration"
+    - "A07:2021 - Auth Failures"
+    - "A08:2021 - Software Integrity Failures"
+    - "A09:2021 - Logging Failures"
+    - "A10:2021 - SSRF"
+
+# Performance
+performance:
+  practices:
+    - "Use async/await for I/O"
+    - "Use connection pooling (Sequelize)"
+    - "Implement caching with Redis"
+    - "Use database indexes"
+    - "Optimize Sequelize queries"
+    - "Use pagination for large result sets"
+    - "Implement lazy loading"
+    - "Profile bottlenecks"
+    - "Use response compression"
+    - "Implement rate limiting"
+    - "Use caching strategies"
+    - "Optimize middleware order"
+
+  async_operations:
+    - "Use async/await"
+    - "Use Promise.all() for parallel operations"
+    - "Implement proper error handling for async"
+    - "Use try-catch-finally"
+
+  database_optimization:
+    - "Use database indexes"
+    - "Optimize N+1 queries with includes"
+    - "Use connection pooling"
+    - "Use read replicas for read-heavy workloads"
+    - "Implement query caching"
+
+  caching:
+    - "Use Redis for distributed caching"
+    - "Implement cache invalidation"
+    - "Use cache warming"
+    - "Implement cache busting"
+    - "Use appropriate TTLs"
+
+# Deployment
+deployment:
+    docker:
+    - "Use multi-stage Dockerfile"
+    - "Use Node Alpine base image"
+    - "Optimize layer caching"
+    - "Minimize image size"
+    - "Use .dockerignore"
+    - "Use non-root user"
+    - "Implement health checks"
+
+  kubernetes:
+    - "Use ConfigMaps for configuration"
+    - "Use Secrets for sensitive data"
+    - "Implement health checks (/health and /ready)"
+    - "Set resource limits"
+    - "Use liveness and readiness probes"
+    - "Implement graceful shutdown"
+    - "Use horizontal pod autoscaler"
+    - "Implement rolling updates"
+
+  ci_cd:
+    - "Run tests on every commit"
+    - "Run ESLint and Prettier"
+    - "Run TypeScript compilation"
+    - "Build Docker images"
+    - "Run security scans"
+    - "Deploy to staging on PR"
+    - "Run integration tests on staging"
+    - "Manual approval for production"
+    - "Implement rollback strategy"
+
+# Logging
+logging:
+  framework: "winston"
+  level: "INFO"
+  format: "json"
+
+  practices:
+    - "Use structured logging"
+    - "Log request/response for API endpoints"
+    - "Log errors with stack traces"
+    - "Use log levels appropriately"
+    - "Implement log rotation"
+    - "Send logs to centralized system"
+    - "Use morgan for HTTP logging"
+
+# Monitoring
+monitoring:
+  metrics: "prometheus"
+  tracing: "opentelemetry"
+  alerts: "alertmanager"
+
+  practices:
+    - "Expose metrics endpoint (/metrics)"
+    - "Track request latency (p50, p90, p99)"
+    - "Track error rates"
+    - "Track request count"
+    - "Implement distributed tracing"
+    - "Set up alerts for critical errors"
+    - "Monitor resource event loop"
+    - "Monitor memory usage"
+
+# Documentation
+documentation:
+  api: "swagger"
+  framework: "swagger-jsdoc"
+  format: "markdown"
+
+  practices:
+    - "Use Swagger/OpenAPI annotations"
+    - "Write JSDoc for public APIs"
+    - "Include examples in API docs"
+    - "Write comprehensive README"
+    - "Document configuration options"
+    - "Document deployment process"
+    - "Keep changelog up to date"
+
+# Best practices
+best_practices:
+  architecture:
+    - "Use layered architecture (Controller → Service → Repository)"
+    - "Use dependency injection"
+    - "Separate concerns (business logic, data access)"
+    - "Use middleware for cross-cutting concerns"
+
+  code_quality:
+    - "Use TypeScript for type safety"
+    - "Use ESLint and Prettier"
+    - "Write comprehensive JSDoc"
+    - "Write comprehensive tests"
+    - "Aim for 80%+ test coverage"
+
+  performance:
+    - "Use async/await"
+    - "Implement caching"
+    - "Optimize database queries"
+    - "Use connection pooling"
+
+  security:
+    - "Harden Express with helmet"
+    - "Validate all input"
+    - "Use JWT authentication"
+    - "Use bcrypt for passwords"
+    - "Follow OWASP guidelines"
+
+  deployment:
+    - "Use Docker"
+    - "Use Kubernetes"
+    - "Implement health checks"
+    - "Use CI/CD"
+    - "Implement rollback strategy"
+
+  monitoring:
+    - "Use structured logging"
+    - "Expose metrics"
+    - "Implement distributed tracing"
+    - "Set up alerts"

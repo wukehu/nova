@@ -1,0 +1,445 @@
+# Java Spring Boot 技术栈
+
+name: "java-spring"
+version: "1.0.0"
+description: "Java Spring Boot 完整技术栈配置 - 企业级应用最佳实践"
+
+# 项目结构
+project_structure:
+  backend:
+    - src/
+        - main/
+              - java/com/example/project/
+                    - ProjectApplication.java     # 应用入口
+                    - controller/                   # 控制器层
+                    - service/                      # 服务层
+                    - repository/                    # 仓储层
+                    - model/                        # 实体/模型
+                    - dto/                          # 数据传输对象
+                    - config/                       # 配置类
+                    - exception/                     # 异常处理
+                    - security/                      # 安全配置
+                    - util/                          # 工具类
+        - test/
+              - java/com/example/project/
+                    - unit/
+                    - integration/
+                    - e2e/
+    - src/main/resources/
+        - application.yml                    # 主配置文件
+        - application-dev.yml                # 开发环境配置
+        - application-prod.yml               # 生产环境配置
+        - application-test.yml               # 测试环境配置
+        - db/changelog/                      # 数据库迁移
+        - db/migration/
+    - pom.xml                             # Maven 配置文件
+    - .env.example                        # 环境变量示例
+
+# 后端配置
+backend:
+  language: "java"
+  version: "17+"
+  framework: "spring-boot"
+  version: "3.2+"
+  build_tool: "maven"
+  version: "3.9+"
+
+  # 依赖管理
+  dependencies:
+    spring_boot_starter:
+      - "spring-boot-starter-web"
+      - "spring-boot-starter-data-jpa"
+      - "spring-boot-starter-data-rest"
+      - "spring-boot-starter-security"
+      - "spring-boot-starter-validation"
+      - "spring-boot-starter-actuator"
+      - "spring-boot-starter-cache"
+      - "spring-boot-starter-redis"
+      - "spring-boot-starter-data-redis"
+      - "spring-boot-starter-aop"
+      - "spring-boot-starter-mail"
+
+    database:
+      - "postgresql"
+      - "hikaricp"
+
+    testing:
+      - "spring-boot-starter-test"
+      - "spring-boot-starter-webflux-test"
+      - "mockito-core"
+      - "assertj-core"
+
+    lombok:
+      - "lombok"
+      - "mapstruct"
+
+    json:
+      - "jackson-databind"
+
+    utils:
+      - "apache-commons-lang3"
+      - "commons-io"
+
+    monitoring:
+      - "micrometer-registry-prometheus"
+      - "micrometer-tracing-bridge-otel"
+
+    openapi:
+      - "springdoc-openapi-starter-webmvc-ui"
+
+  # 开发依赖
+  dev_dependencies:
+    - "spring-boot-devtools"
+    - "spring-boot-configuration-processor"
+    - "testcontainers"
+    - "spotless-maven-plugin:4.8.0"
+    - "com.github.spotbugs:spotbugs-maven-plugin:4.8.0"
+    - "com.puppycrawl.tools:checkstyle:10.12.0"
+
+# 数据库配置
+database:
+  default: "postgresql"
+  options:
+    - name: "postgresql"
+      version: "15+"
+      driver: "postgresql"
+      orm: "jpa-hibernate"
+      migrations: "liquibase"
+      connection_pool: "hikaricp"
+    - name: "mysql"
+      version: "8.0+"
+      driver: "mysql"
+      orm: "jpa-hibernate"
+      migrations: "liquibase"
+      connection_pool: "hikaricp"
+    - name: "h2"
+      version: "2+"
+      driver: "h2"
+      orm: "jpa-hibernate"
+      migrations: "liquibase"
+      connection_pool: "hikaricp"
+
+# 缓存配置
+cache:
+  default: "redis"
+  options:
+    - name: "redis"
+      version: "7+"
+      client: "lettuce"
+    - name: "hazelcast"
+      version: "5+"
+
+# 消息队列
+message_queue:
+  default: "none"
+  options:
+    - name: "rabbitmq"
+      version: "3.12+"
+      client: "spring-amqp"
+    - name: "kafka"
+      version: "3.6+"
+      client: "spring-kafka"
+    - name: "activemq"
+      version: "5.18+"
+      client: "spring-jms"
+
+# 测试配置
+testing:
+  framework: "junit5"
+  version: "5.10+"
+
+  unit_tests:
+    framework: "junit5"
+    mocking: "mockito"
+    assertions: "assertj"
+    coverage_target: 80
+
+  integration_tests:
+    framework: "junit5"
+    mocking: "mockito"
+    fixtures: "testcontainers"
+    coverage_target: 80
+
+  e2e_tests:
+    framework: "restassured"
+    version: "5.3+"
+    coverage_target: 80
+
+  # 测试最佳实践
+  practices:
+    - "Write unit tests for service layer"
+    - "Write integration tests for REST APIs"
+    - "Use @Testcontainers for database tests"
+    - "Use @MockBean for mocking"
+    - "Aim for 80%+ test coverage"
+    - "Test edge cases and error conditions"
+    - "Use REST Assured for API testing"
+    - "Use @SpringBootTest for integration tests"
+
+# 代码规范
+code_standards:
+  java:
+    - "Follow Java Code Conventions"
+    - "Use meaningful class and method names"
+    - "Use package structure properly"
+    - "Follow SOLID principles"
+    - "Use interfaces for abstractions"
+    - "Use DTOs for API communication"
+    - "Use builder pattern for complex objects"
+    - "Use exceptions properly"
+
+  spring_boot:
+    - "Use @RestController for REST endpoints"
+    - "Use @Service for business logic"
+    - "Use @Repository for data access"
+    - "Use @Entity for JPA entities"
+    - "Use @Configuration for configuration"
+    - "Use proper HTTP status codes"
+    - "Implement global exception handling"
+    - "Use @Validated for request validation"
+    - "Use Lombok to reduce boilerplate"
+    - "Use Spring profiles for environments"
+    - "Use @Async for async operations"
+
+  jpa:
+    - "Use proper entity relationships"
+    - "Use JPA repositories"
+    - "Use DTO pattern for API"
+    - "Use pagination for large result sets"
+    - "Use optimistic locking for concurrent updates"
+    - "Use database indexes"
+    - "Use Liquibase for migrations"
+
+# 格式化工具
+formatting:
+  code_formatter: "spotless"
+  version: "7.0.0"
+  config: "settings.gradle.kts"
+  options:
+    - "import_order: 'javadoc', 'static', 'same_package', 'blank', 'blank_external', 'blank_fields', 'method', 'constructor'"
+
+  import_sorter: "spotless"
+  version: "7.0.0"
+  options:
+    - "importsLayout: 'separated'"
+
+  linter: "checkstyle"
+  version: "10.12.0"
+  config: "checkstyle.xml"
+  options:
+    - "suppressions: 'GoogleJava'"
+
+# 安全最佳实践
+security:
+  authentication: "jwt"
+  authorization: "role-based"
+
+  practices:
+    - "Use Spring Security"
+    - "Implement JWT authentication"
+    - "Use BCrypt for password hashing"
+    - "Implement role-based authorization"
+    - "Use @PreAuthorize for method security"
+    - "Implement CSRF protection"
+    - "Use HTTPS in production"
+    - "Sanitize user input with @Validated"
+    - "Use environment variables for secrets"
+    - "Implement CORS properly"
+    - "Use secure session management"
+    - "Implement rate limiting"
+    - "Validate file uploads"
+    - "Implement security headers"
+    - "Use Content Security Policy"
+    - "Implement audit logging"
+    - "Use parameterized queries (JPA handles this)"
+    - "Implement OWASP recommendations"
+
+  owasp_top_10:
+    - "A01:2021 - Broken Access Control"
+    - "A02:2021 - Cryptographic Failures"
+    - "A03:2021 - Injection (JPA prevents SQL injection)"
+    - "A04:2021 - Insecure Design"
+    - "A05:2021 - Security Misconfiguration"
+    - "A07:2021 - Identification and Authentication Failures"
+    - "A08:2021 - Software and Data Integrity Failures"
+    - "A09:2021 - Security Logging and Monitoring Failures"
+    - "A10:2021 - Server-Side Request Forgery"
+
+# 性能优化
+performance:
+  practices:
+    - "Use @Async for async operations"
+    - "Use CompletableFuture for parallel processing"
+    - "Use caching with Spring Cache"
+    - "Use database indexes"
+    - "Optimize JPA queries"
+    - "Use pagination for large result sets"
+    - "Implement lazy loading"
+    - "Profile bottlenecks"
+    - "Use connection pooling (HikariCP)"
+    - "Use response compression"
+    - "Implement rate limiting"
+    - "Use CDN for static assets"
+    - "Optimize JSON serialization"
+
+  async_operations:
+    - "Use @Async and CompletableFuture"
+    - "Use @EnableAsync for Spring MVC"
+    - "Use virtual threads for I/O"
+    - "Use Reactive programming with WebFlux"
+
+  database_optimization:
+    - "Use JPA second-level cache"
+    - "Use query hints"
+    - "Use batch operations"
+    - "Use N+1 queries"
+    - "Use database indexes"
+    - "Use connection pooling with HikariCP"
+    - "Use read replicas for read-heavy workloads"
+
+  caching:
+    - "Use Spring Cache abstraction"
+    - "Use Redis for distributed caching"
+    - "Implement cache invalidation"
+    - "Use cache warming"
+    - "Implement cache busting"
+    - "Use @Cacheable for method caching"
+
+# 部署配置
+deployment:
+  docker:
+    - "Use multi-stage Dockerfile"
+    - "Use Eclipse Temurin or OpenJDK slim"
+    - "Optimize layer caching"
+    - "Minimize image size"
+    - "Use .dockerignore"
+    - "Use non-root user"
+    - "Implement health checks"
+    - "Use multi-stage builds"
+
+  kubernetes:
+    - "Use ConfigMaps for configuration"
+    - "Use Secrets for sensitive data"
+    - "Implement health checks (Spring Actuator)"
+    - "Set resource limits"
+    - "Use liveness and readiness probes"
+    - "Implement graceful shutdown"
+    - "Use horizontal pod autoscaler"
+    - "Implement rolling updates"
+    - "Use persistent volumes for logs"
+
+  ci_cd:
+    - "Run tests on every commit"
+    - "Run SpotBugs and Checkstyle"
+    - "Build Docker images"
+    - "Run security scans"
+    - "Deploy to staging on PR"
+    - "Run integration tests on staging"
+    - "Manual approval for production"
+    - "Implement rollback strategy"
+    - "Use GitHub Actions or GitLab CI"
+
+# 日志和监控
+logging:
+  framework: "logback"
+  level: "INFO"
+  format: "json"
+
+  practices:
+    - "Use structured logging (Logstash encoder)"
+    - "Log request/response for REST endpoints"
+    - "Log errors with stack traces"
+    - "Use log levels appropriately"
+    - "Implement log rotation"
+    - "Send logs to centralized system (ELK)"
+    - "Use MDC for context"
+
+monitoring:
+  metrics: "micrometer"
+  tracing: "opentelemetry"
+  alerts: "prometheus alertmanager"
+
+  practices:
+    - "Expose metrics endpoint (/actuator/prometheus)"
+    - "Track request latency"
+    - "Track error rates"
+    - "Track request count"
+    - "Implement distributed tracing (OpenTelemetry)"
+    - "Set up alerts for critical errors"
+    - "Monitor resource usage (JVM, GC)"
+    - "Monitor database connection pool"
+    - "Monitor cache hit rate"
+
+# 文档
+documentation:
+  api: "springdoc-openapi"
+  framework: "asciidoc"
+  format: "html"
+
+  practices:
+    - "Use Springdoc for automatic API documentation"
+    - "Write Javadoc for public APIs"
+    - "Include examples in API docs"
+    - "Write comprehensive README"
+    - "Document configuration options"
+    - "Document deployment process"
+    - "Keep changelog up to date"
+
+# 微服务最佳实践
+microservice:
+  practices:
+    - "Use API versioning (/api/v1/...)"
+    - "Implement service discovery"
+    - "Use circuit breaker pattern"
+    - "Implement retry logic"
+    - "Use bulkhead pattern"
+    - "Implement API gateway"
+    - "Use asynchronous communication"
+    - "Implement distributed tracing"
+    - "Use eventual consistency"
+    - "Implement health checks"
+    - "Use graceful degradation"
+    - "Implement rate limiting"
+    - "Use configuration server"
+
+# 最佳实践总结
+best_practices:
+  architecture:
+    - "Use layered architecture (Controller → Service → Repository)"
+    - "Use dependency injection"
+    - "Use DTO pattern for API"
+    - "Separate concerns (business logic, data access)"
+    - "Use domain-driven design for complex domains"
+
+  code_quality:
+    - "Follow Java Code Conventions"
+    - "Use Lombok to reduce boilerplate"
+    - "Write comprehensive Javadoc"
+    - "Use SpotBugs and Checkstyle"
+    - "Write comprehensive tests"
+
+  performance:
+    - "Use async operations"
+    - "Implement caching"
+    - "Optimize database queries"
+    - "Use connection pooling"
+
+  security:
+    - "Use Spring Security"
+    - "Implement JWT authentication"
+    - "Implement role-based authorization"
+    - "Follow OWASP guidelines"
+    - "Use HTTPS in production"
+
+  deployment:
+    - "Use Docker"
+    - "Use Kubernetes"
+    - "Implement health checks"
+    - "Use CI/CD"
+    - "Implement rollback strategy"
+
+  monitoring:
+    - "Use structured logging"
+    - "Expose metrics (Micrometer)"
+    - "Implement distributed tracing"
+    - "Set up alerts"

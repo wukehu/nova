@@ -1,0 +1,301 @@
+# React + FastAPI 全栈技术配置
+
+name: "react-fastapi"
+version: "1.0.0"
+description: "React 前端 + FastAPI 后端完整技术栈配置"
+
+# 项目结构
+project_structure:
+  frontend:
+    - src/
+        - components/        # React 组件
+        - pages/            # 页面组件
+        - hooks/             # 自定义 hooks
+        - services/          # API 调用
+        - stores/            # 状态管理
+        - utils/             # 工具函数
+        - types/             # TypeScript 类型
+        - styles/            # 样式文件
+        - assets/            # 静态资源
+    - public/              # 公共资源
+    - package.json          # 依赖配置
+    - tsconfig.json         # TypeScript 配置
+    - vite.config.ts        # Vite 配置
+    - tailwind.config.ts    # Tailwind CSS 配置
+    - .env.example         # 环境变量示例
+
+  backend:
+    - app/
+        - __init__.py
+        - main.py
+        - api/
+        - models/
+        - schemas/
+        - services/
+        - repositories/
+        - core/
+        - utils/
+    - tests/
+    - alembic/
+    - pyproject.toml
+    - requirements.txt
+
+# 前端配置
+frontend:
+  framework: "react"
+  version: "18+"
+  language: "typescript"
+  version: "5+"
+
+  # 构建工具
+  build_tool: "vite"
+  version: "5+"
+
+  # 状态管理
+  state_management: "zustand"
+  version: "4+"
+
+  # 样式框架
+  styling:
+    framework: "tailwindcss"
+    version: "3+"
+    config:
+      - "jit_mode: true"
+      - "content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}']"
+
+  # UI 组件库
+  ui_library: "shadcn/ui"
+  version: "0+"
+
+  # 表单处理
+  forms: "react-hook-form"
+  version: "7+"
+
+  # 数据获取
+  data_fetching: "@tanstack/react-query"
+  version: "5+"
+
+  # 路由
+  routing: "react-router-dom"
+  version: "6+"
+
+  # 依赖管理
+  dependencies:
+    - "react@18"
+    - "react-dom@18"
+    - "typescript@5"
+    - "vite@5"
+    - "tailwindcss@3"
+    - "zustand@4"
+    - "react-hook-form@7"
+    - "@tanstack/react-query@5"
+    - "react-router-dom@6"
+    - "axios"
+    - "date-fns"
+    - "clsx"
+    - "lucide-react"
+
+  dev_dependencies:
+    - "@types/react@18"
+    - "@types/react-dom@18"
+    - "@vitejs/plugin-react@4"
+    - "autoprefixer"
+    - "postcss"
+    - "eslint@8"
+    - "eslint-config-react-app@7"
+    - "@typescript-eslint/eslint-plugin@6"
+    - "@typescript-eslint/parser@6"
+    - "prettier@3"
+    - "prettier-plugin-tailwindcss@0"
+    - "vitest@1"
+    - "@testing-library/react@14"
+    - "@testing-library/jest-dom@14"
+    - "@testing-library/user-event@14"
+    - "playwright@1"
+
+# 后端配置（引用 python-fastapi）
+backend_config:
+  include: "python-fastapi"
+  override:
+    cors_origins:
+      - "http://localhost:5173"
+      - "http://localhost:3000"
+
+# 测试配置
+testing:
+  frontend:
+    unit:
+      framework: "vitest"
+      coverage: "vitest"
+      coverage_target: 80
+    e2e:
+      framework: "playwright"
+      browsers: ["chromium", "firefox"]
+
+  backend:
+    include: "python-fastapi.testing"
+
+# 类型安全
+type_safety:
+  frontend:
+    - "Use TypeScript strict mode"
+    - "Avoid 'any' types"
+    - "Use proper interfaces"
+    - "Use type guards"
+    - "Use generics appropriately"
+
+  backend:
+    - "Use type hints"
+    - "Use Pydantic for validation"
+    - "Use mypy for type checking"
+
+# 代码规范
+code_standards:
+  frontend:
+    react:
+      - "Use functional components"
+      - "Use hooks instead of class components"
+      - "Use proper key props"
+      - "Avoid prop drilling (use context)"
+      - "Use memoization for expensive components"
+      - "Separate presentational and container components"
+
+    typescript:
+      - "Use strict mode"
+      - "Avoid 'any' types"
+      - "Use proper interfaces"
+      - "Use type guards"
+
+    formatting:
+      - "Use Prettier"
+      - "Use ESLint with React config"
+
+  backend:
+    include: "python-fastapi.code_standards"
+
+# 安全最佳实践
+security:
+  frontend:
+    - "Sanitize user input"
+    - "Use Content Security Policy"
+    - "Use HTTPS in production"
+    - "Store tokens securely (httpOnly cookies)"
+    - "Validate API responses"
+    - "Implement CSRF protection"
+    - "Use environment variables for secrets"
+
+  backend:
+    include: "python-fastapi.security"
+
+# 性能优化
+performance:
+  frontend:
+    - "Use React.memo forci for expensive components"
+    - "Use lazy loading for routes"
+    - "Use code splitting"
+    - "Optimize images"
+    - "Use CDN for static assets"
+    - "Implement virtual scrolling for long lists"
+    - "Use useCallback and useMemo appropriately"
+    - "Avoid unnecessary re-renders"
+
+  backend:
+    include: "python-fastapi.performance"
+
+# 部署配置
+deployment:
+  docker:
+    - "Use multi-stage Dockerfile"
+    - "Use Alpine base images"
+    - "Optimize layer caching"
+    - "Minimize image size"
+    - "Use .dockerignore"
+    - "Use non-root user"
+
+  docker_compose:
+    services:
+      - frontend:
+          build: ./frontend
+          ports: ["3000:3000"]
+          environment:
+            - VITE_API_URL=http://localhost:8000
+      - backend:
+          build: ./backend
+          ports: ["8000:8000"]
+          environment:
+            - DATABASE_URL=postgresql://user:pass@db:5432/db
+            - REDIS_URL=redis://redis:6379
+      - db:
+          image: postgres:15
+          environment:
+            - POSTGRES_DB=db
+            - POSTGRES_USER=user
+            - POSTGRES_PASSWORD=pass
+      - redis:
+          image: redis:7-alpine
+
+  kubernetes:
+    include: "python-fastapi.deployment.kubernetes"
+    override:
+      - "Add frontend deployment"
+      - "Add ingress configuration"
+      - "Add horizontal pod autoscaler"
+
+# 日志和监控
+logging:
+  frontend:
+    - "Use structured logging"
+    - "Log API errors"
+    - "Use error boundaries"
+    - "Implement error tracking (Sentry)"
+
+  backend:
+    include: "python-fastapi.logging"
+
+# 文档
+documentation:
+  frontend:
+    - "Document component props"
+    - "Document hooks"
+    - "Write README.md"
+    - "Document environment variables"
+
+  backend:
+    include: "python-fastapi.documentation"
+
+# 开发工具
+development_tools:
+  frontend:
+    - "Vite dev server with HMR"
+    - "React DevTools"
+    - "TypeScript language server"
+    - "ESLint on save"
+    - "Prettier on save"
+    - "Vitest UI"
+    - "Playwright test runner"
+
+  backend:
+    - "Hot reloading with uvicorn"
+    - "FastAPI auto-reload"
+    - "Pytest watch mode"
+
+# 最佳实践总结
+best_practices:
+  full_stack:
+    - "Separate frontend and backend concerns"
+    - "Use TypeScript for full-stack type safety"
+    - "Share types between frontend and backend"
+    - "Use environment-specific configuration"
+    - "Implement proper error handling across stack"
+    - "Use consistent naming conventions"
+    - "Implement proper authentication flow"
+    - "Use proper session management"
+    - "Implement proper API versioning"
+
+  collaboration:
+    - "Share code style standards"
+    - "Use shared linting configuration"
+    - "Use shared type definitions"
+    - "Document API contracts"
+    - "Use integration tests"
+    - "Use contract testing"

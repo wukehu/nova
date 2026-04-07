@@ -1,0 +1,101 @@
+# Feature Development Workflow
+# 功能开发工作流
+
+name: "feature-dev"
+description: "Systematic feature development workflow - from design to deployment"
+version: "1.0.0"
+
+# Workflow stages
+stages:
+  - id: "requirements"
+    name: "需求澄清"
+    phases:
+      - "clarify-requirements"
+    outputs:
+      - "docs/requirements/feature-requirements.md"
+    required: true
+    next: ["design"]
+
+  - id: "design"
+    name: "设计"
+    phases:
+      - "feature-design"
+      - "api-design"
+      - "data-model-design"
+    outputs:
+      - "docs/design/feature-design.md"
+      - "docs/api/feature-api-spec.md"
+      - "docs/database/feature-data-model.md"
+    required: true
+    next: ["implementation"]
+
+  - id: "implementation"
+          name: "实现"
+    phases:
+      - "implement-feature"
+      - "write-tests"
+      - "write-documentation"
+    outputs:
+      - "src/"
+      - "tests/"
+      - "docs/api/feature-endpoints.md"
+    required: true
+    next: ["testing"]
+
+  - id: "testing"
+    name: "测试"
+    phases:
+      - "unit-tests"
+      - "integration-tests"
+      - "e2e-tests"
+    outputs:
+      - "tests/unit/"
+      - "tests/integration/"
+      - "tests/e2e/"
+      - "docs/testing/feature-test-report.md"
+    required: true
+    next: ["code-review"]
+
+  - id: "code-review"
+    name: "代码审查"
+    phases:
+      - "self-review"
+      - "peer-review-request"
+    outputs:
+      - "docs/review/feature-code-review.md"
+    required: true
+    next: ["deployment"]
+
+  - id: "deployment"
+    name: "部署"
+    phases:
+      - "merge-to-branch"
+      - "deploy-to-staging"
+      - "run-verification-tests"
+    outputs:
+      - "docs/deployment/feature-deployment.md"
+    required: false
+    next: []
+
+# Quality gates
+quality_gates:
+  test_coverage:
+    enabled: true
+    minimum: 80
+    on_stages: ["testing"]
+
+  code_review:
+    enabled: true
+    on_stages: ["code-review"]
+
+# Automation
+automation:
+  auto_tests: true
+  auto_documentation: true
+
+# Options
+options:
+  branch_strategy: "feature-branch"
+  require_design_doc: true
+  require_test_review: true
+  require_code_review: true

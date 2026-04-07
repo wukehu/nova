@@ -1,0 +1,296 @@
+# Scalability Rules
+# Scalability and performance rules
+
+name: "scalability"
+description: "Scalability, performance, and capacity planning rules"
+severity: "high"
+
+# Core principles
+principles:
+  - name: "Horizontal Scaling"
+    description: "Scale by adding more instances"
+    check:
+      - "Design stateless services"
+      - "Use external storage"
+      - "Implement session replication"
+      - "Use load balancing"
+
+  - name: "Vertical Scaling"
+    description: "Scale by adding more resources"
+    check:
+      - "Monitor resource usage"
+      - "Profile bottlenecks"
+      - "Optimize for resource efficiency"
+      - "Set resource limits appropriately"
+
+  - name: "Elastic Scaling"
+    description: "Automatically scale based on load"
+    check:
+      - "Configure autoscaling policies"
+      - "Set scaling metrics thresholds"
+      - "Define min/max instance counts"
+      - "Test scaling behavior"
+
+  - name: "Caching"
+    description: "Reduce database and compute load"
+    check:
+      - "Implement multiple cache layers"
+      - "Use appropriate cache strategies"
+      - "Implement cache invalidation"
+      - "Monitor cache hit rates"
+
+# Scaling patterns
+patterns:
+  horizontal:
+    - "Stateless services"
+    - "External storage (databases, object stores)"
+    - "Load balancers"
+    - "Session management (cookies, tokens)"
+    - "Message queues for async work"
+
+  vertical:
+    - "Performance profiling"
+    - "Resource optimization"
+    - "Database indexing"
+    - "Connection pooling"
+    - "Query optimization"
+
+  caching:
+    - "Application-level caching"
+    - "Database query caching"
+    - "HTTP caching (CDN, cache headers)"
+    - "Distributed caching (Redis, Memcached)"
+    - "Cache warming strategies"
+
+  async_processing:
+    - "Background jobs"
+    - "Message queues"
+    - "Event-driven architecture"
+    - "Worker pools"
+    - "Task queues"
+
+  partitioning:
+    - "Database sharding"
+    - "Data partitioning"
+    - "Read replicas"
+    - "Geo-distribution"
+    - "Hot-cold data separation"
+
+# Database scalability
+database:
+  strategies:
+    - name: "Read Replicas"
+      description: "Scale read capacity"
+      implementation:
+        - "Set up read replicas"
+        - "Route reads to replicas"
+        - "Use read/write splitting"
+        - "Monitor replica lag"
+
+    - name: "Sharding"
+      description: "Distribute data across databases"
+      implementation:
+        - "Design sharding key"
+        - "Implement shard routing"
+        - "Handle cross-shard queries"
+        - "Plan shard rebalancing"
+
+    - name: "Partitioning"
+      description: "Organize large tables"
+      implementation:
+        - "Use table partitioning"
+        - "Choose partition key"
+        - "Implement partition pruning"
+        - "Manage partition lifecycle"
+
+    - name: "Connection Pooling"
+      description: "Manage database connections efficiently"
+      implementation:
+        - "Use connection pooling"
+        - "Set appropriate pool size"
+        - "Monitor pool usage"
+        - "Handle connection exhaustion"
+
+    - name: "Query Optimization"
+      description: "Optimize database queries"
+      implementation:
+        - "Use indexes appropriately"
+        - "Avoid N+1 queries"
+        - "Use query caching"
+        - "Optimize join order"
+
+# Application scalability
+application:
+  strategies:
+    - name: "Stateless Design"
+      description: "Design services without local state"
+      implementation:
+        - "Store state externally"
+        - "Use session tokens"
+        - "Avoid in-memory state"
+        - "Design for restart"
+
+    - name: "Async Processing"
+      description: "Offload work to background"
+      implementation:
+        - "Use message queues"
+        - "Implement background jobs"
+        - "Use worker pools"
+        - "Provide async APIs"
+
+    - name: "Load Balancing"
+      description: "Distribute load across instances"
+      implementation:
+        - "Configure load balancer"
+        - "Use appropriate algorithm"
+        - "Implement health checks"
+        - "Configure session affinity"
+
+    - name: "Rate Limiting"
+      description: "Protect from overload"
+      implementation:
+        - "Implement rate limiting"
+        - "Use appropriate algorithm"
+        - "Provide feedback to users"
+        - "Monitor rate limits"
+
+    - name: "Pagination"
+      description: "Handle large result sets"
+      implementation:
+        - "Implement pagination"
+        - "Use cursor-based pagination"
+        - "Limit page size"
+        - "Optimize count queries"
+
+# Caching strategies
+caching:
+  levels:
+    - name: "Client Caching"
+      strategies:
+        - "HTTP cache headers"
+        - "ETag and Last-Modified"
+        - "Service Worker caching"
+        - "Browser storage"
+
+    - name: "CDN Caching"
+      strategies:
+        - "Cache static assets"
+        - "Cache API responses"
+        - "Configure cache TTL"
+        - "Use cache invalidation"
+
+    - name: "Application Caching"
+      strategies:
+        - "In-memory caching (LRU)"
+        - "Distributed caching (Redis)"
+        - "Query result caching"
+        - "Computed value caching"
+
+  strategies:
+    - "Cache-aside pattern"
+    - "Read-through pattern"
+    - "Write-through pattern"
+    - "Write-behind pattern"
+    - "Refresh-ahead pattern"
+
+  invalidation:
+    - "Time-based expiration"
+    - "Event-based invalidation"
+    - "Version-based invalidation"
+    - "Cache warming"
+    - "Cache busting"
+
+# Performance optimization
+performance:
+  strategies:
+    - name: "Algorithm Optimization"
+      description: "Choose efficient algorithms"
+      checks:
+        - "Analyze time complexity"
+        - "Analyze space complexity"
+        - "Choose appropriate data structures"
+        - "Profile hot code paths"
+
+    - name: "I/O Optimization"
+      description: "Optimize I/O operations"
+      checks:
+        - "Use async I/O"
+        - "Batch I/O operations"
+        - "Use streaming for large data"
+        - "Minimize disk I/O"
+
+    - name: "Memory Optimization"
+      description: "Reduce memory usage"
+      checks:
+        - "Avoid memory leaks"
+        - "Use object pooling"
+        - "Optimize data structures"
+        - "Profile memory usage"
+
+    - name: "Network Optimization"
+      description: "Optimize network usage"
+      checks:
+        - "Minimize API calls"
+        - "Use compression"
+        - "Batch requests"
+        - "Use connection pooling"
+
+# Quality checks
+quality_gates:
+  - name: "Performance benchmarks"
+    description: "Meet performance targets"
+    checks:
+      - "Response time targets (p50, p95, p99)"
+      - "Throughput targets"
+      - "Resource usage targets"
+      - "No performance regression"
+
+  - name: "Load testing"
+    description: "Handle expected load"
+    checks:
+      - "Test with expected load"
+      - "Test with peak load"
+      - "Test stress scenarios"
+      - "Monitor resource usage"
+
+  - name: "Capacity planning"
+    description: "Plan for future load"
+    checks:
+      - "Define capacity requirements"
+      - "Plan scaling strategy"
+      - "Set monitoring alerts"
+      - "Plan budget and resources"
+
+# Monitoring
+monitoring:
+  metrics:
+    - "Request rate"
+    - "Response time (p50, p90, p95, p99)"
+    - "Error rate"
+    - "Queue length"
+    - "Cache hit rate"
+    - "Connection pool usage"
+    - "CPU usage"
+    - "Memory usage"
+    - "Disk I/O"
+    - "Network I/O"
+
+  alerts:
+    - "High response time"
+    - "High error rate"
+    - "Queue overflow"
+    - "Low cache hit rate"
+    - "High resource usage"
+    - "Scaling needed"
+
+# Best practices
+best_practices:
+  - "Design for horizontal scaling"
+  - "Use caching strategically"
+  - "Optimize database queries"
+  - "Implement async processing"
+  - "Monitor all the things"
+  - "Test at scale"
+  - "Plan for growth"
+  - "Use autoscaling"
+  - "Set up capacity planning"

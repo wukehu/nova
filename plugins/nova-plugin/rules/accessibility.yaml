@@ -1,0 +1,241 @@
+# Accessibility Rules
+# Accessibility (a11y) standards and best practices
+
+name: "accessibility"
+description: "Accessibility standards and inclusive design principles"
+severity: "medium"
+
+# Core principles
+principles:
+  - name: "Perceivable"
+    description: "Information must be presentable to users"
+    checks:
+      - "Alternative text for images"
+      - "Audio/video captions and transcripts"
+      - "Color is not the only indicator"
+      - "Text alternatives for non-text content"
+
+  - name: "Operable"
+    description: "Interface components must be operable"
+    checks:
+      - "Keyboard accessibility"
+      - "Sufficient time limits"
+      - "No seizures/flashing content"
+      - "Navigable and findable"
+
+  - name: "Understandable"
+    description: "Information and operation must be understandable"
+    checks:
+      - "Readable text"
+      - "Predictable functionality"
+      - "Input assistance"
+      - "Error prevention and recovery"
+
+  - name: "Robust"
+    description: "Content must be robust enough to be interpreted"
+    checks:
+      - "Compatible with assistive technologies"
+      - "Accessible by different users"
+      - "Works with different devices"
+
+# WCAG 2.1 Level AA standards
+wcag_21_aa:
+  # Perceivable
+  perceivable:
+    - name: "Text Alternatives"
+      description: "Provide text alternatives for non-text content"
+      checks:
+        - "All images have alt text"
+        - "Decorative images marked"
+        - "Audio has transcript"
+        - "Video has captions"
+        - "Complex images have long descriptions"
+
+    - name: "Time-based Media"
+      description: "Provide alternatives for time-based media"
+      checks:
+        - "Audio has controls"
+        - "Video has controls"
+        - "Alternatives provided for media"
+
+    - name: "Adaptable"
+      description: "Create content that can be presented in different ways"
+      checks:
+        - "Information conveyed without color alone"
+        - "Contrast ratio minimum 4.5:1"
+        - "Text can be resized"
+        - "Images can be turned off"
+
+    - name: "Distinguishable"
+      description: "Make it easier to see and hear content"
+      checks:
+        - "Audio doesn't play automatically"
+        - "User can pause/stop audio"
+        - "No flashing content (3 flashes/second)"
+        - "Contrast ratio for large text 3:1"
+
+  # Operable
+  operable:
+    - name: "Keyboard Accessible"
+      description: "Make all functionality available via keyboard"
+      checks:
+        - "All interactive elements keyboard accessible"
+        - "Keyboard focus visible"
+        - "Logical tab order"
+        - "No keyboard traps"
+        - "Skip to main content link"
+
+    - name: "Enough Time"
+      description: "Provide users enough time to read and use content"
+      checks:
+        - "Auto-scroll can be paused"
+        - "Time limits are adjustable"
+        - "Time limits are extendable"
+        - "Moving content can be paused"
+
+    - name: "Seizures and Physical Reactions"
+      description: "Do not design content in a way that causes seizures"
+      checks:
+        - "No flashing content"
+        - "No red flash patterns"
+
+    - name: "Navigable"
+      description: "Provide ways to help users navigate"
+      checks:
+        - "Page has descriptive title"
+        - "Purpose of links clear from context"
+        - "Consistent navigation"
+        - "Focus indicators visible"
+
+  # Understandable
+  understandable:
+    - name: "Readable"
+      description: "Make text content readable and understandable"
+      checks:
+        - "Language of page identified"
+        - "Language changes are marked"
+        - "Text has sufficient contrast"
+
+    - name: "Predictable"
+      description: "Make UI predictable"
+      checks:
+        - "Elements behave consistently"
+        - "Input doesn't cause context change"
+        - "Focus doesn't change unexpectedly"
+        - "Navigation is consistent"
+
+    - name: "Input Assistance"
+      description: "Help users avoid and correct mistakes"
+      checks:
+        - "Errors identified clearly"
+        - "Labels provided for inputs"
+        - "Instructions provided when needed"
+        - "Errors suggested correction"
+
+  # Robust
+  robust:
+    - name: "Compatible"
+      description: "Maximize compatibility with current and future users"
+      checks:
+        - "Valid HTML markup"
+        - "Unique IDs for elements"
+        - "Roles for custom elements"
+        - "ARIA attributes correct"
+
+# Technical implementation
+implementation:
+  html:
+    - "Use semantic HTML elements"
+    - "Provide alt text for images"
+    - "Use proper heading hierarchy"
+    - "Use labels for form inputs"
+    - "Use button/link elements appropriately"
+    - "Include skip navigation links"
+
+  css:
+    - "Don't use color:only for information"
+    - "Ensure sufficient color contrast"
+    - "Support text resizing"
+    - "Don't hide content with display:none to screen readers"
+    - "Use relative units (em, rem, %)"
+
+  javascript:
+    - "Don't use keyboard-only event handlers"
+    - "Manage focus for dynamic content"
+    - "Announce changes to screen readers"
+    - "Provide keyboard alternatives for mouse actions"
+    - "Respect user preferences (reduced motion)"
+
+  aria:
+    - "Use appropriate ARIA roles"
+    - "Use aria-label and aria-describedby"
+    - "Use aria-live for dynamic content"
+    - "Use aria-expanded for expandable content"
+    - "Use aria-current for navigation"
+    - "Avoid aria-hidden on important content"
+
+# Testing
+testing:
+  tools:
+    - "axe DevTools"
+    - "WAVE"
+    - "Lighthouse"
+    - "accessibility Insights for Web"
+    - "pa11y"
+    - "Tenon.io"
+    - "Siteimprove (AXE)"
+
+  checks:
+    automated:
+      - "Run axe DevTools"
+      - "Run Lighthouse accessibility audit"
+      - "Check contrast ratios"
+      - "Validate ARIA attributes"
+      - "Check keyboard accessibility"
+
+    manual:
+      - "Test with screen reader (NVDA, JAWS, VoiceOver)"
+      - "Test with keyboard only"
+      - "Test color contrast"
+      - "Test text resizing"
+      - "Test with browser zoom"
+
+    user_testing:
+      - "Test with users with disabilities"
+      - "Get feedback from accessibility experts"
+      - "Test with assistive technologies"
+
+# Quality gates
+quality_gates:
+  - name: "Automated Testing"
+    description: "Pass all automated accessibility tests"
+    checks:
+      - "No axe violations"
+      - "Lighthouse score 90+"
+
+  - name: "Manual Testing"
+    description: "Complete manual accessibility testing"
+    checks:
+      - "Keyboard-only navigation works"
+      - "Screen reader navigation works"
+      - "Color contrast passes WCAG AA"
+
+  - name: "Code Review"
+    description: "Code reviewed for accessibility"
+    checks:
+      - "Proper semantic HTML"
+      - "ARIA attributes correct"
+      - "Focus management implemented"
+
+# Best practices
+best_practices:
+  - "Design with accessibility in mind from start"
+  - "Use semantic HTML elements"
+  - "Provide alternative text for non-text content"
+  - "Ensure sufficient color contrast"
+  - "Make all features keyboard accessible"
+  - "Test with screen readers"
+  - "Test with keyboard only"
+  - "Include users with disabilities in testing"
+  - "Follow WCAG guidelines"
+  - "Use accessibility testing tools"

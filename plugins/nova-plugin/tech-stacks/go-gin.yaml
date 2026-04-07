@@ -1,0 +1,394 @@
+# Go + Gin 技术栈
+
+name: "go-gin"
+version: "1.0.0"
+description: "Go + Gin 完整技术栈配置 - 高性能 Web 服务"
+
+# 项目结构
+project_structure:
+  backend:
+    - cmd/
+        - main.go                   # 应用入口
+        - go.mod                   # Go 模块定义
+        - internal/
+            - controller/             # 控制器层
+            - service/                # 服务层
+            - repository/             # 仓储层
+            - model/                   # 实体/模型
+            - dto/                     # 数据传输对象
+            - middleware/              # 中间件
+            - config/                  # 配置
+            - utils/                   # 工具函数
+    - tests/
+        - unit/
+        - integration/
+        - e2e/
+    - configs/
+        - config.yaml
+        - .env.example
+
+# 后端配置
+backend:
+  language: "go"
+  version: "1.21+"
+  framework: "gin"
+  version: "1.10+"
+
+  # 依赖管理
+  dependencies:
+    web:
+      - "github.com/gin-gonic/gin"
+      - "github.com/gin-contrib/cors"
+      - "github.com/swaggo/echo"
+
+    database:
+      - "gorm.io/gorm"
+      - "gorm.io/driver/postgres"
+      - "github.com/jmoiron/sqlx"
+
+    validation:
+      - "github.com/go-playground/validator/v10"
+
+    utils:
+      - "github.com/google/uuid"
+      - "github.com/pkg/errors"
+
+    middleware:
+      - "github.com/gin-contrib/zap"
+      - "github.com/gin-contrib/cors"
+
+    config:
+      - "github.com/spf13/viper"
+
+    logging:
+      - "github.com/sirupsen/logrus"
+      - "go.uber.org/zap"
+
+  # 开发依赖
+  dev_dependencies:
+    - "github.com/cosmtic/air"
+    - "github.com/stretchr/testify"
+    - "github.com/golang/mock"
+    - "github.com/DATA-DOG/go-sqlmock/v4"
+    - "github.com/ory/tests-mockify"
+    - "github.com/golangci/golangci-lint"
+    - "github.com/golangci/golangci-sec"
+    - "github.com/fzipp/gofumpt"
+    - "github.com/golangci/golangci-misspell"
+    - "github.com/kisielk/gocov-experimental"
+    - "go.uber.org/mock/gomock"
+    - "go.uber.org/goverage"
+    - "github.com/pressly/goerror"
+    - "github.com/stretchr/testify"
+    - "github.com/stretchr/testify/assert"
+    - "github.com/h2non/gomega/v1"
+
+# 数据库配置
+database:
+  default: "postgresql"
+  options:
+    - name: "postgresql"
+      version: "15+"
+      driver: "postgres"
+      orm: "gorm"
+      pool: "pgxpool"
+    - name: "mysql"
+      version: "8.0+"
+      driver: "mysql"
+      orm: "gorm"
+      pool: "go-sql-driver"
+    - name: "sqlite"
+      version: "3+"
+      driver: "sqlite"
+      orm: "gorm"
+
+# 缓存配置
+cache:
+  default: "redis"
+  options:
+    - name: "redis"
+      version: "7+"
+      client: "go-redis"
+
+# 测试配置
+testing:
+  framework: "testify"
+  version: "0.15+"
+
+  unit_tests:
+    framework: "testify"
+    mocking: "gomock"
+    assertions: "testify/assert"
+    coverage_target: 80
+
+  integration_tests:
+    framework: "testify"
+    fixtures: "testcontainers"
+    coverage_target: 80
+
+  e2e_tests:
+    framework: "playwright"
+    browsers: ["chromium", "firefox"]
+    headless: true
+
+  # 测试最佳实践
+  practices:
+    - "Write table-driven tests"
+    - "Write unit tests for business logic"
+    - "Write integration tests for API endpoints"
+    - "Use test mocks for mocking"
+    - "Write E2E tests with Playwright"
+    - "Aim for 80%+ test coverage"
+    - "Test edge cases and error conditions"
+    - "Use subtests for table-driven tests"
+    - "Use testify assertions"
+    - "Test concurrently where appropriate"
+
+# 代码规范
+code_standards:
+  go:
+    - "Follow Go Code Conventions"
+    - "Use gofmt for formatting"
+    - "Use golint for linting"
+    - "Use effective Go naming conventions"
+    - "Keep interfaces small and focused"
+    - "Use error wrapping"
+    - "Document exported functions"
+
+  gin:
+    - "Use gin.Context for request context"
+    - "Use proper HTTP status codes"
+    - "Use middleware for cross-cutting concerns"
+    - "Use JSON tags for response metadata"
+    - "Use structured logging"
+    - "Use proper error handling with gin.Error"
+
+  gorm:
+    - "Use GORM models with proper tags"
+    - "Use struct tags for JSON tags"
+    - "Use hooks for lifecycle events"
+    - "Use transactions for database writes"
+    - "Use preloading for optimization"
+    - "Use explicit SQL for complex queries"
+
+# 格式化工具
+formatting:
+  code_formatter: "gofmt"
+  version: "1.22+"
+  config: ".gofmt.yml"
+  options:
+    - "indent: 4"
+    - "tab_width: 8"
+    - "use_tabs: true"
+    - "align: left"
+
+  import_sorter: "gci-lint"
+  version: "0.14+"
+  config: ".golangci.yml"
+  options:
+    - "blocks: [standard, import]"
+    - "skip-generated: true"
+
+  linter: "golangci-lint"
+  version: "1.61+"
+  config: ".golangci.yml"
+  options:
+    - "fast: true"
+    - "skip-generated: true"
+
+  type_checker: "gotype"
+  version: "1.23+"
+  config: "go.mod"
+
+# 安全最佳实践
+security:
+  authentication: "jwt"
+  authorization: "role-based"
+
+  practices:
+    - "Validate all user input with go-playground"
+    - "Use parameterized queries (GORM handles this)"
+    - "Implement proper JWT authentication"
+    - "Implement role-based authorization with middleware"
+    - "Implement rate limiting"
+    - "Sanitize error messages"
+    - "Use environment variables for secrets"
+    - "Implement CORS properly"
+    - "Use HTTPS in production"
+    - "Implement secure session management"
+    - "Use context for request cancellation"
+    - "Validate file uploads"
+    - "Implement security headers"
+    - "Use constant-time crypto"
+
+  owasp_top_10:
+    - "A01:2021 - Broken Access Control"
+    - "A02:2021 - Cryptographic Failures"
+    - "A03:2021 - Injection (GORM prevents SQL injection)"
+    - "A04:2021 - Insecure Design"
+    - "A05:2021 - Security Misconfiguration"
+    - "A07:2021 - Identification and Authentication Failures"
+    - "A08:2021 - Software and Data Integrity Failures"
+    - "A09:2021 - Security Logging and Monitoring Failures"
+    - "A10:2021 - Server-Side Request Forgery"
+
+# 性能优化
+performance:
+  practices:
+    - "Use goroutines for concurrent operations"
+    - "Use channels instead of mutexes where appropriate"
+    - "Use connection pooling (sql.DB, pgxpool)"
+    - "Implement caching with Redis"
+    - "Use database indexes"
+    - "Optimize GORM queries (Preload, Preload with Select)"
+    - "Use pagination for large result sets"
+    - "Implement lazy loading with Preload"
+    - "Profile bottlenecks with pprof"
+    - "Use response compression"
+    - "Implement rate limiting"
+    - "Use streaming for large data transfers"
+    - "Avoid premature optimization"
+
+  async_operations:
+    - "Use goroutines for CPU-bound operations"
+    - "Use channels for signaling"
+    - "Use sync.Pool for I/O-bound operations"
+    - "Use context for cancellation"
+    - "Use errgroup for error groups"
+
+  database_optimization:
+    - "Use GORM Preload for N+1 queries"
+    - "Use Preload with Select for optimization"
+    - "Use database indexes"
+    - "Use batch operations (CreateInBatch)"
+    - "Use connection pooling (sql.DB, pgxpool)"
+    - "Use read replicas for read-heavy workloads"
+
+  caching:
+    - "Use Redis for distributed caching"
+    - "Implement cache invalidation"
+    - "Use cache warming"
+    - "Implement cache busting"
+    - "Use appropriate TTLs"
+
+# 部署配置
+deployment:
+  docker:
+    - "Use multi-stage Dockerfile"
+    - "Use scratch base image"
+    - "Optimize layer caching"
+    - "Minimize image size"
+    - "Use .dockerignore"
+    - "Use non-root user"
+    - "Implement health checks"
+
+  kubernetes:
+    - "Use ConfigMaps for configuration"
+    - "Use Secrets for sensitive data"
+    - "Implement health checks (http/health and /ready)"
+    - "Set resource limits (CPU, memory)"
+    - "Use liveness and readiness probes"
+    - "Implement graceful shutdown"
+    - "Use horizontal pod autoscaler"
+    - "Implement rolling updates"
+
+  ci_cd:
+    - "Run tests on every commit"
+    - "Run golangci-lint and golangci-sec"
+    - "Run gofumpt"
+    - "Build Docker images"
+    - "Run security scans"
+    - "Deploy to staging on PR"
+    - "Run integration tests on staging"
+    - "Manual approval for production"
+    - "Implement rollback strategy"
+    - "Use GitHub Actions or GitLab CI"
+
+# 日志和监控
+logging:
+  framework: "logrus"
+  level: "INFO"
+  format: "json"
+
+  practices:
+    - "Use structured logging (with JSON encoding)"
+    - "Log request/response for API endpoints"
+    - "Log errors with stack traces"
+    - "Use log levels appropriately"
+    - "Implement log rotation"
+    - "Send logs to centralized system (Loki, ELK)"
+    - "Use request ID for tracing"
+    - "Use field tags for structured data"
+
+monitoring:
+  metrics: "prometheus"
+  tracing: "opentelemetry"
+  alerts: "alertmanager"
+
+  practices:
+    - "Expose metrics endpoint (/metrics)"
+    - "Track request latency (p50, p90, p99)"
+    - "Track error rates"
+    - "Track request count"
+    - "Implement distributed tracing (OpenTelemetry)"
+    - "Set up alerts for critical errors"
+    - "Monitor resource usage (goroutines, memory)"
+    - "Monitor database connection pool"
+    - "Monitor cache hit rate"
+
+# 文档
+documentation:
+  api: "swaggo"
+  framework: "markdown"
+  format: "markdown"
+
+  practices:
+    - "Use Swagger/OpenAPI annotations"
+    - "Write godoc for exported functions"
+    - "Include examples in Godoc"
+    - "Write comprehensive README"
+    - "Document configuration options"
+    - "Document deployment process"
+    - "Keep changelog up to date"
+
+# 最佳实践总结
+best_practices:
+  architecture:
+    - "Use layered architecture (Controller → Service → Repository)"
+    - "Use dependency injection (wire framework)"
+    - "Use proper error handling"
+    - "Separate concerns (business logic, data access)"
+    - "Use middleware for cross-cutting"
+
+  code_quality:
+    - "Follow Go Code Conventions"
+    - "Use gofmt, golint, golangci-lint"
+    - "Write comprehensive godoc"
+    - "Write comprehensive tests"
+    - "Aim for 80%+ test coverage"
+
+  performance:
+    - "Use goroutines for concurrency"
+    - "Implement caching"
+    - "Optimize GORM queries"
+    - "Use connection pooling"
+
+  security:
+    - "Validate all input"
+    - "Use JWT authentication"
+    - "Implement role-based authorization"
+    - "Follow OWASP guidelines"
+    - "Use HTTPS in production"
+
+  deployment:
+    - "Use Docker"
+    - "Use Kubernetes"
+    - "Implement health checks"
+    - "Use CI/CD"
+    - "Implement rollback strategy"
+
+  monitoring:
+    - "Use structured logging"
+    - "Expose metrics"
+    - "Implement distributed tracing"
+    - "Set up alerts"

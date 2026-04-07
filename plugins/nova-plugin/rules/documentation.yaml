@@ -1,0 +1,268 @@
+# Documentation Rules
+# Documentation generation and maintenance rules
+
+name: "documentation"
+description: "Documentation standards and best practices"
+severity: "medium"
+
+# Core principles
+principles:
+  - name: "Clear and Concise"
+    description: "Documentation should be clear and to the point"
+    check:
+      - "Use simple language"
+      - "Avoid jargon when possible"
+      - "Get to the point quickly"
+
+  - name: "Up to Date"
+    description: "Documentation must reflect current code"
+    check:
+      - "Update docs with code changes"
+      - "Remove obsolete documentation"
+      - "Keep examples current"
+
+  - name: "Comprehensive"
+    description: "Cover all important aspects"
+    check:
+      - "Document all public APIs"
+      - "Include examples"
+      - "Document error cases"
+
+# API Documentation
+api_documentation:
+  requirements:
+    - "Document all endpoints"
+    - "Include request/response schemas"
+    - "Document authentication requirements"
+    - "Include error codes"
+    - "Provide example requests/responses"
+    - "Document rate limits"
+    - "Document versioning"
+
+  standards:
+    - "Use OpenAPI/Swagger specification"
+    - "Include descriptions for all parameters"
+    - "Document default values"
+    - "Document required vs optional parameters"
+    - "Include status code documentation"
+
+# Code Documentation
+code_documentation:
+  requirements:
+    - "Document public functions/classes"
+    - "Explain complex algorithms"
+    - "Document non-obvious logic"
+    - "Include parameter descriptions"
+    - "Document return values"
+    - "Document raised exceptions"
+
+  standards:
+    python:
+      - "Use Google-style docstrings"
+      - "Document type hints"
+      - "Include examples in docstrings"
+
+    javascript:
+      - "Use JSDoc comments"
+      - "Document type information"
+      - "Include example usage"
+
+    java:
+      - "Use Javadoc comments"
+      - "Document parameters (@param)"
+      - "Document return values (@return)"
+      - "Document exceptions (@throws)"
+
+    go:
+      - "Use godoc comments"
+      - "Document exported functions"
+      - "Include example usage"
+
+# README Documentation
+readme:
+  sections:
+    - "Project title and description"
+    - "Installation instructions"
+    - "Quick start guide"
+    - "Usage examples"
+    - "Configuration options"
+    - "API documentation links"
+    - "Contributing guidelines"
+    - "License information"
+
+  standards:
+    - "Use clear headings"
+    - "Include badges (build, version, license)"
+    - "Use code examples"
+    - "Include diagrams when helpful"
+    - "Link to external documentation"
+
+# Changelog Standards
+changelog:
+  format: "Keep a Changelog"
+  structure:
+    - "Group by version"
+    - "Use semantic versioning"
+    - "Categorize changes (Added, Changed, Fixed, Removed)"
+    - "Include issue/PR references"
+    - "Document breaking changes"
+
+  entry_format: |
+    ## [Unreleased]
+    ### Added
+    - New feature description (#123)
+
+    ### Changed
+    - Modified behavior (#456)
+
+    ### Fixed
+    - Bug fix description (#789)
+
+# Architecture Documentation
+architecture_documentation:
+  sections:
+    - "High-level overview"
+    - "Component diagram"
+    - "Data flow diagram"
+    - "Technology choices with rationale"
+    - "Integration points"
+    - "Deployment architecture"
+
+  standards:
+    - "Use ASCII art or diagrams"
+    - "Explain design decisions (ADRs)"
+    - "Document trade-offs"
+    - "Include scaling considerations"
+
+# Testing Documentation
+testing_documentation:
+  requirements:
+    - "Document test organization"
+    - "Explain test strategy"
+    - "Document test data"
+    - "Include running tests instructions"
+    - "Document coverage requirements"
+
+    standards:
+      - "Document test categories"
+      - "Explain fixtures and mocks"
+      - "Document how to add new tests"
+
+# Security Documentation
+security_documentation:
+  requirements:
+    - "Document authentication flows"
+    - "Document authorization model"
+    - "Document security features"
+    - "Document secrets management"
+    - "Include security best practices"
+
+# Deployment Documentation
+deployment_documentation:
+  requirements:
+    - "Document deployment process"
+    - "Document environment variables"
+    - "Document infrastructure requirements"
+    - "Document scaling strategy"
+    - "Document monitoring setup"
+
+  standards:
+    - "Include step-by-step instructions"
+    - "Document rollback procedures"
+    - "Include troubleshooting guide"
+    - "Document health checks"
+
+# Language-specific standards
+language_specific:
+  python:
+    - "Use docstrings for modules, classes, and functions"
+    - "Follow PEP 257 for docstring conventions"
+    - "Use Google-style or NumPy-style docstrings"
+    - "Document type hints"
+
+  javascript:
+    - "Use JSDoc for functions and classes"
+    - "Document parameter types"
+    - "Document return types"
+    - "Include examples"
+
+  java:
+    - "Use Javadoc for public APIs"
+    - "Document parameters with @param"
+    - "Document return types with @return"
+    - "Document exceptions with @throws"
+    - "Include @see and @link references"
+
+  go:
+    - "Document exported packages, functions, and types"
+    - "Use godoc conventions"
+    - "Document package-level information"
+    - "Include examples in godoc"
+
+  rust:
+    - "Use rustdoc for public APIs"
+    - "Document module-level docs"
+    - "Include examples in doc comments"
+    - "Document error variants"
+
+# Documentation tools
+tools:
+  generators:
+    - "sphinx (Python)"
+    - "javadoc (Java)"
+    - "godoc (Go)"
+    - "rustdoc (Rust)"
+    - "swagger/OpenAPI (REST APIs)"
+    - "jsdoc (JavaScript)"
+
+  checkers:
+    - "documentation-coverage tools"
+    - "link checkers"
+    - "spell checkers"
+    - "linter for doc formatting"
+
+# Quality checks
+checks:
+  pre_commit:
+    - "Check for missing documentation"
+    - "Check doc formatting"
+    - "Check for broken links"
+    - "Check for outdated examples"
+
+  ci_cd:
+    - "Build documentation"
+    - "Run documentation tests"
+    - "Check documentation coverage"
+    - "Validate external links"
+
+# Metrics
+metrics:
+  coverage:
+    - "Percentage of public APIs documented"
+    - "Percentage of modules with README"
+    - "Percentage of code files with docstrings"
+
+  quality:
+    - "Number of broken links"
+    - "Number of outdated examples"
+    - "Documentation freshness"
+
+# Best practices
+best_practices:
+  writing:
+    - "Start with user-facing docs"
+    - "Write docs as you code"
+    - "Review docs in PRs"
+    - "Treat docs as code"
+
+  maintenance:
+    - "Keep docs in version control"
+    - "Update docs with breaking changes"
+    - "Remove obsolete docs"
+    - "Regular doc audits"
+
+  collaboration:
+    - "Encourage doc contributions"
+    - "Review docs in code review"
+    - "Provide doc templates"
+    - "Document doc conventions"
