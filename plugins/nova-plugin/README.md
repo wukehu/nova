@@ -2,6 +2,65 @@
 
 > **灵活的多维度模板系统**：支持工作流、阶段、语言、规则的自由组合
 
+## 🚀 快速开始 - 简单命令示例
+
+Nova Plugin 提供了一套简单易用的命令，让你可以直接启动各个工作流阶段：
+
+```bash
+# 📝 需求澄清 - 深入理解需求
+/clarify-requirements "Build a todo app"
+
+# 📊 需求分析 - 拆解需求为用户故事和用例
+/analyze-requirements [requirements-doc.md]
+
+# 🏗️ 架构设计 - 设计多种架构方案
+/design-architecture [requirements]
+
+# 📐 详细设计 - 设计 API、数据模型和接口
+/detail-design [architecture-design]
+
+# 💻 代码开发 - 实现功能
+/dev-code [design-document]
+
+# 🐛 测试调试 - 调试和修复问题
+/debug-test [issue-description]
+
+# 📚 文档生成 - 生成完整文档
+/generate-docs [scope]
+```
+
+### 场景示例
+
+#### 场景 1: 快速开发 Web 应用
+```bash
+# 1. 先澄清需求
+/clarify-requirements "Build a simple task manager"
+
+# 2. 分析需求
+/analyze-requirements
+
+# 3. 设计架构
+/design-architecture
+
+# 4. 详细设计
+/detail-design
+
+# 5. 开始编码
+/dev-code
+```
+
+#### 场景 2: 修复 Bug
+```bash
+# 调试和修复问题
+/debug-test "User login fails with invalid credentials"
+```
+
+#### 场景 3: 完善文档
+```bash
+# 生成项目文档
+/generate-docs "all"
+```
+
 ## 核心特性
 
 Nova Plugin 不是一个传统的固定命令插件，而是一个**多维度模板系统**。
